@@ -4,42 +4,30 @@ OTG-INFO-003
 
 |
 
-검색 엔진으로 정보 노출에 대한 검색 실행
+정보 노출에 대한 웹 서버 메타 파일 확인
 
 |
 
 Summary
 ============================================================================================
 
-There are direct and indirect elements to search engine discovery and reconnaissance. 
-Direct methods relate to searching the indexes and the associated content from caches.
-Indirect methods relate to gleaning sensitive design and configuration information by searching forums, newsgroups, and tendering websites.
-
-Once a search engine robot has completed crawling, it commences indexing the web page based on tags and associated attributes, such as <TITLE>, in order to return the relevant search results [1].
-If the robots.txt file is not updated during the lifetime of the web site, and inline
-HTML meta tags that instruct robots not to index content have not been used, then it is possible for indexes to contain web content not intended to be included in by the owners.
-Website owners may use the previously mentioned robots.txt, HTML meta tags, authentication, and tools provided by search engines to remove such content.
+This section describes how to test the robots.txt file for information
+leakage of the web application’s directory or folder path(s). Furthermore,
+the list of directories that are to be avoided by Spiders,
+Robots, or Crawlers can also be created as a dependency for Map
+execution paths through application (OTG-INFO-007)
 
 .. note::
 
-    검색 엔진으로 검색하는 방법에는 직접 방법과 간접 방법이 있습니다.
-    직접 방법은 캐시로 부터 인덱스와 관련 컨텐츠를 검색하는 것 입니다.
-    간접 방법은 검색 포럼, 뉴스 그룹, 지불 웹사이트에서 민감한 디자인과 구성 정보를 수집하는 것 입니다.
     
-    검색 엔진 로봇이 수집이 완료되면, 관련 검색 결과를 리턴하기 위하여 <TITLE>과 같은 태그 또는 속성에 기반한 웹페이지를 인덱싱하기 시작합니다.
-    만약 robots.txt 파일이 웹사이트의 라이프타임동안 업데이트 되지 않으면, HTML 메타 태그 내에 
-    웹사이트 소유자는 위에서 언급한 robots.txt, HTML 메타 태그, 인증, 툴
 
 |
 
 Test Objectives
 ============================================================================================
 
-To understand what sensitive design and configuration information of the application/system/organization is exposed both directly (on the organization’s website) or indirectly (on a third party website).
-
-.. note::
-
-    
+(1) 웹 애플리케이션의 디렉토리의 정보 노출
+(2) Spiders, Robots, Crawler를 방지하기 위한 디렉토리 리스트 생성
 
 |
 
@@ -47,86 +35,191 @@ To understand what sensitive design and configuration information of the applica
 How to Test
 ============================================================================================
 
-검색 엔진 사용 리스트
+robots.txt
 
-- Network diagrams and configurations
-- Archived posts and emails by administrators and other key staff
-- Log on procedures and username formats
-- Usernames and passwords
-- Error message content
-- Development, test, UAT and staging versions of the website
+웹 스파이더, Robots, 또는 크롤러는 retrieve a web page and then recursively
+traverse hyperlinks to retrieve further web content. Their
+accepted behavior is specified by the Robots Exclusion Protocol of
+the robots.txt file in the web root directory [1].
+As an example, the beginning of the robots.txt file from http://www.
+google.com/robots.txt sampled on 11 August 2013 is quoted below:
+
+.. code-block:: console
+
+    User-agent: *
+    Disallow: /search
+    Disallow: /sdch
+    Disallow: /groups
+    Disallow: /images
+    Disallow: /catalogs
+    ...
+
+The User-Agent directive refers to the specific web spider/robot/
+crawler. For example the User-Agent: Googlebot refers to the spider
+from Google while “User-Agent: bingbot”[1] refers to crawler from
+Microsoft/Yahoo!. User-Agent: * in the example above applies to all
+web spiders/robots/crawlers [2] as quoted below:
+
+.. code-block:: console
+
+    User-agent: *
+
+The Disallow directive specifies which resources are prohibited by
+spiders/robots/crawlers. In the example above, directories such as
+the following are prohibited:
+
+.. code-block:: console
+
+    ...
+    Disallow: /search
+    Disallow: /sdch
+    Disallow: /groups
+    Disallow: /images
+    Disallow: /catalogs
+    ...
+
+
+Web spiders/robots/crawlers can intentionally ignore the Disallow
+directives specified in a robots.txt file [3], such as those from Social
+Networks[2] to ensure that shared linked are still valid. Hence,
+robots.txt should not be considered as a mechanism to enforce restrictions
+on how web content is accessed, stored, or republished
+by third parties.
 
 |
 
-Search operators
-============================================================================================
+robots.txt in webroot - with “wget” or “curl”
+-------------------------------------------------------------------------------------------
 
-**site:** 옵션을 사용하여 특정 도메인에 대한 검색 결과를 제한할 수 있습니다.
-    수집할 때 컨텐츠와 알고리즘에 따라 다른 결과를 생성 할 수 있으므로, 하나의 검색 엔진에 테스트를 제한하지 마십시오.
+The robots.txt file is retrieved from the web root directory of the web
+server. For example, to retrieve the robots.txt from www.google.com
+using “wget” or “curl”:
 
-검색 엔진 종류 
+.. code-block:: console
 
-- Baidu
-- binsearch.info
-- Bing
-- Duck Duck Go
-- ixquick/Startpage
-- Google
-- Shodan
-- PunkSpider
+    cmlh$ wget http://www.google.com/robots.txt
+    --2013-08-11 14:40:36-- http://www.google.com/robots.txt
+    Resolving www.google.com... 74.125.237.17, 74.125.237.18,
+    74.125.237.19, ...
+    Connecting to www.google.com|74.125.237.17|:80... connected.
+    HTTP request sent, awaiting response... 200 OK
+    Length: unspecified [text/plain]
+    Saving to: ‘robots.txt.1’
 
+     [ <=> ] 7,074 --.-K/s in 0s
 
-Duck Duck Go와 ixquick/Startpage는 테스터에 관한 정보 유출을 최소화할 수 있습니다.
-Google은 **cache:** 옵션을 제공하는데, 이 옵션은 Google 검색 결과에 **저장된 페이지** 와 동일합니다.
-따라서, **site:** 옵션을 사용한 후 **저장된 페이지**를 클릭하면 됩니다.
-Google SOAP Search API는 저장된 페이지 검색을 지원하기 위해 doGetCachedPage 와 관련 doGetCachedPageResponse SOAP 메시지를 지원합니다.
-해당 구현은 OWASP **Google Hacking** 프로젝트에 의해 개발 중입니다.
-PunkSpider는 웹 어플리케이션 취약점 검색 엔진입니다. 침투 테스터가 수동 작업을 하기 위한 용도로 사용됩니다.
-그러나 스크립트 초보자들이 취약점을 찾는데 데모로 유용하게 사용됩니다.
+    2013-08-11 14:40:37 (59.7 MB/s) - ‘robots.txt’ saved [7074]
 
-**Example** 
+    cmlh$ head -n5 robots.txt
+    User-agent: *
+    Disallow: /search
+    Disallow: /sdch
+    Disallow: /groups
+    Disallow: /images
 
-일반적인 검색 엔진으로 owasp.org의 웹 컨텐츠를 찾기 위해, 다음 구문을 사용합니다.
+.. code-block:: console
 
-site:owasp.org
+    cmlh$ curl -O http://www.google.com/robots.txt
+     % Total % Received % Xferd Average Speed Time Time
+    Time Current
+     Dload Upload Total Spent Left Speed
+    101 7074 0 7074 0 0 9410 0 --:--:-- --:--:-- --:--:--
+    27312
 
-[이미지]
-
-저장된 owasp.org의 index.html을 보기위해 다음 구문을 사용합니다.
-
-cache:owasp.org
-
-[이미지]
+    cmlh$ head -n5 robots.txt
+    User-agent: *
+    Disallow: /search
+    Disallow: /sdch
+    Disallow: /groups
+    Disallow: /images
 
 |
 
-Google Hacking Database
-============================================================================================
+robots.txt in webroot - with rockspider
+-------------------------------------------------------------------------------------------
 
-Google Hacking Database는 Google으로 유용한 검색 쿼리 리스트입니다.
+“rockspider”[3] automates the creation of the initial scope for Spiders/
+Robots/Crawlers of files and directories/folders of a web site.
+For example, to create the initial scope based on the Allowed: directive
+from www.google.com using “rockspider”[4]:
 
-Google 검색 쿼리 종류
+.. code-block:: console
 
-- Footholds
-- Files containing usernames
-- Sensitive Directories
-- Web Server Detection
-- Vulnerable Files
-- Vulnerable Servers
-- Error Messages
-- Files containing juicy info
-- Files containing passwords
-- Sensitive Online Shopping Info
+    cmlh$ ./rockspider.pl -www www.google.com
+
+    “Rockspider” Alpha v0.1_2
+
+    Copyright 2013 Christian Heinrich
+    Licensed under the Apache License, Version 2.0
+
+    1. Downloading http://www.google.com/robots.txt
+    2. “robots.txt” saved as “www.google.com-robots.txt”
+    3. Sending Allow: URIs of www.google.com to web proxy i.e.
+    127.0.0.1:8080
+     /catalogs/about sent
+     /catalogs/p? sent
+     /news/directory sent
+    ...
+    4. Done.
+
+|
+
+Analyze robots.txt using Google Webmaster Tools
+-------------------------------------------------------------------------------------------
+
+Web site owners can use the Google “Analyze robots.txt” function to
+analyse the website as part of its “Google Webmaster Tools” (https://
+www.google.com/webmasters/tools). This tool can assist with testing
+and the procedure is as follows:
+
+1. Sign into Google Webmaster Tools with a Google account.
+2. On the dashboard, write the URL for the site to be analyzed.
+3. Choose between the available methods and follow the on screen instruction.
+
+
+|
+
+META Tag
+-------------------------------------------------------------------------------------------
+
+<META> tags are located within the HEAD section of each HTML Document
+and should be consistent across a web site in the likely event
+that the robot/spider/crawler start point does not begin from a document
+link other than webroot i.e. a “deep link”[5].
+
+If there is no “<META NAME=”ROBOTS” ... >” entry then the “Robots
+Exclusion Protocol” defaults to “INDEX,FOLLOW” respectively. Therefore,
+the other two valid entries defined by the “Robots Exclusion Protocol”
+are prefixed with “NO...” i.e. “NOINDEX” and “NOFOLLOW”.
+Web spiders/robots/crawlers can intentionally ignore the “<META
+NAME=”ROBOTS”” tag as the robots.txt file convention is preferred.
+Hence, <META> Tags should not be considered the primary mechanism,
+rather a complementary control to robots.txt.
+
+<META> Tags - with Burp
+
+Based on the Disallow directive(s) listed within the robots.txt file in
+webroot, a regular expression search for “<META NAME=”ROBOTS””
+within each web page is undertaken and the result compared to the
+robots.txt file in webroot.
+
+For example, the robots.txt file from facebook.com has a “Disallow:
+/ac.php” entry[6] and the resulting search for “<META NAME=”ROBOTS””
+shown below:
+
+The above might be considered a fail since “INDEX,FOLLOW” is the
+default <META> Tag specified by the “Robots Exclusion Protocol” yet
+“Disallow: /ac.php” is listed in robots.txt.
 
 |
 
 Tools
 ============================================================================================
 
-[4] FoundStone SiteDigger: http://www.mcafee.com/uk/downloads/free-tools/sitedigger.aspx
-[5] Google Hacker: http://yehg.net/lab/pr0js/files.php/googlehacker.zip
-[6] Stach & Liu’s Google Hacking Diggity Project: http://www.stachliu.com/resources/tools/google-hacking-diggity-project/
-[7] PunkSPIDER: http://punkspider.hyperiongray.com/
+- Browser (View Source function)
+- curl
+- wget
+- rockspider[7]
 
 
 |
@@ -134,18 +227,10 @@ Tools
 References
 ============================================================================================
 
-[1] “Google Basics: Learn how Google Discovers, Crawls, and Serves Web Pages” - https://support.google.com/webmasters/answer/70897
-[2] “Operators and More Search Help”: https://support.google.com/websearch/answer/136861?hl=en
-[3] “Google Hacking Database”: http://www.exploit-db.com/google-dorks/
+[1] “The Web Robots Pages” - http://www.robotstxt.org/
+[2] “Block and Remove Pages Using a robots.txt File” - https://support.google.com/webmasters/answer/156449
+[3] “(ISC)2 Blog: The Attack of the Spiders from the Clouds” - http://blog.isc2.org/isc2_blog/2008/07/the-attack-of-t.html
+[4] “Telstra customer database exposed” - http://www.smh.com.au/it-pro/security-it/telstra-customer-database-exposed-20111209-1on60.html
 
-
-|
-
-Remediation
-============================================================================================
-
-Carefully consider the sensitivity of design and configuration information before it is posted online.
-Periodically review the sensitivity of existing design and configuration
-information that is posted online.
 
 |

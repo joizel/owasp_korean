@@ -4,42 +4,33 @@ OTG-INFO-002
 
 |
 
-검색 엔진으로 정보 노출에 대한 검색 실행
+웹서버 핑거 프린팅
 
 |
 
 Summary
 ============================================================================================
 
-There are direct and indirect elements to search engine discovery and reconnaissance. 
-Direct methods relate to searching the indexes and the associated content from caches.
-Indirect methods relate to gleaning sensitive design and configuration information by searching forums, newsgroups, and tendering websites.
+Web server fingerprinting is a critical task for the penetration tester.
+Knowing the version and type of a running web server allows testers to determine known vulnerabilities and the appropriate exploits to use during testing.
 
-Once a search engine robot has completed crawling, it commences indexing the web page based on tags and associated attributes, such as <TITLE>, in order to return the relevant search results [1].
-If the robots.txt file is not updated during the lifetime of the web site, and inline
-HTML meta tags that instruct robots not to index content have not been used, then it is possible for indexes to contain web content not intended to be included in by the owners.
-Website owners may use the previously mentioned robots.txt, HTML meta tags, authentication, and tools provided by search engines to remove such content.
+There are several different vendors and versions of web servers on the market today. 
+Knowing the type of web server that is being tested significantly helps in the testing process and can also change the course of the test.
+This information can be derived by sending the web server specific commands and analyzing the output, as each version of web server software may respond differently to these commands. By knowing how each type of web server responds to specific commands and keeping this information in a web server fingerprint database, a penetration tester can send these commands to the web server, analyze the response, and compare it to the database of known signatures.
+Please note that it usually takes several different commands to accurately identify the web server, as different versions may react similarly to the same command. 
+Rarely do different versions react the same to all HTTP commands. So by sending several different commands, the
+tester can increase the accuracy of their guess.
 
 .. note::
 
-    검색 엔진으로 검색하는 방법에는 직접 방법과 간접 방법이 있습니다.
-    직접 방법은 캐시로 부터 인덱스와 관련 컨텐츠를 검색하는 것 입니다.
-    간접 방법은 검색 포럼, 뉴스 그룹, 지불 웹사이트에서 민감한 디자인과 구성 정보를 수집하는 것 입니다.
     
-    검색 엔진 로봇이 수집이 완료되면, 관련 검색 결과를 리턴하기 위하여 <TITLE>과 같은 태그 또는 속성에 기반한 웹페이지를 인덱싱하기 시작합니다.
-    만약 robots.txt 파일이 웹사이트의 라이프타임동안 업데이트 되지 않으면, HTML 메타 태그 내에 
-    웹사이트 소유자는 위에서 언급한 robots.txt, HTML 메타 태그, 인증, 툴
 
 |
 
 Test Objectives
 ============================================================================================
 
-To understand what sensitive design and configuration information of the application/system/organization is exposed both directly (on the organization’s website) or indirectly (on a third party website).
-
-.. note::
-
-    
+침투 테스트 시 사용할 취약점과 적합한 익스플로잇을 찾기하기 위해 실행중인 웹 서버의 버전과 형식을 확인합니다.
 
 |
 
@@ -47,86 +38,327 @@ To understand what sensitive design and configuration information of the applica
 How to Test
 ============================================================================================
 
-검색 엔진 사용 리스트
+|
 
-- Network diagrams and configurations
-- Archived posts and emails by administrators and other key staff
-- Log on procedures and username formats
-- Usernames and passwords
-- Error message content
-- Development, test, UAT and staging versions of the website
+Black Box testing
+-------------------------------------------------------------------------------------------
+
+웹 서버를 식별하기 위한 가장 간단하고 기본적인 방법은 HTTP 응답 헤더에서 Server 필드를 확인하는 것입니다.
+NetCat을 이용하여 다음과 같이 사용합니다.
+
+.. code-block:: console
+
+    $ nc 202.41.76.251 80
+    HEAD / HTTP/1.0
+    HTTP/1.1 200 OK
+    Date: Mon, 16 Jun 2003 02:53:29 GMT
+    Server: Apache/1.3.3 (Unix) (Red Hat/Linux)
+    Last-Modified: Wed, 07 Oct 1998 11:18:14 GMT
+    ETag: “1813-49b-361b4df6”
+    Accept-Ranges: bytes
+    Content-Length: 1179
+    Connection: close
+    Content-Type: text/html
+
+
+Server 필드로 부터 Apache 1.3.3 이라는 것을 확인할 수 있으며, Linux 운영체제인 것도 확인 가능합니다.
+아래 다른 서버에 대한 예제를 4개 더 보도록 하겠습니다.
+
+Apache 1.3.23 서버
+
+.. code-block:: console
+
+    HTTP/1.1 200 OK
+    Date: Sun, 15 Jun 2003 17:10: 49 GMT
+    Server: Apache/1.3.23
+    Last-Modified: Thu, 27 Feb 2003 03:48: 19 GMT
+    ETag: 32417-c4-3e5d8a83
+    Accept-Ranges: bytes
+    Content-Length: 196
+    Connection: close
+    Content-Type: text/HTML
+
+Microsoft IIS 5.0 서버
+
+.. code-block:: console
+
+    HTTP/1.1 200 OK
+    Server: Microsoft-IIS/5.0
+    Expires: Yours, 17 Jun 2003 01:41: 33 GMT
+    Date: Mon, 16 Jun 2003 01:41: 33 GMT
+    Content-Type: text/HTML
+    Accept-Ranges: bytes
+    Last-Modified: Wed, 28 May 2003 15:32: 21 GMT
+    ETag: b0aac0542e25c31: 89d
+    Content-Length: 7369
+
+Netscape Enterprise 4.1 서버
+
+.. code-block:: console
+
+    HTTP/1.1 200 OK
+    Server: Netscape-Enterprise/4.1
+    Date: Mon, 16 Jun 2003 06:19: 04 GMT
+    Content-type: text/HTML
+    Last-modified: Wed, 31 Jul 2002 15:37: 56 GMT
+    Content-length: 57
+    Accept-ranges: bytes
+    Connection: close
+
+SunONE 6.1 서버
+
+.. code-block:: console
+
+    HTTP/1.1 200 OK
+    Server: Sun-ONE-Web-Server/6.1
+    Date: Tue, 16 Jan 2007 14:53:45 GMT
+    Content-length: 1186
+    Content-type: text/html
+    Date: Tue, 16 Jan 2007 14:50:31 GMT
+    Last-Modified: Wed, 10 Jan 2007 09:58:26 GMT
+    Accept-Ranges: bytes
+    Connection: close
+
+위의 테스트 방법은 정확성에 문제가 있을 수 있습니다. 
+서버 베너 문자열을 수정하거나 난독화 시키는 방법이 있기 때문입니다. 
+
+.. code-block:: console
+
+    403 HTTP/1.1 Forbidden
+    Date: Mon, 16 Jun 2003 02:41: 27 GMT
+    Server: Unknown-Webserver/1.0
+    Connection: close
+    Content-Type: text/HTML; charset=iso-8859-1
+
+
+
+위의 경우 응답 헤더에 Server 필드가 난독화되어 있어, 침투 테스터는 웹 서버의 기본 정보를 확인할 수 없습니다.
 
 |
 
-Search operators
-============================================================================================
+Protocol Behavior
+-------------------------------------------------------------------------------------------
 
-**site:** 옵션을 사용하여 특정 도메인에 대한 검색 결과를 제한할 수 있습니다.
-    수집할 때 컨텐츠와 알고리즘에 따라 다른 결과를 생성 할 수 있으므로, 하나의 검색 엔진에 테스트를 제한하지 마십시오.
-
-검색 엔진 종류 
-
-- Baidu
-- binsearch.info
-- Bing
-- Duck Duck Go
-- ixquick/Startpage
-- Google
-- Shodan
-- PunkSpider
-
-
-Duck Duck Go와 ixquick/Startpage는 테스터에 관한 정보 유출을 최소화할 수 있습니다.
-Google은 **cache:** 옵션을 제공하는데, 이 옵션은 Google 검색 결과에 **저장된 페이지** 와 동일합니다.
-따라서, **site:** 옵션을 사용한 후 **저장된 페이지**를 클릭하면 됩니다.
-Google SOAP Search API는 저장된 페이지 검색을 지원하기 위해 doGetCachedPage 와 관련 doGetCachedPageResponse SOAP 메시지를 지원합니다.
-해당 구현은 OWASP **Google Hacking** 프로젝트에 의해 개발 중입니다.
-PunkSpider는 웹 어플리케이션 취약점 검색 엔진입니다. 침투 테스터가 수동 작업을 하기 위한 용도로 사용됩니다.
-그러나 스크립트 초보자들이 취약점을 찾는데 데모로 유용하게 사용됩니다.
-
-**Example** 
-
-일반적인 검색 엔진으로 owasp.org의 웹 컨텐츠를 찾기 위해, 다음 구문을 사용합니다.
-
-site:owasp.org
-
-[이미지]
-
-저장된 owasp.org의 index.html을 보기위해 다음 구문을 사용합니다.
-
-cache:owasp.org
-
-[이미지]
+더 정교한 기술은 이용하는 여러 웹 서버의 다양한 특성을 이용하는 것입니다. 
+아래 침투 테스터가 침투시 웹 서버 형태를 추론할 수 있는 또 다른 방법을 설명합니다.
 
 |
 
-Google Hacking Database
-============================================================================================
+HTTP header field ordering
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Google Hacking Database는 Google으로 유용한 검색 쿼리 리스트입니다.
+HTTP 응답 헤더 순서를 관찰하여 웹 서버를 구분할 수 있습니다.
+아래 응답 헤더 부분을 보면 Apache, Netscape Enterprise, IIS가 Date 필드와 
+Server 필드 사이의 순서가 다른 것을 확인할 수 있습니다.
 
-Google 검색 쿼리 종류
+Apache 1.3.23 서버
 
-- Footholds
-- Files containing usernames
-- Sensitive Directories
-- Web Server Detection
-- Vulnerable Files
-- Vulnerable Servers
-- Error Messages
-- Files containing juicy info
-- Files containing passwords
-- Sensitive Online Shopping Info
+.. code-block:: console
+
+    $ nc apache.example.com 80
+    HEAD / HTTP/1.0
+    HTTP/1.1 200 OK
+    Date: Sun, 15 Jun 2003 17:10: 49 GMT
+    Server: Apache/1.3.23
+    Last-Modified: Thu, 27 Feb 2003 03:48: 19 GMT
+    ETag: 32417-c4-3e5d8a83
+    Accept-Ranges: bytes
+    Content-Length: 196
+    Connection: close
+    Content-Type: text/HTML
+
+Microsoft IIS 5.0 서버
+
+.. code-block:: console
+
+    $ nc iis.example.com 80
+    HEAD / HTTP/1.0
+    HTTP/1.1 200 OK
+    Server: Microsoft-IIS/5.0
+    Content-Location: http://iis.example.com/Default.htm
+    Date: Fri, 01 Jan 1999 20:13: 52 GMT
+    Content-Type: text/HTML
+    Accept-Ranges: bytes
+    Last-Modified: Fri, 01 Jan 1999 20:13: 52 GMT
+    ETag: W/e0d362a4c335be1: ae1
+    Content-Length: 133 
+
+Netscape Enterprise 4.1 서버
+
+.. code-block:: console
+
+    $ nc netscape.example.com 80
+    HEAD / HTTP/1.0
+    HTTP/1.1 200 OK
+    Server: Netscape-Enterprise/4.1
+    Date: Mon, 16 Jun 2003 06:01: 40 GMT
+    Content-type: text/HTML
+    Last-modified: Wed, 31 Jul 2002 15:37: 56 GMT
+    Content-length: 57
+    Accept-ranges: bytes
+    Connection: close
+
+SunONE 6.1 서버
+
+.. code-block:: console
+
+    $ nc sunone.example.com 80
+    HEAD / HTTP/1.0
+    HTTP/1.1 200 OK
+    Server: Sun-ONE-Web-Server/6.1
+    Date: Tue, 16 Jan 2007 15:23:37 GMT
+    Content-length: 0
+    Content-type: text/html
+    Date: Tue, 16 Jan 2007 15:20:26 GMT
+    Last-Modified: Wed, 10 Jan 2007 09:58:26 GMT
+    Connection: close
+
+
 
 |
+
+Malformed requests test
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+또 다른 유용한 침투 테스트는 악의적인 요청 또는 존재하지 않는 페이지 요청을 서버에 보내는 것입니다.
+아래를 확인해보면 서버마다 다른 응답 헤더를 보내는 것을 확인할 수 있습니다.
+
+Apache 1.3.23 서버
+
+.. code-block:: console
+
+    $ nc apache.example.com 80
+    GET / HTTP/3.0
+    HTTP/1.1 400 Bad Request
+    Date: Sun, 15 Jun 2003 17:12: 37 GMT
+    Server: Apache/1.3.23
+    Connection: close
+    Transfer: chunked
+    Content-Type: text/HTML; charset=iso-8859-1
+
+    $ nc apache.example.com 80
+    GET / JUNK/1.0
+    HTTP/1.1 200 OK
+    Date: Sun, 15 Jun 2003 17:17: 47 GMT
+    Server: Apache/1.3.23
+    Last-Modified: Thu, 27 Feb 2003 03:48: 19 GMT
+    ETag: 32417-c4-3e5d8a83
+    Accept-Ranges: bytes
+    Content-Length: 196
+    Connection: close
+    Content-Type: text/HTML
+
+Microsoft IIS 5.0 서버
+
+.. code-block:: console
+
+    $ nc iis.example.com 80
+    GET / HTTP/3.0
+    HTTP/1.1 200 OK
+    Server: Microsoft-IIS/5.0
+    Content-Location: http://iis.example.com/Default.htm
+    Date: Fri, 01 Jan 1999 20:14: 02 GMT
+    Content-Type: text/HTML
+    Accept-Ranges: bytes
+    Last-Modified: Fri, 01 Jan 1999 20:14: 02 GMT
+    ETag: W/e0d362a4c335be1: ae1
+    Content-Length: 133
+
+    $ nc iis.example.com 80
+    GET / JUNK/1.0
+    HTTP/1.1 400 Bad Request
+    Server: Microsoft-IIS/5.0
+    Date: Fri, 01 Jan 1999 20:14: 34 GMT
+    Content-Type: text/HTML
+    Content-Length: 87
+
+Netscape Enterprise 4.1 서버
+
+.. code-block:: console
+
+    $ nc netscape.example.com 80
+    GET / HTTP/3.0 
+
+    HTTP/1.1 505 HTTP Version Not Supported
+    Server: Netscape-Enterprise/4.1
+    Date: Mon, 16 Jun 2003 06:04: 04 GMT
+    Content-length: 140
+    Content-type: text/HTML
+    Connection: close
+
+    $ nc netscape.example.com 80
+    GET / JUNK/1.0
+    <HTML><HEAD><TITLE>Bad request</TITLE></HEAD>
+    <BODY><H1>Bad request</H1>
+    Your browser sent to query this server could not understand.
+    </BODY></HTML>
+
+SunONE 6.1 서버
+
+.. code-block:: console
+
+    $ nc sunone.example.com 80
+    GET / HTTP/3.0
+    HTTP/1.1 400 Bad request
+    Server: Sun-ONE-Web-Server/6.1
+    Date: Tue, 16 Jan 2007 15:25:00 GMT
+    Content-length: 0
+    Content-type: text/html
+    Connection: close
+
+    $ nc sunone.example.com 80
+    GET / JUNK/1.0
+    <HTML><HEAD><TITLE>Bad request</TITLE></HEAD>
+    <BODY><H1>Bad request</H1>
+    Your browser sent a query this server could not understand.
+    </BODY></HTML>
+
+|
+
 
 Tools
 ============================================================================================
 
-[4] FoundStone SiteDigger: http://www.mcafee.com/uk/downloads/free-tools/sitedigger.aspx
-[5] Google Hacker: http://yehg.net/lab/pr0js/files.php/googlehacker.zip
-[6] Stach & Liu’s Google Hacking Diggity Project: http://www.stachliu.com/resources/tools/google-hacking-diggity-project/
-[7] PunkSPIDER: http://punkspider.hyperiongray.com/
+- httprint - http://net-square.com/httprint.html
+- httprecon - http://www.computec.ch/projekte/httprecon/
+- Netcraft - http://www.netcraft.com
+- Desenmascarame - http://desenmascara.me
+
+
+Automated Testing
+-------------------------------------------------------------------------------------------
+
+
+Rather than rely on manual banner grabbing and analysis of the web
+server headers, a tester can use automated tools to achieve the same
+results. There are many tests to carry out in order to accurately fingerprint
+a web server. Luckily, there are tools that automate these tests.
+“httprint” is one of such tools. httprint uses a signature dictionary that
+allows it to recognize the type and the version of the web server in
+use.
+An example of running httprint is shown below:
+
+|
+
+Online Testing
+-------------------------------------------------------------------------------------------
+
+Online tools can be used if the tester wishes to test more stealthily
+and doesn’t wish to directly connect to the target website. An example 
+of an online tool that often delivers a lot of information about target
+Web Servers, is Netcraft. With this tool we can retrieve information
+about operating system, web server used, Server Uptime, Netblock
+Owner, history of change related to Web server and O.S.
+An example is shown below:
+
+OWASP Unmaskme Project is expected to become another online
+tool to do fingerprinting of any website with an overall interpretation
+of all the Web-metadata extracted. The idea behind this project
+is that anyone in charge of a website could test the metadata the
+site is showing to the world and assess it from a security point of
+view.
+While this project is still being developed, you can test a Spanish
+Proof of Concept of this idea.
 
 
 |
@@ -134,18 +366,19 @@ Tools
 References
 ============================================================================================
 
-[1] “Google Basics: Learn how Google Discovers, Crawls, and Serves Web Pages” - https://support.google.com/webmasters/answer/70897
-[2] “Operators and More Search Help”: https://support.google.com/websearch/answer/136861?hl=en
-[3] “Google Hacking Database”: http://www.exploit-db.com/google-dorks/
 
+- Saumil Shah: “An Introduction to HTTP fingerprinting” - http://www.net-square.com/httprint_paper.html
+- Anant Shrivastava: “Web Application Finger Printing” - http://anantshri.info/articles/web_app_finger_printing.html
 
 |
 
 Remediation
 ============================================================================================
 
-Carefully consider the sensitivity of design and configuration information before it is posted online.
-Periodically review the sensitivity of existing design and configuration
-information that is posted online.
+Protect the presentation layer web server behind a hardened reverse proxy.
+Obfuscate the presentation layer web server headers.
+
+- Apache
+- IIS
 
 |
