@@ -1,6 +1,6 @@
-============================================================================================
+==========================================================================================
 OTG-INFO-006
-============================================================================================
+==========================================================================================
 
 |
 
@@ -8,34 +8,30 @@ OTG-INFO-006
 
 |
 
-Summary
-============================================================================================
+개요
+==========================================================================================
 
 Enumerating the application and its attack surface is a key precursor
 before any thorough testing can be undertaken, as it allows the tester
 to identify likely areas of weakness. This section aims to help identify
 and map out areas within the application that should be investigated
 once enumeration and mapping have been completed.
-
-.. note::
-
     
 
 |
 
-Test Objectives
-============================================================================================
+테스트 목적
+==========================================================================================
 
-Understand how requests are formed and typical responses from the
-application
-
+리퀘스트가 어떻게 형성되는 지와 어플리케이션으로 부터 전형적인 응답 이해
     
-
 |
 
 
-How to Test
-============================================================================================
+테스트 방법
+==========================================================================================
+
+|
 
 Before any testing begins, the tester should always get a good understanding
 of the application and how the user and browser communicates
@@ -92,66 +88,38 @@ in this guide dedicated for testing these HTTP methods.
 |
 
 Requests
--------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------
 
 - Identify where GETs are used and where POSTs are used.
-- Identify all parameters used in a POST request (these are in the body
-of the request).
-- Within the POST request, pay special attention to any hidden
-parameters. When a POST is sent all the form fields (including
-hidden parameters) will be sent in the body of the HTTP message
-to the application. These typically aren’t seen unless a proxy or view
-the HTML source code is used. In addition, the next page shown, its
-data, and the level of access can all be different depending on the
-value of the hidden parameter(s).
-- Identify all parameters used in a GET request (i.e., URL), in particular
-the query string (usually after a ? mark).
-- Identify all the parameters of the query string. These usually are in a
- pair format, such as foo=bar. Also note that many parameters can
-be in one query string such as separated by a &, ~, :, or any other
-special character or encoding.
-- A special note when it comes to identifying multiple parameters
-in one string or within a POST request is that some or all of the
-parameters will be needed to execute the attacks.
-The tester needs to identify all of the parameters (even if encoded
-or encrypted) and identify which ones are processed by the
-application. Later sections of the guide will identify how to test
-these parameters. At this point, just make sure each one of them
-is identified.
-- Also pay attention to any additional or custom type headers not
-typically seen (such as debug=False).
+- Identify all parameters used in a POST request (these are in the body of the request).
+- Within the POST request, pay special attention to any hidden parameters. When a POST is sent all the form fields (including hidden parameters) will be sent in the body of the HTTP message to the application. These typically aren’t seen unless a proxy or view the HTML source code is used. In addition, the next page shown, its data, and the level of access can all be different depending on the value of the hidden parameter(s).
+- Identify all parameters used in a GET request (i.e., URL), in particular the query string (usually after a ? mark).
+- Identify all the parameters of the query string. These usually are in a pair format, such as foo=bar. Also note that many parameters can be in one query string such as separated by a &, ~, :, or any other special character or encoding.
+- A special note when it comes to identifying multiple parameters in one string or within a POST request is that some or all of the parameters will be needed to execute the attacks. The tester needs to identify all of the parameters (even if encoded or encrypted) and identify which ones are processed by the application. Later sections of the guide will identify how to test these parameters. At this point, just make sure each one of them is identified.
+- Also pay attention to any additional or custom type headers not typically seen (such as debug=False).
 
 |
 
 Responses
--------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------
 
-- Identify where new cookies are set (Set-Cookie header), modified,
- or added to.
-- Identify where there are any redirects (3xx HTTP status code), 400
-status codes, in particular 403 Forbidden, and 500 internal server
-errors during normal responses (i.e., unmodified requests).
-- Also note where any interesting headers are used. For example,
-“Server: BIG-IP” indicates that the site is load balanced.
-Thus, if a site is load balanced and one server is incorrectly
-configured, then the tester might have to make multiple requests
-to access the vulnerable server, depending on the type of load
-balancing used.
+- Identify where new cookies are set (Set-Cookie header), modified, or added to.
+- Identify where there are any redirects (3xx HTTP status code), 400 status codes, in particular 403 Forbidden, and 500 internal server errors during normal responses (i.e., unmodified requests).
+- Also note where any interesting headers are used. For example, "Server: BIG-IP" indicates that the site is load balanced. Thus, if a site is load balanced and one server is incorrectly configured, then the tester might have to make multiple requests to access the vulnerable server, depending on the type of load balancing used.
 
 |
 
 Black Box Testing
-============================================================================================
+-----------------------------------------------------------------------------------------
 
-Testing for application entry points:
+어플리케이션 엔트리 포인트 테스트:
 
-The following are two examples on how to check for application
-entry points.
+어플리케이션 엔트리 포인트를 체크하는 방법은 다음 두가지 예가 있습니다.
 
 EXAMPLE 1
--------------------------------------------------------------------------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-This example shows a GET request that would purchase an item from an online shopping application.
+이 예제는 온라인 쇼핑 어플리케이션으로 부터 아이템을 구매하는 GET 리퀘스트를 보여줍니다.
 
 .. code-block:: console
 
@@ -160,18 +128,17 @@ This example shows a GET request that would purchase an item from an online shop
     Host: x.x.x.x
     Cookie: SESSIONID=Z29vZCBqb2IgcGFkYXdhIG15IHVzZXJuYW1lIGlzIGZvbyBhbmQgcGFzc3dvcmQgaXMgYmFy
 
-Result Expected:
+:Result Expected:
 
-Here the tester would note all the parameters of the request such
-as CUSTOMERID, ITEM, PRICE, IP, and the Cookie (which could just
-be encoded parameters or used for session state).
+여기 테스터는 리퀘스트의 파라미터 모두를 기록해야 합니다.
+(CUSTOMERID, ITEM, PRICE, IP, Cookie)
 
 |
 
 EXAMPLE 2
--------------------------------------------------------------------------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-This example shows a POST request that would log you into an application.
+이 예제는 어플리케이션으로 로그인하는 POST 리퀘스트를 보여줍니다.
 
 .. code-block:: console
 
@@ -180,23 +147,21 @@ This example shows a POST request that would log you into an application.
     Cookie: SESSIONID=dGhpcyBpcyBhIGJhZCBhcHAgdGhhdCBzZXRzIHByZWRpY3RhYmxlIGNvb2tpZXMgYW5kIG1pbmUgaXMgMTIzNA==
     CustomCookie=00my00trusted00ip00is00x.x.x.x00
 
-Body of the POST message:
+:POST Body:
 
 .. code-block:: console
 
     user=admin&pass=pass123&debug=true&fromtrustIP=true
 
-Result Expected:
+:Result Expected:
 
-In this example the tester would note all the parameters as they
-have before but notice that the parameters are passed in the body
-of the message and not in the URL. Additionally, note that there is a
-custom cookie that is being used.
+이 예제에서 테스터는 POST Body 상에 모든 파라미터를 기록해야 합니다.
+또한, Cookie값과 CustomCookie값 역시 기록합니다.
 
 |
 
 Gray Box Testing
-============================================================================================
+==========================================================================================
 
 Testing for application entry points via a Gray Box methodology
 would consist of everything already identified above with one addition.
@@ -213,10 +178,10 @@ hasn’t already been identified during the black box testing).
 |
 
 Tools
-============================================================================================
+==========================================================================================
 
 Intercepting Proxy
--------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------
 
 - OWASP: Zed Attack Proxy (ZAP)
 - OWASP: WebScarab
@@ -224,7 +189,7 @@ Intercepting Proxy
 - CAT
 
 Browser Plug-in
--------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------
 
 - TamperIE for Internet Explorer
 - Tamper Data for Firefox
@@ -232,9 +197,11 @@ Browser Plug-in
 |
 
 References
-============================================================================================
+==========================================================================================
 
 Whitepapers
-• RFC 2616 – Hypertext Transfer Protocol – HTTP 1.1 - http://tools.ietf.org/html/rfc2616
+-----------------------------------------------------------------------------------------
+
+- RFC 2616 – Hypertext Transfer Protocol – HTTP 1.1 - http://tools.ietf.org/html/rfc2616
 
 |

@@ -1,6 +1,6 @@
-============================================================================================
+==========================================================================================
 OTG-INFO-009
-============================================================================================
+==========================================================================================
 
 |
 
@@ -8,144 +8,142 @@ OTG-INFO-009
 
 |
 
-Summary
-============================================================================================
+개요
+==========================================================================================
 
-There are direct and indirect elements to search engine discovery and reconnaissance. 
-Direct methods relate to searching the indexes and the associated content from caches.
-Indirect methods relate to gleaning sensitive design and configuration information by searching forums, newsgroups, and tendering websites.
-
-Once a search engine robot has completed crawling, it commences indexing the web page based on tags and associated attributes, such as <TITLE>, in order to return the relevant search results [1].
-If the robots.txt file is not updated during the lifetime of the web site, and inline
-HTML meta tags that instruct robots not to index content have not been used, then it is possible for indexes to contain web content not intended to be included in by the owners.
-Website owners may use the previously mentioned robots.txt, HTML meta tags, authentication, and tools provided by search engines to remove such content.
-
-.. note::
-
-    검색 엔진으로 검색하는 방법에는 직접 방법과 간접 방법이 있습니다.
-    직접 방법은 캐시로 부터 인덱스와 관련 컨텐츠를 검색하는 것 입니다.
-    간접 방법은 검색 포럼, 뉴스 그룹, 지불 웹사이트에서 민감한 디자인과 구성 정보를 수집하는 것 입니다.
-    
-    검색 엔진 로봇이 수집이 완료되면, 관련 검색 결과를 리턴하기 위하여 <TITLE>과 같은 태그 또는 속성에 기반한 웹페이지를 인덱싱하기 시작합니다.
-    만약 robots.txt 파일이 웹사이트의 라이프타임동안 업데이트 되지 않으면, HTML 메타 태그 내에 
-    웹사이트 소유자는 위에서 언급한 robots.txt, HTML 메타 태그, 인증, 툴
+There is nothing new under the sun, and nearly every web application
+that one may think of developing has already been developed.
+With the vast number of free and open source software projects
+that are actively developed and deployed around the world, it is
+very likely that an application security test will face a target site
+that is entirely or partly dependent on these well known applications
+(e.g. Wordpress, phpBB, Mediawiki, etc). Knowing the web
+application components that are being tested significantly helps
+in the testing process and will also drastically reduce the effort
+required during the test. These well known web applications have
+known HTML headers, cookies, and directory structures that can
+be enumerated to identify the application.
 
 |
 
-Test Objectives
-============================================================================================
+테스트 목적
+==========================================================================================
 
-To understand what sensitive design and configuration information of the application/system/organization is exposed both directly (on the organization’s website) or indirectly (on a third party website).
-
-.. note::
-
-    
+Identify the web application and version to determine known vulnerabilities
+and the appropriate exploits to use during testing.
 
 |
 
 
-How to Test
-============================================================================================
+테스트 방법
+==========================================================================================
 
-검색 엔진 사용 리스트
+**Cookies**
 
-- Network diagrams and configurations
-- Archived posts and emails by administrators and other key staff
-- Log on procedures and username formats
-- Usernames and passwords
-- Error message content
-- Development, test, UAT and staging versions of the website
+A relatively reliable way to identify a web application is by the application-specific
+cookies.
 
-|
+Consider the following HTTP-request:
 
-Search operators
-============================================================================================
+.. code-block:: console
 
-**site:** 옵션을 사용하여 특정 도메인에 대한 검색 결과를 제한할 수 있습니다.
-    수집할 때 컨텐츠와 알고리즘에 따라 다른 결과를 생성 할 수 있으므로, 하나의 검색 엔진에 테스트를 제한하지 마십시오.
+    GET / HTTP/1.1
+    User-Agent: Mozilla/5.0 (Windows NT 6.2; WOW64; rv:31.0)
+    Gecko/20100101 Firefox/31.0
+    Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+    Accept-Language: en-US,en;q=0.5
+    ‘’’Cookie: wp-settings-time-1=1406093286; wp-settingstime-2=1405988284’’’
+    DNT: 1
+    Connection: keep-alive
+    Host: blog.owasp.org
 
-검색 엔진 종류 
+The cookie CAKEPHP has automatically been set, which gives information
+about the framework being used. List of common cookies
+names is presented in Cpmmon Application Identifiers section.
+However, it is possible to change the name of the cookie.
 
-- Baidu
-- binsearch.info
-- Bing
-- Duck Duck Go
-- ixquick/Startpage
-- Google
-- Shodan
-- PunkSpider
+**HTML source code**
+
+This technique is based on finding certain patterns in the HTML
+page source code. Often one can find a lot of information which
+helps a tester to recognize a specific web application. One of the
+common markers are HTML comments that directly lead to application
+disclosure. More often certain application-specific paths
+can be found, i.e. links to application-specific css and/or js folders.
+Finally, specific script variables might also point to a certain application.
+From the meta tag below, one can easily learn the application
+used by a website and its version. The comment, specific paths
+and script variables can all help an attacker to quickly determine
+an instance of an application
+
+.. code-block:: html
+
+    <meta name=”generator” content=”WordPress 3.9.2” />
+
+More frequently such information is placed between <head></
+head> tags, in <meta> tags or at the end of the page. Nevertheless,
+ it is recommended to check the whole document since it can be
+useful for other purposes such as inspection of other useful comments
+and hidden fields.
+Specific files and folders
+Apart from information gathered from HTML sources, there is another
+approach which greatly helps an attacker to determine the
+application with high accuracy. Every application has its own specific
+file and folder structure on the server. It has been pointed out
+that one can see the specific path from the HTML page source but
+sometimes they are not explicitly presented there and still reside
+on the server.
+In order to uncover them a technique known as dirbusting is used.
+Dirbusting is brute forcing a target with predictable folder and file
+names and monitoring HTTP-responses to emumerate server
+contents. This information can be used both for finding default
+files and attacking them, and for fingerprinting the web application.
+Dirbusting can be done in several ways, the example below
+shows a successful dirbusting attack against a WordPress-powered 
+target with the help of defined list and intruder functionality
+of Burp Suite.
+We can see that for some WordPress-specific folders (for instance,
+/wp-includes/, /wp-admin/ and /wp-content/) HTTP-reponses
+are 403 (Forbidden), 302 (Found, redirection to wp-login.
+php) and 200 (OK) respectively. This is a good indicator that the
+target is WordPress-powered. The same way it is possible to dirbust
+different application plugin folders and their versions. On
+the screenshot below one can see a typical CHANGELOG file of a
+Drupal plugin, which provides information on the application being
+used and discloses a vulnerable plugin version.
+
+Tip: before starting dirbusting, it is recommended to check the robots.txt
+file first. Sometimes application specific folders and other
+sensitive information can be found there as well. An example of
+such a robots.txt file is presented on a screenshot below.
+
+Specific files and folders are different for each specific application.
+It is recommended to install the corresponding application during
+penetration tests in order to have better understanding of what infrastructure
+is presented and what files might be left on the server.
+However, several good file lists already exist and one good example
+is FuzzDB wordlists of predictable files/folders (http://code.google.
+com/p/fuzzdb/).
 
 
-Duck Duck Go와 ixquick/Startpage는 테스터에 관한 정보 유출을 최소화할 수 있습니다.
-Google은 **cache:** 옵션을 제공하는데, 이 옵션은 Google 검색 결과에 **저장된 페이지** 와 동일합니다.
-따라서, **site:** 옵션을 사용한 후 **저장된 페이지**를 클릭하면 됩니다.
-Google SOAP Search API는 저장된 페이지 검색을 지원하기 위해 doGetCachedPage 와 관련 doGetCachedPageResponse SOAP 메시지를 지원합니다.
-해당 구현은 OWASP **Google Hacking** 프로젝트에 의해 개발 중입니다.
-PunkSpider는 웹 어플리케이션 취약점 검색 엔진입니다. 침투 테스터가 수동 작업을 하기 위한 용도로 사용됩니다.
-그러나 스크립트 초보자들이 취약점을 찾는데 데모로 유용하게 사용됩니다.
-
-**Example** 
-
-일반적인 검색 엔진으로 owasp.org의 웹 컨텐츠를 찾기 위해, 다음 구문을 사용합니다.
-
-site:owasp.org
-
-[이미지]
-
-저장된 owasp.org의 index.html을 보기위해 다음 구문을 사용합니다.
-
-cache:owasp.org
-
-[이미지]
-
-|
-
-Google Hacking Database
-============================================================================================
-
-Google Hacking Database는 Google으로 유용한 검색 쿼리 리스트입니다.
-
-Google 검색 쿼리 종류
-
-- Footholds
-- Files containing usernames
-- Sensitive Directories
-- Web Server Detection
-- Vulnerable Files
-- Vulnerable Servers
-- Error Messages
-- Files containing juicy info
-- Files containing passwords
-- Sensitive Online Shopping Info
 
 |
 
 Tools
-============================================================================================
+==========================================================================================
 
-[4] FoundStone SiteDigger: http://www.mcafee.com/uk/downloads/free-tools/sitedigger.aspx
-[5] Google Hacker: http://yehg.net/lab/pr0js/files.php/googlehacker.zip
-[6] Stach & Liu’s Google Hacking Diggity Project: http://www.stachliu.com/resources/tools/google-hacking-diggity-project/
-[7] PunkSPIDER: http://punkspider.hyperiongray.com/
 
 
 |
 
 References
-============================================================================================
-
-[1] “Google Basics: Learn how Google Discovers, Crawls, and Serves Web Pages” - https://support.google.com/webmasters/answer/70897
-[2] “Operators and More Search Help”: https://support.google.com/websearch/answer/136861?hl=en
-[3] “Google Hacking Database”: http://www.exploit-db.com/google-dorks/
+==========================================================================================
 
 
 |
 
 Remediation
-============================================================================================
+==========================================================================================
 
-Carefully consider the sensitivity of design and configuration information before it is posted online.
-Periodically review the sensitivity of existing design and configuration
-information that is posted online.
 
 |
