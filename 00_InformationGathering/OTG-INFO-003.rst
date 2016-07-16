@@ -1,6 +1,6 @@
-============================================================================================
+==========================================================================================
 OTG-INFO-003
-============================================================================================
+==========================================================================================
 
 |
 
@@ -8,41 +8,33 @@ OTG-INFO-003
 
 |
 
-Summary
-============================================================================================
+개요
+==========================================================================================
 
-This section describes how to test the robots.txt file for information
-leakage of the web application’s directory or folder path(s). Furthermore,
-the list of directories that are to be avoided by Spiders,
-Robots, or Crawlers can also be created as a dependency for Map
-execution paths through application (OTG-INFO-007)
-
-.. note::
-
+이번 섹션에서는 웹 어플리케이션의 디렉토리 또는 폴더 경로 정보 노출에 대한 robots.txt 파일을 테스트하는 방법에 대해 설명합니다.
     
+또한, Spiders, Robots, Crawler를 우회하는 디렉토리 리스트는 어플리키에션을 통한 실행 경로 맵에 의존하여 생성될 수 있습니다.(OTG-INFO-007)
 
 |
 
-Test Objectives
-============================================================================================
+테스트 목적
+==========================================================================================
 
-(1) 웹 애플리케이션의 디렉토리의 정보 노출
-(2) Spiders, Robots, Crawler를 방지하기 위한 디렉토리 리스트 생성
+1. 웹 애플리케이션의 디렉토리의 정보 노출
+2. Spiders, Robots, Crawler를 방지하기 위한 디렉토리 리스트 생성
 
 |
 
-
-How to Test
-============================================================================================
+테스트 방법
+==========================================================================================
 
 robots.txt
+-------------------------------------------------------------------------------------------
 
-웹 스파이더, Robots, 또는 크롤러는 retrieve a web page and then recursively
-traverse hyperlinks to retrieve further web content. Their
-accepted behavior is specified by the Robots Exclusion Protocol of
-the robots.txt file in the web root directory [1].
-As an example, the beginning of the robots.txt file from http://www.
-google.com/robots.txt sampled on 11 August 2013 is quoted below:
+Spiders, Robots, Crawler는 웹 페이지를 검색하고 더 많은 웹 컨텐츠를 검색하기 위해 반복적으로 하이퍼링크를 선회합니다.
+허용 동작은 웹 루트 디렉토리에 robots.txt 파일의 Robots Exclusion Protocol에 의해 지정됩니다.
+아래 2013년 8월 11에 http://www.google.com/robots.txt의 robots.txt 파일의 시작 부분
+에 대한 샘플을 확인할 수 있습니다.
 
 .. code-block:: console
 
@@ -54,19 +46,17 @@ google.com/robots.txt sampled on 11 August 2013 is quoted below:
     Disallow: /catalogs
     ...
 
-The User-Agent directive refers to the specific web spider/robot/
-crawler. For example the User-Agent: Googlebot refers to the spider
-from Google while “User-Agent: bingbot”[1] refers to crawler from
-Microsoft/Yahoo!. User-Agent: * in the example above applies to all
-web spiders/robots/crawlers [2] as quoted below:
+User-Agent 지시어는 특정 web spider/robot/crawler를 의미합니다.
+예를 들어, User-Agent: Googlebot은 Goolg spider를 의미하고,
+User-Agent: bingbot은 Microsoft/Yahoo crawler를 의미합니다.
+User-Agent: *은 web spider/robot/crawler 전체를 의미합니다.
 
 .. code-block:: console
 
     User-agent: *
 
-The Disallow directive specifies which resources are prohibited by
-spiders/robots/crawlers. In the example above, directories such as
-the following are prohibited:
+Disallow 지시어는 web spider/robot/crawler에 의해 금지할 리소스를 지정합니다.
+예를 들어, 아래와 같은 디렉토리는 금지 설정되어 있습니다.
 
 .. code-block:: console
 
@@ -79,21 +69,17 @@ the following are prohibited:
     ...
 
 
-Web spiders/robots/crawlers can intentionally ignore the Disallow
-directives specified in a robots.txt file [3], such as those from Social
-Networks[2] to ensure that shared linked are still valid. Hence,
-robots.txt should not be considered as a mechanism to enforce restrictions
-on how web content is accessed, stored, or republished
-by third parties.
+Web spiders/robots/crawlers는 의도적으로 소셜 네트워크로 부터 여전히 유효한지 확인하는 robots.txt 파일에 지정된 Disallow 지시어를 무시할 수 있습니다.
+따라서, robots.txt가 웹 컨텐츠를 써드 파티에 의해 접근, 저장, 게시되는 방법에 제한을 적용하는 메커니즘으로 간주되서는 안됩니다.
 
 |
 
-robots.txt in webroot - with “wget” or “curl”
--------------------------------------------------------------------------------------------
+웹 루트 robots.txt - "wget", "curl"
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The robots.txt file is retrieved from the web root directory of the web
-server. For example, to retrieve the robots.txt from www.google.com
-using “wget” or “curl”:
+robots.txt 파일은 웹 서버의 웹 루트 디렉토리에서 검색됩니다.
+예를 들어, www.google.com으로 부터 robots.txt를 검색하기 위해 
+"wget" 또는 "curl" 을 사용합니다.
 
 .. code-block:: console
 
@@ -135,25 +121,24 @@ using “wget” or “curl”:
 
 |
 
-robots.txt in webroot - with rockspider
--------------------------------------------------------------------------------------------
+웹 루트 robots.txt - rockspider
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-“rockspider”[3] automates the creation of the initial scope for Spiders/
-Robots/Crawlers of files and directories/folders of a web site.
-For example, to create the initial scope based on the Allowed: directive
-from www.google.com using “rockspider”[4]:
+"rockspider"는 파일의 Spiders/Robots/Crawlers와 웹 사이트의 디렉토리/폴더로 초기 범위를 지정하여 생성합니다.
+예를 들어, "rockspider"를 사용하여 www.google.com으로 Allowed: directive를 기본으로 
+초기 범위를 생성합니다.
 
 .. code-block:: console
 
     cmlh$ ./rockspider.pl -www www.google.com
 
-    “Rockspider” Alpha v0.1_2
+    "Rockspider" Alpha v0.1_2
 
     Copyright 2013 Christian Heinrich
     Licensed under the Apache License, Version 2.0
 
     1. Downloading http://www.google.com/robots.txt
-    2. “robots.txt” saved as “www.google.com-robots.txt”
+    2. "robots.txt" saved as "www.google.com-robots.txt"
     3. Sending Allow: URIs of www.google.com to web proxy i.e.
     127.0.0.1:8080
      /catalogs/about sent
@@ -164,73 +149,60 @@ from www.google.com using “rockspider”[4]:
 
 |
 
-Analyze robots.txt using Google Webmaster Tools
--------------------------------------------------------------------------------------------
+Google Webmaster 툴을 사용하여 robots.txt 분석
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Web site owners can use the Google “Analyze robots.txt” function to
-analyse the website as part of its “Google Webmaster Tools” (https://
-www.google.com/webmasters/tools). This tool can assist with testing
-and the procedure is as follows:
+웹 사이트 관리자는 "Google Webmaster Tools"의 일부로 웹 사이트 분석 기능인
+"Analyze robots.txt"를 사용할 수 있습니다. (https://www.google.com/webmasters/tools)
+이 툴은 다음 절차로 테스트를 지원합니다.
 
-1. Sign into Google Webmaster Tools with a Google account.
-2. On the dashboard, write the URL for the site to be analyzed.
-3. Choose between the available methods and follow the on screen instruction.
-
+1. 구글 계정으로 Google Webmaster Tools 가입
+2. 대쉬보드에서 분석할 사이트 URL 기입
+3. 이용할 방법을 선택하고 화면의 지시에 따릅니다.
 
 |
 
-META Tag
--------------------------------------------------------------------------------------------
+<META> 태그
+-----------------------------------------------------------------------------------------
 
-<META> tags are located within the HEAD section of each HTML Document
-and should be consistent across a web site in the likely event
-that the robot/spider/crawler start point does not begin from a document
-link other than webroot i.e. a “deep link”[5].
+<META> 태그는 각 HTML 문서의 HEAD 섹션에 위치하고 있습니다.
 
-If there is no “<META NAME=”ROBOTS” ... >” entry then the “Robots
-Exclusion Protocol” defaults to “INDEX,FOLLOW” respectively. Therefore,
-the other two valid entries defined by the “Robots Exclusion Protocol”
-are prefixed with “NO...” i.e. “NOINDEX” and “NOFOLLOW”.
-Web spiders/robots/crawlers can intentionally ignore the “<META
-NAME=”ROBOTS”” tag as the robots.txt file convention is preferred.
-Hence, <META> Tags should not be considered the primary mechanism,
-rather a complementary control to robots.txt.
+"<META NAME='ROBOTS' ... >"가 없다면 "Robots Exclusion Protocol"은 기본적으로 "INDEX,FOLLW"가 존재합니다.
+그러므로, "Robots Exclusion Protocol"에 정의한 2개의 유효 항목은 "NOINDEX"와 "NOFOLLOW"와 같이 "No..."로 시작됩니다.
 
-<META> Tags - with Burp
+Web spiders/robots/crawlers는 의도적으로 robots.txt 파일과 같은 "<META NAME='ROBOTS'" 태그를 무시할 수 있습니다.
+따라서, <META> 태그는 robots.txt에 보완할 수 있는 메커니즘으로 간주되서는 안됩니다.
 
-Based on the Disallow directive(s) listed within the robots.txt file in
-webroot, a regular expression search for “<META NAME=”ROBOTS””
-within each web page is undertaken and the result compared to the
-robots.txt file in webroot.
+|
 
-For example, the robots.txt file from facebook.com has a “Disallow:
-/ac.php” entry[6] and the resulting search for “<META NAME=”ROBOTS””
-shown below:
+<META> 태그 - Burp
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The above might be considered a fail since “INDEX,FOLLOW” is the
-default <META> Tag specified by the “Robots Exclusion Protocol” yet
-“Disallow: /ac.php” is listed in robots.txt.
+웹 루트에 robots.txt 파일에 Disallow 지시어에 기초하여, 각각의 웹 페이지 내에 "<META NAME='ROBOTS'" 정규 표현식 검색은 웹 루트에 robots.txt 파일을 비교하는 결과를 수행합니다.
+
+예를 들어, facebook.com의 robots.txt 파일은 "Disallow:/ac.php" 항목을 가지고 있습니다.
+그리고 결과는 "<META NAME='ROBOTS'"를 찾는 것입니다. 
+
+"INDEX,FOLLOW"는 "Robots Exclusion Protocol"에 의해 지정한 기본적인 <META> 태그 이며, "Disallow: /ac.php"는 robots.txt에 의해 목록화되어 있습니다.
 
 |
 
 Tools
-============================================================================================
+==========================================================================================
 
 - Browser (View Source function)
 - curl
 - wget
-- rockspider[7]
-
+- rockspider
 
 |
 
 References
-============================================================================================
+==========================================================================================
 
-[1] “The Web Robots Pages” - http://www.robotstxt.org/
-[2] “Block and Remove Pages Using a robots.txt File” - https://support.google.com/webmasters/answer/156449
-[3] “(ISC)2 Blog: The Attack of the Spiders from the Clouds” - http://blog.isc2.org/isc2_blog/2008/07/the-attack-of-t.html
-[4] “Telstra customer database exposed” - http://www.smh.com.au/it-pro/security-it/telstra-customer-database-exposed-20111209-1on60.html
-
+- "The Web Robots Pages" - http://www.robotstxt.org/
+- "Block and Remove Pages Using a robots.txt File" - https://support.google.com/webmasters/answer/156449
+- "(ISC)2 Blog: The Attack of the Spiders from the Clouds" - http://blog.isc2.org/isc2_blog/2008/07/the-attack-of-t.html
+- "Telstra customer database exposed" - http://www.smh.com.au/it-pro/security-it/telstra-customer-database-exposed-20111209-1on60.html
 
 |

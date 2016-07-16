@@ -1,15 +1,15 @@
-============================================================================================
+==========================================================================================
 OTG-INFO-001
-============================================================================================
+==========================================================================================
 
 |
 
-정보 노출 확인을 위해 써치 엔진으로 검색 실행
+써치 엔진으로 정보 노출 검색
 
 |
 
 개요
-============================================================================================
+==========================================================================================
 
 써치 엔진으로 정보 노출을 검색하는 방법에는 직접 방법과 간접 방법이 있습니다.
 직접 방법은 저장된 페이지로 부터 인덱스와 관련 컨텐츠를 검색하는 것 입니다.
@@ -23,7 +23,7 @@ OTG-INFO-001
 |
 
 테스트 목적
-============================================================================================
+==========================================================================================
 
 어플리케이션/시스템/기관의 민감한 디자인과 설정 정보가 
 직접 또는 간접적으로 노출되는 것 이해하기
@@ -31,7 +31,7 @@ OTG-INFO-001
 |
 
 테스트 방법
-============================================================================================
+==========================================================================================
 
 써치 엔진 사용
 
@@ -45,7 +45,7 @@ OTG-INFO-001
 |
 
 Search operators
--------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------
 
 **site:** 옵션을 사용하여 특정 도메인에 대한 검색 결과를 제한할 수 있습니다.
 
@@ -68,8 +68,10 @@ Search operators
 Duck Duck Go와 ixquick/Startpage는 테스터에 관한 정보 유출을 최소화할 수 있습니다.
 
 Google은 **cache:** 옵션을 제공하는데, 이 옵션은 Google 검색 결과에 **저장된 페이지** 와 동일합니다.
-따라서, **site:** 옵션을 사용한 후 **저장된 페이지**를 클릭하면 됩니다.
+따라서, **site:** 옵션을 사용한 후 **저장된 페이지** 를 클릭하면 됩니다.
+
 Google SOAP Search API는 저장된 페이지 검색을 지원하기 위해 doGetCachedPage 와 관련 doGetCachedPageResponse SOAP 메시지를 지원합니다.
+
 해당 구현은 OWASP **Google Hacking** 프로젝트에 의해 개발 중입니다.
 PunkSpider는 웹 어플리케이션 취약점 검색 엔진입니다. 침투 테스터가 수동 작업을 하기 위한 용도로 사용됩니다.
 그러나 스크립트 초보자들이 취약점을 찾는데 데모로 유용하게 사용됩니다.
@@ -115,31 +117,30 @@ Google 검색 쿼리 종류
 |
 
 Tools
-============================================================================================
+==========================================================================================
 
-[4] FoundStone SiteDigger: http://www.mcafee.com/uk/downloads/free-tools/sitedigger.aspx
-[5] Google Hacker: http://yehg.net/lab/pr0js/files.php/googlehacker.zip
-[6] Stach & Liu’s Google Hacking Diggity Project: http://www.stachliu.com/resources/tools/google-hacking-diggity-project/
-[7] PunkSPIDER: http://punkspider.hyperiongray.com/
+- FoundStone SiteDigger: http://www.mcafee.com/uk/downloads/free-tools/sitedigger.aspx
+- Google Hacker: http://yehg.net/lab/pr0js/files.php/googlehacker.zip
+- Stach & Liu’s Google Hacking Diggity Project: http://www.stachliu.com/resources/tools/google-hacking-diggity-project/
+- PunkSPIDER: http://punkspider.hyperiongray.com/
 
 
 |
 
 References
-============================================================================================
+==========================================================================================
 
-[1] “Google Basics: Learn how Google Discovers, Crawls, and Serves Web Pages” - https://support.google.com/webmasters/answer/70897
-[2] “Operators and More Search Help”: https://support.google.com/websearch/answer/136861?hl=en
-[3] “Google Hacking Database”: http://www.exploit-db.com/google-dorks/
+- "Google Basics: Learn how Google Discovers, Crawls, and Serves Web Pages" - https://support.google.com/webmasters/answer/70897
+- "Operators and More Search Help": https://support.google.com/websearch/answer/136861?hl=en
+- "Google Hacking Database": http://www.exploit-db.com/google-dorks/
 
 
 |
 
 Remediation
-============================================================================================
+==========================================================================================
 
-Carefully consider the sensitivity of design and configuration information before it is posted online.
-Periodically review the sensitivity of existing design and configuration
-information that is posted online.
+온라인에 게시하기 전에 민간한 디자인과 설정 정보에 대해 주의깊에 살펴보십시오.
+정기적으로 온라인에 게시되어 있는 기존 디자인과 설정 정보에 대해 검토하십시오.
 
 |

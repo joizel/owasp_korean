@@ -1,6 +1,6 @@
-============================================================================================
+==========================================================================================
 OTG-INFO-002
-============================================================================================
+==========================================================================================
 
 |
 
@@ -9,7 +9,7 @@ OTG-INFO-002
 |
 
 개요
-============================================================================================
+==========================================================================================
 
 웹 서버 핑거 프린팅은 침투 테스터를 위한 중요한 작업 입니다.
 
@@ -26,17 +26,17 @@ OTG-INFO-002
 |
 
 테스트 목적
-============================================================================================
+==========================================================================================
 
 침투 테스트 시 사용할 취약점과 적합한 익스플로잇을 찾기하기 위해 실행중인 웹 서버의 버전과 형식을 확인합니다.
 
 |
 
 테스트 방법
-============================================================================================
+==========================================================================================
 
 Black Box testing
--------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------
 
 웹 서버를 식별하기 위한 가장 간단하고 기본적인 방법은 HTTP 응답 헤더에서 Server 필드를 확인하는 것입니다.
 NetCat을 이용하여 다음과 같이 사용합니다.
@@ -49,7 +49,7 @@ NetCat을 이용하여 다음과 같이 사용합니다.
     Date: Mon, 16 Jun 2003 02:53:29 GMT
     Server: Apache/1.3.3 (Unix) (Red Hat/Linux)
     Last-Modified: Wed, 07 Oct 1998 11:18:14 GMT
-    ETag: “1813-49b-361b4df6”
+    ETag: "1813-49b-361b4df6"
     Accept-Ranges: bytes
     Content-Length: 1179
     Connection: close
@@ -132,15 +132,15 @@ SunONE 6.1 서버
 |
 
 프로토콜 행위
--------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------
 
 더 정교한 기술은 이용하는 여러 웹 서버의 다양한 특성을 이용하는 것입니다. 
 아래 침투 테스터가 침투시 웹 서버 형태를 추론할 수 있는 또 다른 방법을 설명합니다.
 
 |
 
-HTTP header field ordering
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+HTTP 헤더 필드 순서
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 HTTP 응답 헤더 순서를 관찰하여 웹 서버를 구분할 수 있습니다.
 아래 응답 헤더 부분을 보면 Apache, Netscape Enterprise, IIS가 Date 필드와 
@@ -213,7 +213,7 @@ SunONE 6.1 서버
 |
 
 악의적 리퀘스트 테스트
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 또 다른 유용한 침투 테스트는 악의적인 리퀘스트 또는 존재하지 않는 페이지 요청을 서버에 보내는 것입니다.
 아래를 확인해보면 서버마다 다른 응답 헤더를 보내는 것을 확인할 수 있습니다.
@@ -312,7 +312,7 @@ SunONE 6.1 서버
 
 
 Tools
-============================================================================================
+==========================================================================================
 
 - httprint - http://net-square.com/httprint.html
 - httprecon - http://www.computec.ch/projekte/httprecon/
@@ -321,57 +321,38 @@ Tools
 
 
 Automated Testing
--------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------
 
-
-Rather than rely on manual banner grabbing and analysis of the web
-server headers, a tester can use automated tools to achieve the same
-results. There are many tests to carry out in order to accurately fingerprint
-a web server. Luckily, there are tools that automate these tests.
-“httprint” is one of such tools. httprint uses a signature dictionary that
-allows it to recognize the type and the version of the web server in
-use.
-An example of running httprint is shown below:
+웹 서버 헤더 분석과 배너 수집을 위해 수동으로 의존하는 것보다, 동일한 결과를 얻기 위해 자동화된 도구를 사용하는 것이 좋습니다.
+웹 서버를 정확하게 핑거프린트하기 위해 수행하는 테스트 방법이 여러가지 있는데, 그 중 "httprint" 라는 툴이 있습니다.
+httprint는 웹 서버 버전과 형태를 인식하기 위해 시그너처 데이터베이스를 사용합니다.
 
 |
 
 Online Testing
--------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------
 
-Online tools can be used if the tester wishes to test more stealthily
-and doesn’t wish to directly connect to the target website. An example 
-of an online tool that often delivers a lot of information about target
-Web Servers, is Netcraft. With this tool we can retrieve information
-about operating system, web server used, Server Uptime, Netblock
-Owner, history of change related to Web server and O.S.
-An example is shown below:
+온라인 툴은 직접 타겟 웹 사이트에 연결하기를 원치 않을 경우 사용할 수 있습니다.
 
-OWASP Unmaskme Project is expected to become another online
-tool to do fingerprinting of any website with an overall interpretation
-of all the Web-metadata extracted. The idea behind this project
-is that anyone in charge of a website could test the metadata the
-site is showing to the world and assess it from a security point of
-view.
-While this project is still being developed, you can test a Spanish
-Proof of Concept of this idea.
+Netcraft라는 툴은 웹 서버 서버 가동 시간, Netblock 소유자, 웹 서버 관련 히스토리 등의 정보를 확인할 수 있습니다.
 
+OWASP Unmaskme 프로젝트는 추출한 모든 웹 메타 데이터의 전반적인 해석과 모든 웹 사이트의 핑거프린트를 수행하는 또 다른 온라인 도구가 될 것으로 예상됩니다.
 
 |
 
 References
-============================================================================================
+==========================================================================================
 
-
-- Saumil Shah: “An Introduction to HTTP fingerprinting” - http://www.net-square.com/httprint_paper.html
-- Anant Shrivastava: “Web Application Finger Printing” - http://anantshri.info/articles/web_app_finger_printing.html
+- Saumil Shah: "An Introduction to HTTP fingerprinting" - http://www.net-square.com/httprint_paper.html
+- Anant Shrivastava: "Web Application Finger Printing" - http://anantshri.info/articles/web_app_finger_printing.html
 
 |
 
 Remediation
-============================================================================================
+==========================================================================================
 
-Protect the presentation layer web server behind a hardened reverse proxy.
-Obfuscate the presentation layer web server headers.
+강화된 리버스 프록시 뒤에 표현 계층 웹 서버를 보호합니다.
+표현 계층 웹 서버 헤더를 난독화합니다.
 
 - Apache
 - IIS
