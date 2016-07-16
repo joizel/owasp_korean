@@ -1,6 +1,6 @@
-============================================================================================
+==========================================================================================
 OTG-CONFIG-003
-============================================================================================
+==========================================================================================
 
 |
 
@@ -8,11 +8,17 @@ OTG-CONFIG-003
 
 |
 
-Summary
-============================================================================================
+개요
+==========================================================================================
 
-File extensions are commonly used in web servers to easily determine which technologies, languages and plugins must be used to fulfill the web request. 
-While this behavior is consistent with RFCs and Web Standards, using standard file extensions provides the penetration tester useful information about the underlying technologies used in a web appliance and greatly simplifies the task of determining the attack scenario to be used on particular technologies. 
+파일 확장자는 일반적으로 쉽게 웹 요청을 수행하는 데 사용되어야 하는 기술, 언어, 플러그인을 결정하기 위해 웹 서버에서 사용됩니다.
+
+이 동작은 RFC와 웹 표준과 일치하지만, 표준 파일 정보를 사용하여 웹 어플라이언스에 사용되는 기반 기술에 대한 침투 테스터에게 유용한 정보를 제공하고 크게 공격 시나리오를 결정하는 작업이 특정 기술에 사용되는 단순화한다.
+While this behavior is consistent with RFCs and Web Standards, 
+using standard file extensions provides the penetration tester useful information 
+about the underlying technologies used in a web appliance and greatly simplifies 
+the task of determining the attack scenario to be used on particular technologies. 
+
 In addition, mis-configuration of web servers could easily reveal confidential information about access credentials. 
 
 Extension checking is often used to validate files to be uploaded, which can lead to unexpected results because the content is not what is expected, or because of unexpected OS file name handling. 
@@ -21,8 +27,8 @@ Determining how web servers handle requests corresponding to files having differ
 
 |
 
-How to Test
-============================================================================================
+테스트 방법
+==========================================================================================
 
 **Forced browsing**
 
@@ -30,7 +36,7 @@ Submit http[s] requests involving different file extensions and verify how they 
 
 If the web application architecture is load-balanced, it is important to assess all of the web servers. This may or may not be easy, depending on the configuration of the balancing infrastructure. In an infrastructure with redundant components there may be slight variations in the configuration of individual web or application servers. This may happen if the web architecture employs heterogeneous technologies (think of a set of IIS and Apache web servers in a load-balancing configuration, which may introduce slight asymmetric behavior between them, and possibly different vulnerabilities). 
 
-'Example: 
+Example: 
 
 The tester has identified the existence of a file named connection.inc. 
 Trying to access it directly gives back its contents, which are: 
@@ -66,7 +72,7 @@ To identify files having a given extensions a mix of techniques can be employed.
 |
 
 File Upload
--------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------
 
 Windows 8.3 legacy file handling can sometimes be used to defeat file upload filters 
 
@@ -84,7 +90,7 @@ Windows 8.3 legacy file handling can sometimes be used to defeat file upload fil
 |
 
 Gray Box testing 
-============================================================================================
+-----------------------------------------------------------------------------------------
 
 Performing white box testing against file extensions handling amounts to checking the configurations of web servers or application servers taking part in the web application architecture, and verifying how they are instructed to serve different file extensions. 
 If the web application relies on a load-balanced, heterogeneous infrastructure, determine whether this may introduce different behavior. 
@@ -92,12 +98,12 @@ If the web application relies on a load-balanced, heterogeneous infrastructure, 
 |
 
 Tools 
-============================================================================================
+==========================================================================================
 
 Vulnerability scanners, such as Nessus and Nikto check for the existence of well-known web directories. They may allow the tester to download the web site structure, which is helpful when trying to determine the configuration of web directories and how individual file extensions are served. Other tools that can be used for this purpose include: 
 
 - wget - http://www.gnu.org/software/wget 
 - curl - http://curl.haxx.se 
-- google for ¡°web mirroring tools". 
+- google for "web mirroring tools". 
 
 |

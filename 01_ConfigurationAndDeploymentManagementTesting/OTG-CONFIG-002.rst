@@ -1,6 +1,6 @@
-============================================================================================
+==========================================================================================
 OTG-CONFIG-002
-============================================================================================
+==========================================================================================
 
 |
 
@@ -8,27 +8,28 @@ OTG-CONFIG-002
 
 |
 
-Summary
-============================================================================================
+개요
+==========================================================================================
+
 
 Proper configuration of the single elements that make up an application architecture is important in order to prevent mistakes that might compromise the security of the whole architecture. 
-Configuration review and testing is a critical task in creating and maintaining an architecture. This is because many different systems will be usually provided with generic configurations that might not be suited to the task they will perform on the specific site they're installed on. 
+Configuration review and testing is a critical task in creating and maintaining an architecture. This is because many different systems will be usually provided with generic configurations that might not be suited to the task they will perform on the specific site they`re installed on. 
 
 While the typical web and application server installation will contain a lot of functionality (like application examples, documentation, test pages) what is not essential should be removed before deployment to avoid post-install exploitation. 
 
 |
 
-How to Test
-============================================================================================
+테스트 방법
+==========================================================================================
 
 |
 
 Black Box Testing
--------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------
 
 **Sample and known files and directories**
 
-Many web servers and application servers provide, in a default installation, sample applications and files that are provided for the benefit of the developer and in order to test that the server is working properly right after installation. However, many default web server applications have been later known to be vulnerable. This was the case, for example, for CVE-1999-0449 (Denial of Service in IIS when the Exair sample site had been installed), CAN-2002-1744 (Directory traversal vulnerability in CodeBrws.asp in Microsoft IIS 5.0), CAN-2002-1630 (Use of sendmail.jsp in Oracle 9iAS), or CAN-2003-1172 (Directory traversal in the view-source sample in Apache's Cocoon). 
+Many web servers and application servers provide, in a default installation, sample applications and files that are provided for the benefit of the developer and in order to test that the server is working properly right after installation. However, many default web server applications have been later known to be vulnerable. This was the case, for example, for CVE-1999-0449 (Denial of Service in IIS when the Exair sample site had been installed), CAN-2002-1744 (Directory traversal vulnerability in CodeBrws.asp in Microsoft IIS 5.0), CAN-2002-1630 (Use of sendmail.jsp in Oracle 9iAS), or CAN-2003-1172 (Directory traversal in the view-source sample in Apache`s Cocoon). 
 CGI scanners include a detailed list of known files and directory samples that are provided by different web or application servers and might be a fast way to determine if these files are present. However, the only way to be really sure is to do a full review of the contents of the web server or application server and determine of whether they are related to the application itself or not.
 
 
@@ -36,9 +37,10 @@ CGI scanners include a detailed list of known files and directory samples that a
 
 It is very common, and even recommended, for programmers to include detailed comments on their source code in order to allow for other programmers to better understand why a given decision was taken in coding a given function. Programmers usually add comments when developing large web-based applications. However, comments included inline in HTML code might reveal internal information that should not be available to an attacker. Sometimes, even source code is commented out since a functionality is no longer required, but this comment is leaked out to the HTML pages returned to the users unintentionally. Comment review should be done in order to determine if any information is being leaked through comments. This review can only be thoroughly done through an analysis of the web server static and dynamic content and through file searches. It can be useful to browse the site either in an automatic or guided fashion and store all the content retrieved. This retrieved content can then be searched in order to analyse any HTML comments available in the code. 
 
+|
 
 Gray Box Testing 
--------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------
 
 **Configuration review**
 
@@ -51,8 +53,8 @@ It is impossible to generically say how a server should be configured, however, 
 - Make sure that the server software runs with minimized privileges in the operating system. This prevents an error in the server software from directly compromising the whole system, although an attacker could elevate privileges once running code as the web server. 
 - Make sure the server software properly logs both legitimate access and errors. 
 - Make sure that the server is configured to properly handle overloads and prevent Denial of Service attacks. Ensure that the server has been performance-tuned properly. 
-- Never grant non-administrative identities (with the exception of NT SERVICE\WMSvc) access to applicationHost.config, redirection. config, and administration.config (either Read or Write access). This includes Network Service, IIS_IUSRS, IUSR, or any custom identity used by IIS application pools. IIS worker processes are not meant to access any of these files directly. 
-- Never share out applicationHost.config, redirection.config, and administration.config on the network. When using Shared Configuration, prefer to export applicationHost.config to another location (see the section titled "Setting Permissions for Shared Configuration). 
+- Never grant non-administrative identities (with the exception of NT SERVICE\WMSvc)access to applicationHost.config, redirection. config, and administration.config (either Read or Write access). This includes Network Service, IIS_IUSRS, IUSR, or any custom identity used by IIS application pools. IIS worker processes are not meant to access any of these files directly. 
+- Never share out applicationHost.config, redirection.config, and administration.config on the network. When using Shared Configuration, prefer to export applicationHost.config to another location (see the section titled "Setting Permissions for Shared Configuration"). 
 - Keep in mind that all users can read .NET Framework machine.config and root web.config files by default. Do not store sensitive information in these files if it should be for administrator eyes only. 
 - Encrypt sensitive information that should be read by the IIS worker processes only and not by other users on the machine. 
 - Do not grant Write access to the identity that the Web server uses to access the shared applicationHost.config. This identity should have only Read access. 
@@ -113,7 +115,7 @@ A wider list of sensitive information is:
 
 **Log location**
 
-Typically servers will generate local logs of their actions and errors, consuming the disk of the system the server is running on. However, if the server is compromised its logs can be wiped out by the intruder to clean up all the traces of its attack and methods. If this were to happen the system administrator would have no knowledge of how the attack occurred or where the attack source was located. Actually, most attacker tool kits include a log zapper that is capable of cleaning up any logs that hold given information (like the IP address of the attacker) and are routinely used in attacker's system-level root kits. 
+Typically servers will generate local logs of their actions and errors, consuming the disk of the system the server is running on. However, if the server is compromised its logs can be wiped out by the intruder to clean up all the traces of its attack and methods. If this were to happen the system administrator would have no knowledge of how the attack occurred or where the attack source was located. Actually, most attacker tool kits include a log zapper that is capable of cleaning up any logs that hold given information (like the IP address of the attacker) and are routinely used in attacker`s system-level root kits. 
 
 Consequently, it is wiser to keep logs in a separate location and not in the web server itself. This also makes it easier to aggregate logs from different sources that refer to the same application (such as those of a web server farm) and it also makes it easier to do log analysis (which can be CPU intensive) without affecting the server itself. 
 
@@ -137,7 +139,7 @@ This feature should be tested in order to ensure that:
 
 - Logs are kept for the time defined in the security policy, not more and not less. 
 - Logs are compressed once rotated (this is a convenience, since it will mean that more logs will be stored for the same available disk space). 
-- File system permission of rotated log files are the same (or stricter) that those of the log files itself. For example, web servers will need to write to the logs they use but they don't actually need to write to rotated logs, which means that the permissions of the files can be changed upon rotation to prevent the web server process from modifying these. 
+- File system permission of rotated log files are the same (or stricter) that those of the log files itself. For example, web servers will need to write to the logs they use but they don`t actually need to write to rotated logs, which means that the permissions of the files can be changed upon rotation to prevent the web server process from modifying these. 
 Some servers might rotate logs when they reach a given size. If this happens, it must be ensured that an attacker cannot force logs to rotate in order to hide his tracks. 
 
 |
@@ -162,11 +164,11 @@ Log statistics or analysis should not be generated, nor stored, in the same serv
 |
 
 References
-============================================================================================
+==========================================================================================
 
 [1] Apache 
 
-- Apache Security, by Ivan Ristic, O'reilly, March 2005. 
+- Apache Security, by Ivan Ristic, O`reilly, March 2005. 
 - Apache Security Secrets: Revealed (Again), Mark Cox, November 2003 http://www.awe.com/mark/apcon2003/ 
 - Apache Security Secrets: Revealed, ApacheCon 2002, Las Vegas, Mark J Cox, October 2002 - http://www.awe.com/mark/apcon2002 
 - Performance Tuning -http://httpd.apache.org/docs/misc/perf-tuning.html 
@@ -187,7 +189,7 @@ References
 - Secure Internet Information Services 5 Checklist, by Michael Howard, Microsoft Corporation, June 2000 
 - "INFO: Using URLScan on IIS" - http://support.microsoft.com/default.aspx?scid=307608 
 
-[4] Red Hat's (formerly Netscape's) iPlanet 
+[4] Red Hat`s (formerly Netscape`s) iPlanet 
 
 - Guide to the Secure Configuration and Administration of iPlanet Web Server, Enterprise Edition 4.1, by James M Hayes, The Network Applications Team of the Systems and Network Attack Center (SNAC), NSA, January 2001 
 
