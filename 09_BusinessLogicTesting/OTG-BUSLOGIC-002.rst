@@ -42,17 +42,24 @@ Also, if an attacker was able to see through a proxy that the application has a 
 테스트 방법
 ============================================================================================
 
-Generic Testing Method 
+일반 테스트 방법
+-----------------------------------------------------------------------------------------
 
-- Review the project documentation and use exploratory testing looking for guessable, predictable or hidden functionality of fields. 
-- Once found try to insert logically valid data into the application/system allowing the user go through the application/system against the normal busineess logic workflow. 
+- 프로젝트 문서를 검토하고 추측 또는 예측할 수 있거나 숨겨진 필드 함수를 찾아 테스트 공격 진행
+- 어플리케이션 및 시스템에서 논리적으로 잘못된 데이터 입력 검색
 
-Specific Testing Method 1 
+|
+
+구체적인 테스트 방법 1 
+-----------------------------------------------------------------------------------------
 
 - Using an intercepting proxy observe the HTTP POST/GET looking for some indication that values are incrementing at a regular interval or are easily guessable. 
 - If it is found that some value is guessable this value may be changed and one may gain unexpected visibility. 
 
-Specific Testing Method 2 
+|
+
+구체적인 테스트 방법 2 
+-----------------------------------------------------------------------------------------
 
 - Using an intercepting proxy observe the HTTP POST/GET looking for some indication of hidden features such as debug that can be switched on or activated. 
 - If any are found try to guess and change these values to get a different application response or behavior. 
@@ -62,32 +69,27 @@ Specific Testing Method 2
 Related Test Cases 
 ============================================================================================
 
-Testing for Exposed Session Variables (OTG-SESS-004) 
-Testing for Cross Site Request Forgery (CSRF) (OTG-SESS-005) 
-Testing for Account Enumeration and Guessable User Account (OTG-IDENT-004) 
+- Testing for Exposed Session Variables (OTG-SESS-004) 
+- Testing for Cross Site Request Forgery (CSRF) (OTG-SESS-005) 
+- Testing for Account Enumeration and Guessable User Account (OTG-IDENT-004) 
 
 |
 
 Tools 
 ============================================================================================
 
-OWASP Zed Attack Proxy (ZAP) - https://www.owasp.org index.php/OWASP_Zed_Attack_Proxy_Project 
-
-ZAP는 웹 어플리케이션에서 취약점을 찾아주는 통합 침투 테스트 툴로 사용하기 쉽습니다.
-폭 넓은 보안 경력을 가진 사람들이 사용하도록 설계되었고, 개발자나 기능 테스터들에게 이상적입니다.
-
-ZAP는 자동 스캐너뿐만 아니라 수동으로 보안 취약점을 찾을 수 있는 툴 셋도 제공합니다.
+- OWASP Zed Attack Proxy (ZAP) - https://www.owasp.org index.php/OWASP_Zed_Attack_Proxy_Project 
 
 |
 
 References 
 ============================================================================================
 
-Cross Site Request Forgery - Legitimizing Forged Requests 
+- Cross Site Request Forgery - Legitimizing Forged Requests 
 http://fragilesecurity.blogspot.com/2012/11/cross-siterequest-forgery-legitimazing.html 
-Debugging features which remain present in the final game 
-http://glitchcity.info/wiki/index.php/List_of_video_games_ with_debugging_features#Debugging_features_which_ remain_present_in_the_final_game 
-Easter egg - http://en.wikipedia.org/wiki/Easter_egg_(media) 
+- Debugging features which remain present in the final game 
+http://glitchcity.info/wiki/index.php/List_of_video_games_ with_debugging_features#Debugging_features_which_remain_present_in_the_final_game 
+- Easter egg - http://en.wikipedia.org/wiki/Easter_egg_(media) 
 Top 10 Software Easter Eggs - http://lifehacker.com/371083/ top-10-software-easter-eggs 
 
 |
