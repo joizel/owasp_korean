@@ -314,10 +314,10 @@ SunONE 6.1 서버
 Tools
 ==========================================================================================
 
-- httprint - http://net-square.com/httprint.html
-- httprecon - http://www.computec.ch/projekte/httprecon/
-- Netcraft - http://www.netcraft.com
-- Desenmascarame - http://desenmascara.me
+- httprint: http://net-square.com/httprint.html
+- httprecon: http://www.computec.ch/projekte/httprecon/
+- Netcraft: http://www.netcraft.com
+- Desenmascarame: http://desenmascara.me
 
 
 Automated Testing
@@ -333,9 +333,7 @@ Online Testing
 -----------------------------------------------------------------------------------------
 
 온라인 툴은 직접 타겟 웹 사이트에 연결하기를 원치 않을 경우 사용할 수 있습니다.
-
 Netcraft라는 툴은 웹 서버 서버 가동 시간, Netblock 소유자, 웹 서버 관련 히스토리 등의 정보를 확인할 수 있습니다.
-
 OWASP Unmaskme 프로젝트는 추출한 모든 웹 메타 데이터의 전반적인 해석과 모든 웹 사이트의 핑거프린트를 수행하는 또 다른 온라인 도구가 될 것으로 예상됩니다.
 
 |
@@ -343,8 +341,8 @@ OWASP Unmaskme 프로젝트는 추출한 모든 웹 메타 데이터의 전반�
 References
 ==========================================================================================
 
-- Saumil Shah: "An Introduction to HTTP fingerprinting" - http://www.net-square.com/httprint_paper.html
-- Anant Shrivastava: "Web Application Finger Printing" - http://anantshri.info/articles/web_app_finger_printing.html
+- Saumil Shah: "An Introduction to HTTP fingerprinting": http://www.net-square.com/httprint_paper.html
+- Anant Shrivastava: "Web Application Finger Printing": http://anantshri.info/articles/web_app_finger_printing.html
 
 |
 

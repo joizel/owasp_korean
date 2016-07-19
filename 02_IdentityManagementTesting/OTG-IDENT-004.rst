@@ -116,7 +116,7 @@ Looking at the second server response, the tester understand in the same way tha
 
 **로그인 페이지에서 받는 에러 코드 분석**
 
-Some web application release a specific error code or message that we can analyze. 
+일부 웹 어플리케이션은 지정한 에러 코드 또는 분석할 수 있는 메시지를 배포합니다.
 
 |
 
@@ -147,7 +147,7 @@ and
 
     404 Not found error code 
 
-Example 
+예제
 
 .. code-block:: html
 

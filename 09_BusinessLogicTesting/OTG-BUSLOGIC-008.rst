@@ -50,19 +50,19 @@ Suppose a picture sharing application allows users to upload a .gif or .jpg grap
 Related Test Cases 
 ============================================================================================
 
-- Test File Extensions Handling for Sensitive Information (OTG-CONFIG-003) 
-- Test Upload of Malicious Files (OTG-BUSLOGIC-009) 
+- 민감한 정보를 확인하기 위해 파일 확장자 처리 테스트 (OTG-CONFIG-003) 
+- 악성 파일 형식 업로드 테스트 (OTG-BUSLOGIC-009) 
 
 |
 
 References 
 ============================================================================================
 
-- OWASP - Unrestricted File Upload - https://www.owasp.org index.php/Unrestricted_File_Upload 
-- File upload security best practices: Block a malicious file upload - http://www.computerweekly.com/answer/Fileupload-security-best-practices-Block-a-malicious-file-upload 
-- Stop people uploading malicious PHP files via forms - http:/ stackoverflow.com/questions/602539/stop-peopleuploading-malicious-php-files-via-forms 
-- CWE-434: Unrestricted Upload of File with Dangerous Type - http://cwe.mitre.org/data/definitions/434.html 
-- Secure Programming Tips - Handling File Uploads - https:/ www.datasprings.com/resources/dnn-tutorials/artmid/535/ articleid/65/secure-programming-tips-handling-file-uploads? AspxAutoDetectCookieSupport=1 
+- OWASP - Unrestricted File Upload: https://www.owasp.org index.php/Unrestricted_File_Upload 
+- File upload security best practices: Block a malicious file upload: http://www.computerweekly.com/answer/Fileupload-security-best-practices-Block-a-malicious-file-upload 
+- Stop people uploading malicious PHP files via forms: http:/ stackoverflow.com/questions/602539/stop-peopleuploading-malicious-php-files-via-forms 
+- CWE-434: Unrestricted Upload of File with Dangerous Type: http://cwe.mitre.org/data/definitions/434.html 
+- Secure Programming Tips - Handling File Uploads: https:/ www.datasprings.com/resources/dnn-tutorials/artmid/535/ articleid/65/secure-programming-tips-handling-file-uploads? AspxAutoDetectCookieSupport=1 
 
 |
 

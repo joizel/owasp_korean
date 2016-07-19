@@ -133,10 +133,10 @@ X-Powered-By 필드로 부터, Mono라는 웹 어플리케이션 프레임워크
     /**
     * The name of CakePHP`s session cookie.
     *
-    * Note the guidelines for Session names states: “The session
+    * Note the guidelines for Session names states: "The session
     name references
     * the session id in cookies and URLs. It should contain only alphanumeric
-    * characters.”
+    * characters."
     * @link http://php.net/session_name
     */
     Configure::write('Session.cookie', 'CAKEPHP');
@@ -268,8 +268,8 @@ References
 Whitepapers
 -----------------------------------------------------------------------------------------
 
-- Saumil Shah: “An Introduction to HTTP fingerprinting” - http://www.net-square.com/httprint_paper.html
-- Anant Shrivastava : “Web Application Finger Printing” - http://anantshri.info/articles/web_app_finger_printing.html
+- Saumil Shah: "An Introduction to HTTP fingerprinting" - http://www.net-square.com/httprint_paper.html
+- Anant Shrivastava : "Web Application Finger Printing" - http://anantshri.info/articles/web_app_finger_printing.html
 
 
 |

@@ -326,12 +326,12 @@ Not applicable.
 Tools
 ==========================================================================================
 
-- DNS lookup tools such as nslookup, dig and similar.
-- Search engines (Google, Bing and other major search engines).
+- DNS lookup tools: nslookup, dig.
+- Search engines: Google, Bing
 - Specialized DNS-related web-based search service: see text.
-- Nmap - http://www.insecure.org
-- Nessus Vulnerability Scanner - http://www.nessus.org
-- Nikto - http://www.cirt.net/nikto2
+- Nmap: http://www.insecure.org
+- Nessus Vulnerability Scanner: http://www.nessus.org
+- Nikto: http://www.cirt.net/nikto2
 
 |
 

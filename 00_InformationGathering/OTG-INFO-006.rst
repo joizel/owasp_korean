@@ -191,8 +191,8 @@ Intercepting Proxy
 Browser Plug-in
 -----------------------------------------------------------------------------------------
 
-- TamperIE for Internet Explorer
-- Tamper Data for Firefox
+- Internet Explorer: TamperIE 
+- Firefox: Tamper Data 
 
 |
 

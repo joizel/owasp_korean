@@ -58,7 +58,7 @@ Many credit card systems are now downloading account balances nightly so the cus
 구체적인 테스트 방법
 -----------------------------------------------------------------------------------------
 
-- Perform front-end GUI Functional Valid testing on the application to ensure that the only "valid" values are accepted. 
+- "valid" 값 허용되는 지 확인하기 위해 어플리케이션의 프론트 엔트 GUI 기능 유효성 테스트 수행
 - Using an intercepting proxy observe the HTTP POST/GET look ing for places that variables such as cost and quality are passed. Specifically, look for "hand-offs" between application/systems that may be possible injection of tamper points. 
 - Once variables are found start interrogating the field with log ically "invalid" data, such as social security numbers or unique identifiers that do not exist or that do not fit the business logic. This testing verifies that the server functions properly and does not accept logically invalid data them. 
 
@@ -67,17 +67,17 @@ Many credit card systems are now downloading account balances nightly so the cus
 Related Test Cases 
 ============================================================================================
 
-- All Input Validation test cases 
-- Testing for Account Enumeration and Guessable User Account (OTG-IDENT-004) 
-- Testing for Bypassing Session Management Schema (OTG-SESS-001) 
-- Testing for Exposed Session Variables (OTG-SESS-004) 
+- 모든 입력 유효성 검사 테스트 케이스
+- 계정 리스트 및 추측 가능한 사용자 테스트 (OTG-IDENT-004) 
+- 세션 관리 스키마 우회 테스트 (OTG-SESS-001) 
+- 노출 세션 변수 테스트 (OTG-SESS-004) 
 
 |
 
 Tools 
 ============================================================================================
 
-- OWASP Zed Attack Proxy (ZAP) - https://www.owasp.org index.php/OWASP_Zed_Attack_Proxy_Project 
+- OWASP Zed Attack Proxy (ZAP) - https://www.owasp.org index.php/OWASP_Zed_Attack_Proxy_Project
 
 |
 

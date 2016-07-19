@@ -11,7 +11,9 @@ OTG-BUSLOGIC-009
 개요
 ============================================================================================
 
-Many application's business processes allow for the upload of data/information. We regularly check the validity and security of text but accepting files can introduce even more risk. To reduce the risk we may only accept certain file extensions, but attackers are able to encapsulate malicious code into inert file types. Testing for malicious files verifies that the application/system is able to correctly protect against attackers uploading malicious files. 
+수많은 어플리케이션 비즈니스 프로세스는 데이터 및 정보 업로드를 허가합니다.
+
+We regularly check the validity and security of text but accepting files can introduce even more risk. To reduce the risk we may only accept certain file extensions, but attackers are able to encapsulate malicious code into inert file types. Testing for malicious files verifies that the application/system is able to correctly protect against attackers uploading malicious files. 
 
 Vulnerabilities related to the uploading of malicious files is unique in that these "malicious" files can easily be rejected through including business logic that will scan files during the upload process and reject those perceived as malicious. Additionally, this is different from uploading unexpected files in that while the file type may be accepted the file may still be malicious to the system. 
 
@@ -64,15 +66,15 @@ Suppose a picture sharing application allows users to upload their .gif or .jpg 
 Related Test Cases 
 ============================================================================================
 
-- Test File Extensions Handling for Sensitive Information (OTG-CONFIG-003) 
-- Test Upload of Unexpected File Types (OTG-BUSLOGIC-008) 
+- 민감한 정보를 확인하기 위해 파일 확장자 처리 테스트 (OTG-CONFIG-003) 
+- 예기치 않은 파일 형식 업로드 테스트 (OTG-BUSLOGIC-008) 
 
 |
 
 Tools 
 ============================================================================================
  
-- Metasploit's payload generation functionality 
+- Metasploit의 payload 생성 기능
 - Intercepting proxy 
 
 |
@@ -80,10 +82,10 @@ Tools
 References 
 ============================================================================================
 
-- OWASP - Unrestricted File Upload - https://www.owasp.org index.php/Unrestricted_File_Upload 
-- Why File Upload Forms are a Major Security Threat - http:/ www.acunetix.com/websitesecurity/upload-forms-threat/ 
-- File upload security best practices: Block a malicious file upload - http://www.computerweekly.com/answer/File-uploadsecurity-best-practices-Block-a-malicious-file-upload 
-- Overview of Malicious File Upload Attacks - http:/securitymecca.com/article/overview-of-malicious-fileupload-attacks/ 
+- OWASP - Unrestricted File Upload: https://www.owasp.org index.php/Unrestricted_File_Upload 
+- Why File Upload Forms are a Major Security Threat: http:/ www.acunetix.com/websitesecurity/upload-forms-threat/ 
+- File upload security best practices: Block a malicious file upload: http://www.computerweekly.com/answer/File-uploadsecurity-best-practices-Block-a-malicious-file-upload 
+- Overview of Malicious File Upload Attacks: http:/securitymecca.com/article/overview-of-malicious-fileupload-attacks/ 
 - Stop people uploading malicious PHP files via forms - http://stackoverflow.com/questions/602539/stop-peopleuploading-malicious-php-files-via-forms 
 - How to Tell if a File is Malicious - http://www.techsupportalert.com/content/how-tell-if-filemalicious.htm 
 - CWE-434: Unrestricted Upload of File with Dangerous Type - http://cwe.mitre.org/data/definitions/434.html 

@@ -200,9 +200,9 @@ Tools
 References
 ==========================================================================================
 
-- "The Web Robots Pages" - http://www.robotstxt.org/
-- "Block and Remove Pages Using a robots.txt File" - https://support.google.com/webmasters/answer/156449
-- "(ISC)2 Blog: The Attack of the Spiders from the Clouds" - http://blog.isc2.org/isc2_blog/2008/07/the-attack-of-t.html
-- "Telstra customer database exposed" - http://www.smh.com.au/it-pro/security-it/telstra-customer-database-exposed-20111209-1on60.html
+- "The Web Robots Pages": http://www.robotstxt.org/
+- "Block and Remove Pages Using a robots.txt File": https://support.google.com/webmasters/answer/156449
+- "(ISC)2 Blog: The Attack of the Spiders from the Clouds": http://blog.isc2.org/isc2_blog/2008/07/the-attack-of-t.html
+- "Telstra customer database exposed": http://www.smh.com.au/it-pro/security-it/telstra-customer-database-exposed-20111209-1on60.html
 
 |

@@ -68,25 +68,25 @@ An electronic bulletin board system may be designed to ensure that initial posts
 Related Test Cases 
 ============================================================================================
 
-- Testing Directory traversal/file include (OTG-AUTHZ-001) 
-- Testing for bypassing authorization schema (OTG-AUTHZ-002) 
-- Testing for Bypassing Session Management Schema (OTGSESS-001) 
-- Test Business Logic Data Validation (OTG-BUSLOGIC-001) 
-- Test Ability to Forge Requests (OTG-BUSLOGIC-002) 
-- Test Integrity Checks (OTG-BUSLOGIC-003) 
-- Test for Process Timing (OTG-BUSLOGIC-004) 
-- Test Number of Times a Function Can be Used Limits (OTG-BUSLOGIC-005) 
-- Test Defenses Against Application Mis-use (OTG-BUSLOGIC-007) 
-- Test Upload of Unexpected File Types (OTG-BUSLOGIC-008) 
-- Test Upload of Malicious Files (OTG-BUSLOGIC-009) 
+- 디렉토리 트레버셜 및 파일 인클루트 테스트 (OTG-AUTHZ-001) 
+- 인증 스키마 우회 테스트 (OTG-AUTHZ-002) 
+- 세션 관리 스키마 우회 테스트 (OTG-SESS-001) 
+- 비즈니스 로직 데이터 인증 테스트 (OTG-BUSLOGIC-001) 
+- 요청 위조 기능 테스트 (OTG-BUSLOGIC-002) 
+- 무결성 검사 테스트 (OTG-BUSLOGIC-003) 
+- 프로세스 시간 테스트 (OTG-BUSLOGIC-004) 
+- 기능 사용 제한 시간 테스트 (OTG-BUSLOGIC-005) 
+- 어플리케이션 오용에 대한 테스트 방어 (OTG-BUSLOGIC-007) 
+- 예기치 않은 파일 형식 업로드 테스트 (OTG-BUSLOGIC-008) 
+- 악성 파일 형식 업로드 테스트 (OTG-BUSLOGIC-009) 
 
 |
 
 References 
 ============================================================================================
 
-- OWASP Detail Misuse Cases - https://www.owasp.org/index php/Detail_misuse_cases 
-- Real-Life Example of a 'Business Logic Defect - http://h30501 www3.hp.com/t5/Following-the-White-Rabbit-A/Real-LifeExample-of-a-Business-Logic-Defect-Screen-Shots/bap/22581 
+- OWASP Detail Misuse Cases: https://www.owasp.org/index php/Detail_misuse_cases 
+- Real-Life Example of a Business Logic Defect - http://h30501 www3.hp.com/t5/Following-the-White-Rabbit-A/Real-LifeExample-of-a-Business-Logic-Defect-Screen-Shots/bap/22581 
 - Top 10 Business Logic Attack Vectors Attacking and Exploiting Business Application Assets and Flaws . Vulnerability Detection to Fix -http://www.ntobjectives.com/go/business-logicattack-vectors-white-paper/ and http://www.ntobjectives. com/files/Business_Logic_White_Paper.pdf 
 - CWE-840: Business Logic Errors - http://cwe.mitre.org/data definitions/840.html 
 
