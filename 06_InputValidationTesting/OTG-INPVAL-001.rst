@@ -8,7 +8,7 @@ OTG-INPVAL-001
 
 |
 
-Summary
+개요
 ============================================================================================
 
 반사형 크로스 사이트 스크립팅은 공격자가 HTTP 응답 데이터 안에 브라우저 실행 코드를
@@ -45,7 +45,7 @@ XSS 취약점을 막기 가장 어려운 부분은 적절한 문자 인코딩입
 
 |
 
-How to Test
+테스트 방법
 ============================================================================================
 
 |
@@ -248,79 +248,14 @@ sanitization procedures implemented to decide if these can be circumvented.
 Tools
 ============================================================================================
 
-- OWASP CAL9000
-
-CAL9000 is a collection of web application security testing tools
-that complement the feature set of current web proxies and automated
-scanners. It’s hosted as a reference at 
-http://yehg.net/lab/pr0js/pentest/CAL9000/
-
-- PHP Charset Encoder(PCE)
-
-http://h4k.in/encoding [mirror: http://yehg.net/e ]
-This tool helps you encode arbitrary texts to and from 65 kinds
-of charsets. Also some encoding functions featured by JavaScript
-are provided.
-
-- HackVertor
-
-http://www.businessinfo.co.uk/labs/hackvertor/
-hackvertor.php
-It provides multiple dozens of flexible encoding for advanced
-string manipulation attacks.
-
+- PHP Charset Encoder(PCE): http://yehg.net/encoding/
+- HackVertor: http://www.businessinfo.co.uk/labs/hackvertor/
 - WebScarab 
-
-WebScarab is a framework for analysing
-applications that communicate using the HTTP and HTTPS
-protocols.
-
-- XSS-Proxy
-
-http://xss-proxy.sourceforge.net/
-XSS-Proxy is an advanced Cross-Site-Scripting (XSS) attack tool.
-
-- ratproxy
-
-http://code.google.com/p/ratproxy/
-A semi-automated, largely passive web application security
-audit tool, optimized for an accurate and sensitive detection,
-and automatic annotation, of potential problems and securityrelevant
-design patterns based on the observation of existing,
-user-initiated traffic in complex web 2.0 environments.
-
 - Burp Proxy
-
-http://portswigger.net/proxy/
-Burp Proxy is an interactive HTTP/S proxy server for attacking
-and testing web applications.
-
 - OWASP Zed Attack Proxy (ZAP)
-
-OWASP_Zed_Attack_Proxy_Project
-ZAP is an easy to use integrated penetration testing tool for
-finding vulnerabilities in web applications. It is designed to be
-used by people with a wide range of security experience and as
-such is ideal for developers and functional testers who are new
-to penetration testing. ZAP provides automated scanners as well
-as a set of tools that allow you to find security vulnerabilities
-manually.
-
+- XSS-Proxy: http://xss-proxy.sourceforge.net/ 
+- ratproxy: http://code.google.com/p/ratproxy/
 - OWASP Xenotix XSS Exploit Framework
-
-OWASP_Xenotix_XSS_Exploit_Framework
-OWASP Xenotix XSS Exploit Framework is an advanced Cross
-Site Scripting (XSS) vulnerability detection and exploitation
-framework. It provides Zero False Positive scan results with
-its unique Triple Browser Engine (Trident, WebKit, and Gecko)
-embedded scanner. It is claimed to have the world’s 2nd largest
-XSS Payloads of about 1600+ distinctive XSS Payloads for
-effective XSS vulnerability detection and WAF Bypass. Xenotix
-Scripting Engine allows you to create custom test cases and
-addons over the Xenotix API. It is incorporated with a feature rich
-Information Gathering module for target Reconnaissance. The
-Exploit Framework includes offensive XSS exploitation modules
-for Penetration Testing and Proof of Concept creation.
 
 |
 
@@ -335,29 +270,18 @@ OWASP Resources
 Books
 --------------------------------------------------------------------------------------------
 
-- Joel Scambray, Mike Shema, Caleb Sima - “Hacking Exposed Web
-Applications”, Second Edition, McGraw-Hill, 2006 - ISBN 0-07-
-226229-0
-
-- Dafydd Stuttard, Marcus Pinto - “The Web Application’s
-Handbook - Discovering and Exploiting Security Flaws”, 2008, Wiley,
-ISBN 978-0-470-17077-9
-
-- Jeremiah Grossman, Robert “RSnake” Hansen, Petko “pdp” D.
-Petkov, Anton Rager, Seth Fogie - “Cross Site Scripting Attacks: XSS
-Exploits and Defense”, 2007, Syngress, ISBN-10: 1-59749-154-3
+- Joel Scambray, Mike Shema, Caleb Sima - “Hacking Exposed Web Applications”, Second Edition, McGraw-Hill, 2006 - ISBN 0-07-226229-0
+- Dafydd Stuttard, Marcus Pinto - “The Web Application’s Handbook - Discovering and Exploiting Security Flaws”, 2008, Wiley, ISBN 978-0-470-17077-9
+- Jeremiah Grossman, Robert “RSnake” Hansen, Petko “pdp” D. Petkov, Anton Rager, Seth Fogie - “Cross Site Scripting Attacks: XSS Exploits and Defense”, 2007, Syngress, ISBN-10: 1-59749-154-3
 
 Whitepapers
 --------------------------------------------------------------------------------------------
 
-- CERT - Malicious HTML Tags Embedded in Client Web Requests:
-Read
+- CERT - Malicious HTML Tags Embedded in Client Web Requests: Read
 - Rsnake - XSS Cheat Sheet: Read
 - cgisecurity.com - The Cross Site Scripting FAQ: Read
 - G.Ollmann - HTML Code Injection and Cross-site scripting: Read
-- A. Calvo, D.Tiscornia - alert(‘A javascritp agent’):
-Read ( To be published )
-- S. Frei, T. Dübendorfer, G. Ollmann, M. May - Understanding the
-Web browser threat: Read
+- A. Calvo, D.Tiscornia - alert(‘A javascritp agent’): Read ( To be published )
+- S. Frei, T. Dübendorfer, G. Ollmann, M. May - Understanding the Web browser threat: Read
 
 |

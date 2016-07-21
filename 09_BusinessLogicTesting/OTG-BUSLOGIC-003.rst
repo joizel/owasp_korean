@@ -12,9 +12,13 @@ OTG-BUSLOGIC-003
 개요
 ============================================================================================
 
-Many applications are designed to display different fields depending on the user of situation by leaving some inputs hidden. However, in many cases it is possible to submit values hidden field values to the server using a proxy. In these cases the server side controls must be smart enough to perform relational or server side edits to ensure that the proper data is allowed to the server based on user and application specific business logic. 
+대부분 어플리케이션은 숨겨진 입력 부분을 두고 사용자에 따라 서로 다른 필드를 표시하도록 설계되어 있습니다.
+그러나, 이런 경우 프록시를 사용하여 서버측에 숨겨진 필드 값을 입력할 수 있습니다.
+이 경우, 서버측 컨트롤 관계형 또는 서버측의 적절한 데이터가 서버와 어플리케이션의 특정 비즈니스 로직에 기반하여 허용되도록 편집해야합니다.
 
-Additionally, the application must not depend on non-editable controls, drop-down menus or hidden fields for business logic processing because these fields remain non-editable only in the context of the browsers. Users may be able to edit their values using proxy editor tools and try to manipulate business logic. If the application exposes values related to business rules like quantity, etc. as non-editable fields it must maintain a copy on the server side and use the same for business logic processing. Finally, aside application/system data, log systems must be secured to prevent read, writing and updating. Business logic integrity check vulnerabilities is unique in that these misuse cases are application specific and if users are able to make changes one should only be able to write or update/edit specific artifacts at specific times per the business process logic. 
+Additionally, the application must not depend on non-editable controls, drop-down menus or hidden fields for business logic processing because these fields remain non-editable only in the context of the browsers. 
+
+Users may be able to edit their values using proxy editor tools and try to manipulate business logic. If the application exposes values related to business rules like quantity, etc. as non-editable fields it must maintain a copy on the server side and use the same for business logic processing. Finally, aside application/system data, log systems must be secured to prevent read, writing and updating. Business logic integrity check vulnerabilities is unique in that these misuse cases are application specific and if users are able to make changes one should only be able to write or update/edit specific artifacts at specific times per the business process logic. 
 
 The application must be smart enough to check for relational edits and not allow users to submit information directly to the server that is not valid, trusted because it came from a non-editable controls or the user is not authorized to submit through the front end. Additionally, system artifacts such as logs must be "protected" from unauthorized read, writing and removal. 
 
@@ -68,27 +72,28 @@ Many systems include logging for auditing and troubleshooting purposes. But, how
 구체적인 테스트 방법 1 
 -----------------------------------------------------------------------------------------
  
-- Using a proxy capture and HTTP traffic looking for hidden fields. 
-- If a hidden field is found see how these fields compare with the GUI application and start interrogating this value through the proxy by submitting different data values trying to circumvent the business process and manipulate values you were not intended to have access to. 
+- 프록시 캡쳐를 사용하여 HTTP 트래픽에 숨겨진 필드 검색
+- 만약 히든 필드를 찾았다면, 이 필드를 GUI 어플리케이션과 비교하고, 프록시를 통해 비즈니스 처리를 우회하는 데이터 값을 입력하여 의도하지 않는 값을 처리
+
 
 구체적인 테스트 방법 2 
 -----------------------------------------------------------------------------------------
 
-- Using a proxy capture and HTTP traffic looking a place to insert information into areas of the application that are non-editable. 
-- If it is found see how these fields compare with the GUI application and start interrogating this value through the proxy by submitting different data values trying to circumvent the business process and manipulate values you were not intended to have access to. 
+- 프록시 캡쳐를 사용하여 HTTP 트래픽에 non-editable 어플리케이션 영역에서 정보 삽입이 가능한 곳 검색
+- 만약 삽입이 가능한 곳을 찾았다면, 이 부분을 어플리케이션과 비교하고, 프록시를 통해 비즈니스 처리를 우회하는 데이터 값을 입력하여 의도하지 않는 값을 처리
 
 구체적인 테스트 방법 3 
 -----------------------------------------------------------------------------------------
 
-- List components of the application or system that could be edited, for example logs or databases. 
-- For each component identified, try to read, edit or remove its information. For example log files should be identified and Testers should try to manipulate the data/information being collected. 
+- 수정할 수 있는 어플리케이션 또는 시스템 구성을 목록화 (로그, 데이터베이스)
+- 식별된 구성 요소에서 읽기, 수정, 삭제 시도. 예를 들어, 로그 파일을 확인하고, 테스터는 수집한 데이터 및 정보를 조작 시도
 
 |
 
 Related Test Cases 
 ============================================================================================
 
-- All Input Validation test cases 
+- 모든 입력 유효성 검사 테스트 케이스
 
 |
 
@@ -96,7 +101,7 @@ Tools
 ============================================================================================
 
 - Various system/application tools such as editors and file manipulation tools. 
-- OWASP Zed Attack Proxy (ZAP) - https://www.owasp.org index.php/OWASP_Zed_Attack_Proxy_Project 
+- OWASP Zed Attack Proxy (ZAP) - https://www.owasp.org/index.php/OWASP_Zed_Attack_Proxy_Project 
 
 
 |
@@ -108,7 +113,7 @@ References
 - On Rules and Integrity Constraints in Database Systems http://www.comp.nus.edu.sg/~lingtw/papers/IST92.teopk.pdf 
 - Use referential integrity to enforce basic business rules in Oracle - http://www.techrepublic.com/article/use-referentialintegrity-to-enforce-basic-business-rules-in-oracle/ 
 - Maximizing Business Logic Reuse with Reactive Logic - http:/ architects.dzone.com/articles/maximizing-business-logic 
-- Tamper Evidence Logging - http://tamperevident.cs.rice.edu Logging.html 
+- Tamper Evidence Logging - http://tamperevident.cs.rice.edu/Logging.html 
 
 |
 
