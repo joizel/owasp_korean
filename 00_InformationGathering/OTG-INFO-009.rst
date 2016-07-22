@@ -1,10 +1,6 @@
 ==========================================================================================
-OTG-INFO-009
+OTG-INFO-009 (웹 어플리케이션 핑거프린트)
 ==========================================================================================
-
-|
-
-웹 어플리케이션 핑거프린트
 
 |
 
@@ -29,8 +25,7 @@ be enumerated to identify the application.
 테스트 목적
 ==========================================================================================
 
-Identify the web application and version to determine known vulnerabilities
-and the appropriate exploits to use during testing.
+웹 어플리케이션, 알려진 취약점을 결정하는 버전, 테스트 시 사용할 적절한 익스플로잇 확인
 
 |
 
@@ -38,12 +33,12 @@ and the appropriate exploits to use during testing.
 테스트 방법
 ==========================================================================================
 
-**Cookies**
+Cookies
+-----------------------------------------------------------------------------------------
 
-A relatively reliable way to identify a web application is by the application-specific
-cookies.
+웹 애플리케이션을 식별하기 위한 신뢰할 수 있는 방법은 어플리케이션에 지정된 쿠키이다.
 
-Consider the following HTTP-request:
+HTTP-request 확인:
 
 .. code-block:: console
 
@@ -51,25 +46,28 @@ Consider the following HTTP-request:
     User-Agent: Mozilla/5.0 (Windows NT 6.2; WOW64; rv:31.0)
     Gecko/20100101 Firefox/31.0
     Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+
     Accept-Language: en-US,en;q=0.5
     ‘’’Cookie: wp-settings-time-1=1406093286; wp-settingstime-2=1405988284’’’
     DNT: 1
     Connection: keep-alive
     Host: blog.owasp.org
 
-The cookie CAKEPHP has automatically been set, which gives information
-about the framework being used. List of common cookies
-names is presented in Cpmmon Application Identifiers section.
-However, it is possible to change the name of the cookie.
 
-**HTML source code**
+CAKEPHP는 쿠키가 자동으로 설정되어, 사용하고 있는 프레임워크 정보를 제공합니다.
+일반적인 쿠키명 목록은 아래 Common Application Identifiers 섹션에 나와있습니다.
+그러나, 쿠키 이름은 바꾸는게 가능합니다.
 
-This technique is based on finding certain patterns in the HTML
-page source code. Often one can find a lot of information which
-helps a tester to recognize a specific web application. One of the
-common markers are HTML comments that directly lead to application
-disclosure. More often certain application-specific paths
-can be found, i.e. links to application-specific css and/or js folders.
+|
+
+HTML source code
+-----------------------------------------------------------------------------------------
+
+이 기술은 HTML 페이지 소스 코드에서 정확한 패턴을 찾는게 기본입니다.
+
+Often one can find a lot of information which helps a tester to recognize a specific web application. 
+One of the common markers are HTML comments that directly lead to application disclosure. 
+More often certain application-specific paths can be found, i.e. links to application-specific css and/or js folders.
 Finally, specific script variables might also point to a certain application.
 From the meta tag below, one can easily learn the application
 used by a website and its version. The comment, specific paths
@@ -78,14 +76,16 @@ an instance of an application
 
 .. code-block:: html
 
-    <meta name=”generator” content=”WordPress 3.9.2” />
+    <meta name="generator" content="WordPress 3.9.2" />
 
-More frequently such information is placed between <head></
-head> tags, in <meta> tags or at the end of the page. Nevertheless,
- it is recommended to check the whole document since it can be
-useful for other purposes such as inspection of other useful comments
-and hidden fields.
-Specific files and folders
+More frequently such information is placed between <head></head> tags, in <meta> tags or at the end of the page. 
+Nevertheless, it is recommended to check the whole document since it can be useful for other purposes such as inspection of other useful comments and hidden fields.
+
+|
+
+특정 파일과 폴더
+-----------------------------------------------------------------------------------------
+
 Apart from information gathered from HTML sources, there is another
 approach which greatly helps an attacker to determine the
 application with high accuracy. Every application has its own specific
@@ -93,6 +93,7 @@ file and folder structure on the server. It has been pointed out
 that one can see the specific path from the HTML page source but
 sometimes they are not explicitly presented there and still reside
 on the server.
+
 In order to uncover them a technique known as dirbusting is used.
 Dirbusting is brute forcing a target with predictable folder and file
 names and monitoring HTTP-responses to emumerate server
@@ -102,15 +103,20 @@ Dirbusting can be done in several ways, the example below
 shows a successful dirbusting attack against a WordPress-powered 
 target with the help of defined list and intruder functionality
 of Burp Suite.
+
+
 We can see that for some WordPress-specific folders (for instance,
 /wp-includes/, /wp-admin/ and /wp-content/) HTTP-reponses
 are 403 (Forbidden), 302 (Found, redirection to wp-login.
 php) and 200 (OK) respectively. This is a good indicator that the
-target is WordPress-powered. The same way it is possible to dirbust
+target is WordPress-powered. 
+
+The same way it is possible to dirbust
 different application plugin folders and their versions. On
 the screenshot below one can see a typical CHANGELOG file of a
 Drupal plugin, which provides information on the application being
 used and discloses a vulnerable plugin version.
+
 
 Tip: before starting dirbusting, it is recommended to check the robots.txt
 file first. Sometimes application specific folders and other
@@ -125,6 +131,40 @@ However, several good file lists already exist and one good example
 is FuzzDB wordlists of predictable files/folders (http://code.google.
 com/p/fuzzdb/).
 
+.. csv-table:: Common Application Identifiers
+    :widths: 15, 10
+
+    'phpBB','phpbb3_'
+    'Wordpress','wp-settings'
+    '1C-Bitrix','BITRIX_'
+    'AMPcms','AMP'
+    'Django CMS','django'
+    'DotNetNuke','DotNetNukeAnonymous'
+    'e107','e107'
+    'EPiServer','EPiTrace, EPiServer'
+    'Graffiti CMS','graffitibot'
+    'Hotaru CMS','hotaru_mobile'
+    'ImpressCMS','ICMSession'
+    'Indico','MAKACSESSION'
+    'InstantCMS','InstantCMS[logdate]'
+    'Kentico CMS','CMSPreferredCulture'
+    'MODx','SN4[12symb]'
+    'TYPO3','fe_typo_user'
+    'Dynamicweb','Dynamicweb'
+    'LEPTON','lep[some_numeric_value]+sessionid'
+    'Wix','Domain=.wix.com'
+    'VIVVO','VivvoSessionId '
+
+
+.. csv-table:: HTML source code 
+    :widths: 15, 10
+
+    'Wordpress','<meta name="generator" content="WordPress 3.9.2"/>'
+    'phpBB','<body id="phpbb"'
+    'Mediawiki','<meta name="generator" content="MediaWiki 1.21.9" />'
+    'Joomla','<meta name="generator" content="Joomla! - Open Source Content Management" />'
+    'Drupal','<meta name="Generator" content="Drupal 7 (http://drupal.org)" />'
+    'DotNetNuke','DNN Platform - http://www.dnnsoftware.com'
 
 
 |
@@ -132,18 +172,200 @@ com/p/fuzzdb/).
 Tools
 ==========================================================================================
 
+A list of general and well-known tools is presented below. 
+There are also a lot of other utilities, as well as framework-based fingerprinting tools.
 
+WhatWeb
+------------------------------------------------------------------------------------------
+
+http://www.morningstarsecurity.com/research/whatweb
+
+Currently one of the best fingerprinting tools on the market. Included
+in a default Kali Linux build. Language: Ruby Matches for fingerprinting
+are made with:
+
+- Text strings (case sensitive)
+- Regular expressions
+- Google Hack Database queries (limited set of keywords)
+- MD5 hashes
+- URL recognition
+- HTML tag patterns
+- Custom ruby code for passive and aggressive operations
+
+Sample output is presented on a screenshot below:
+
+|
+
+BlindElephant
+------------------------------------------------------------------------------------------
+
+https://community.qualys.com/community/blindelephant
+
+This great tool works on the principle of static file checksum based
+version difference thus providing a very high quality of fingerprinting.
+Language: Python
+
+Sample output of a successful fingerprint:
+
+.. code-block:: console
+
+    pentester$ python BlindElephant.py http://my_target drupal
+    Loaded /Library/Python/2.7/site-packages/blindelephant/
+    dbs/drupal.pkl with 145 versions, 478 differentiating paths,
+    and 434 version groups.
+    Starting BlindElephant fingerprint for version of drupal at
+    http://my_target
+
+    Hit http://my_target/CHANGELOG.txt
+    File produced no match. Error: Retrieved file doesn’t match
+    known fingerprint. 527b085a3717bd691d47713dff74acf4
+
+    Hit http://my_target/INSTALL.txt
+    File produced no match. Error: Retrieved file doesn’t match
+    known fingerprint. 14dfc133e4101be6f0ef5c64566da4a4
+
+    Hit http://my_target/misc/drupal.js
+    Possible versions based on result: 7.12, 7.13, 7.14
+
+    Hit http://my_target/MAINTAINERS.txt
+    File produced no match. Error: Retrieved file doesn’t match
+    known fingerprint. 36b740941a19912f3fdbfcca7caa08ca
+
+    Hit http://my_target/themes/garland/style.css
+    Possible versions based on result: 7.2, 7.3, 7.4, 7.5, 7.6, 7.7,
+    7.8, 7.9, 7.10, 7.11, 7.12, 7.13, 7.14
+    ...
+
+    Fingerprinting resulted in:
+    7.14
+
+    Best Guess: 7.14
+
+|
+
+Wappalyzer
+------------------------------------------------------------------------------------------
+
+http://wappalyzer.com
+
+Wapplyzer is a Firefox Chrome plug-in. It works only on regular expression
+matching and doesn’t need anything other than the page
+to be loaded on browser. It works completely at the browser level
+and gives results in the form of icons. Although sometimes it has
+false positives, this is very handy to have notion of what technologies
+were used to construct a target website immediately after
+browsing a page.
+
+Sample output of a plug-in is presented on a screenshot below. 
 
 |
 
 References
 ==========================================================================================
 
+Whitepapers
+------------------------------------------------------------------------------------------
+
+- Saumil Shah: "An Introduction to HTTP fingerprinting" - http://www.net-square.com/httprint_paper.html
+- Anant Shrivastava : "Web Application Finger Printing" - http://anantshri.info/articles/web_app_finger_printing.html
 
 |
 
 Remediation
 ==========================================================================================
 
+The general advice is to use several of the tools described above
+and check logs to better understand what exactly helps an attacker
+to disclose the web framework. By performing multiple scans
+after changes have been made to hide framework tracks, it’s possible
+to achieve a better level of security and to make sure of the
+framework can not be detected by automatic scans. Below are
+some specific recommendations by framework marker location
+and some additional interesting approaches.
+
+|
+
+HTTP headers
+------------------------------------------------------------------------------------------
+
+Check the configuration and disable or obfuscate all HTTP-headers
+that disclose information the technologies used. Here is an
+interesting article about HTTP-headers obfuscation using Netscaler:
+http://grahamhosking.blogspot.ru/2013/07/obfuscating-http-header-using-netscaler.html
+
+|
+
+Cookies
+------------------------------------------------------------------------------------------
+
+It is recommended to change cookie names by making changes in
+the corresponding configuration files.
+
+|
+
+HTML source code
+------------------------------------------------------------------------------------------
+
+Manually check the contents of the HTML code and remove everything
+that explicitly points to the framework.
+General guidelines:
+
+- Make sure there are no visual markers disclosing the framework
+- Remove any unnecessary comments (copyrights, bug information, specific framework comments)
+- Remove META and generator tags
+- Use the companies own css or js files and do not store those in a framework-specific folders
+- Do not use default scripts on the page or obfuscate them if they must be used.
+
+|
+
+특정 파일과 폴더
+------------------------------------------------------------------------------------------
+
+General guidelines:
+
+- Remove any unnecessary or unused files on the server. This
+implies text files disclosing information about versions and
+installation too.
+- Restrict access to other files in order to achieve 404-response
+when accessing them from outside. This can be done, for
+example, by modifying htaccess file and adding RewriteCond
+or RewriteRule there. An example of such restriction for two
+common WordPress folders is presented below.
+
+.. code-block:: console
+
+    RewriteCond %{REQUEST_URI} /wp-login\.php$ [OR]
+    RewriteCond %{REQUEST_URI} /wp-admin/$
+    RewriteRule $ /http://your_website [R=404,L]    
+
+However, these are not the only ways to restrict access. In order to
+automate this process, certain framework-specific plugins exist.
+One example for WordPress is StealthLogin (http://wordpress.org/
+plugins/stealth-login-page).
+
+|
+
+Additional approaches
+------------------------------------------------------------------------------------------
+
+General guidelines:
+
+1. Checksum management
+The purpose of this approach is to beat checksum-based scanners
+and not let them disclose files by their hashes. Generally, there are
+two approaches in checksum management:
+
+- Change the location of where those files are placed (i.e. move
+them to another folder, or rename the existing folder)
+- Modify the contents - even slight modification results in a
+completely different hash sum, so adding a single byte in the end
+of the file should not be a big problem.
+
+2. Controlled chaos
+
+A funny and effective method that involves adding bogus files and
+folders from other frameworks in order to fool scanners and confuse
+an attacker. But be careful not to overwrite existing files and
+folders and to break the current framework!
 
 |

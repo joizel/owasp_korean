@@ -1,10 +1,6 @@
 ==========================================================================================
-OTG-INFO-008
+OTG-INFO-008 (웹 어플리케이션 프레임워크 핑거프린트)
 ==========================================================================================
-
-|
-
-웹 어플리케이션 프레임워크 핑거프린트
 
 |
 
@@ -52,9 +48,12 @@ Black Box Testing
 - HTTP 헤더
 - Cookies
 - HTML source code
-- Specific files and folders
+- 특정 파일과 폴더
 
-**HTTP 헤더**
+|
+
+HTTP 헤더
+-----------------------------------------------------------------------------------------
 
 웹 프레임워크를 식별하는 가장 기본적인 형태는 HTTP response 헤더에서 X-Powered-By 필드를 찾는 것입니다.
 많은 툴들이 목표에 대한 핑거프린트를 하는데 사용될 수 있습니다. 가장 간단한 것 중 하나가 netcat 유틸리티입니다. 다음 HTTP Request와 Response를 고려해봅니다.
@@ -109,7 +108,8 @@ X-Powered-By 필드로 부터, Mono라는 웹 어플리케이션 프레임워크
 
 |
 
-**Cookies**
+Cookies
+-----------------------------------------------------------------------------------------
 
 현재 웹 프레임워크를 결정하는 또 다른 유사한 방법은 프레임워크의 특정 쿠키 값입니다.
 
@@ -140,13 +140,15 @@ X-Powered-By 필드로 부터, Mono라는 웹 어플리케이션 프레임워크
     * @link http://php.net/session_name
     */
     Configure::write('Session.cookie', 'CAKEPHP');
-    However, these changes are less likely to be made than changes
-    to the X-Powered-By header, so this approach can be considered
-    as more reliable.
+
+However, these changes are less likely to be made than changes
+to the X-Powered-By header, so this approach can be considered
+as more reliable.
 
 |
 
-**HTML source code**
+HTML source code
+-----------------------------------------------------------------------------------------
 
 This technique is based on finding certain patterns in the HTML page source code. 
 Often one can find a lot of information which helps a tester to recognize a specific web framework. 
@@ -165,7 +167,8 @@ It is still possible to stumble upon something like this at the bottom of the pa
 
 |
 
-**Specific files and folders**
+특정 파일과 폴더
+-----------------------------------------------------------------------------------------
 
 Specific files and folders are different for each specific framework. It is recommended to install the corresponding framework
 during penetration tests in order to have better understanding
@@ -186,7 +189,7 @@ There are also a lot of other utilities, as well as framework-based fingerprinti
 WhatWeb
 -----------------------------------------------------------------------------------------
 
-Website: http://www.morningstarsecurity.com/research/whatweb
+http://www.morningstarsecurity.com/research/whatweb
 
 Currently one of the best fingerprinting tools on the market. 
 Included in a default Kali Linux build. Language: Ruby Matches for fingerprinting are made with:
@@ -206,7 +209,8 @@ Sample output is presented on a screenshot below:
 BlindElephant
 -----------------------------------------------------------------------------------------
 
-Website: https://community.qualys.com/community/blindelephant
+https://community.qualys.com/community/blindelephant
+
 This great tool works on the principle of static file checksum based
 version difference thus providing a very high quality of fingerprinting. Language: Python
 
@@ -251,7 +255,8 @@ Sample output of a successful fingerprint:
 Wappalyzer
 -----------------------------------------------------------------------------------------
 
-Website: http://wappalyzer.com
+http://wappalyzer.com
+
 Wapplyzer is a Firefox Chrome plug-in. It works only on regular expression matching and doesn`t need anything other than the page
 to be loaded on browser. It works completely at the browser level
 and gives results in the form of icons. Although sometimes it has

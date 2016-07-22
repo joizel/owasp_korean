@@ -1,10 +1,6 @@
 ==========================================================================================
-OTG-INFO-010
+OTG-INFO-010 (어플리케이션 아키텍쳐 맵)
 ==========================================================================================
-
-|
-
-어플리케이션 구조 맵
 
 |
 
@@ -30,18 +26,26 @@ with a web application and how they affect security.
 테스트 방법
 ==========================================================================================
 
-Map the application architecture
+어플리케이션 아키텍쳐 맵
 
-The application architecture needs to be mapped through some test to determine what different components are used to build the web application. 
-In small setups, such as a simple CGI-based application, a single server might be used that runs the web server which executes the C, Perl, or Shell CGIs application, and perhaps also the authentication mechanism.
-On more complex setups, such as an online bank system, multiple servers might be involved. These may include a reverse proxy, a frontend web server, an application server and a database server or LDAP server. 
-Each of these servers will be used for different purposes and might be even be divided in different networks with firewalls between them. 
+어플리케이션 아키텍쳐는 다른 구성 요소가 웹 어플리케이션을 빌드하는데 사용되는 결정을 
+하기위해 몇가지 테스트를 통해 매핑할 필요가 있습니다.
+
+CGI 기반 어플리케이션과 같은 소규모 설정에서는, 단일 서버가 C, Perl, Shell CGI 어플리케이션, 인증 메커니즘이 실행되는 웹 서버를 동작하는데 사용될 수 있습니다.
+온라인 뱅크 시스템과 같은 복잡한 설정에서는, 여러 서버가 포함될 수 있습니다.
+리버스 프록시, 프론트 엔드 웹 서버, 어플리케이션 서버, 그리고 데이터 베이스 서버 또는 LDAP 서버가 포함될 수 있습니다.
+이러한 서버는 서로 다른 목적으로 사용되며, 심지어 그들 사이에 방화벽으로 다른 네트워크와 구분될 수 있습니다.
 
 This creates different DMZs so that access to the web server will not grant a remote user access to the authentication mechanism itself, and so that compromises of the different elements of the architecture can be isolated so that they will not compromise the whole architecture.
+
 Getting knowledge of the application architecture can be easy if this information is provided to the testing team by the application developers in document form or through interviews, but can also prove to be very difficult if doing a blind penetration test.
+
 In the latter case, a tester will first start with the assumption that there is a simple setup (a single server). 
+
 Then they will retrieve information from other tests and derive the different elements, question this assumption and extend the architecture map. 
+
 The tester will start by asking simple questions such as: “Is there a firewalling system protecting the web server?”. 
+
 This question will be answered based on the results of network scans targeted at the web server and the analysis of whether the network ports of the web server are being filtered in the network edge (no answer or ICMP unreachables are received) or if the server is directly connected to the Internet (i.e. returns RST
 packets for all non-listening ports). This analysis can be enhanced to
 determine the type of firewall used based on network packet tests.
@@ -73,13 +77,16 @@ In some cases, even the protection system gives itself away
     Cache-Control: no-cache
     Content-Type: text/html
     Content-Length: 83
+
     <TITLE>Error</TITLE>
     <BODY>
     <H1>Error</H1>
     FW-1 at XXXXXX: Access denied.</BODY>
 
-Example of the security server of Check Point Firewall-1 NG AI “protecting”
-a web server
+|
+
+Check Point Firewall-1 NG AI "protecting" 웹 서버의 보안 서버 예제
+==========================================================================================
 
 Reverse proxies can also be introduced as proxy-caches to accelerate
 the performance of back-end application servers. Detecting these
@@ -87,6 +94,7 @@ proxies can be done based on the server header. They can also be
 detected by timing requests that should be cached by the server and
 comparing the time taken to server the first request with subsequent
 requests.
+
 Another element that can be detected is network load balancers.
 Typically, these systems will balance a given TCP/IP port to multiple
 servers based on different algorithms (round-robin, web server load,
@@ -98,6 +106,7 @@ clocks are not synchronized. In some cases, the network load balance
 process might inject new information in the headers that will make it
 stand out distinctively, like the AlteonP cookie introduced by Nortel’s
 Alteon WebSystems load balancer.
+
 Application web servers are usually easy to detect. The request for
 several resources is handled by the application server itself (not the
 web server) and the response header will vary significantly (including
@@ -106,10 +115,12 @@ detect these is to see if the web server tries to set cookies which are
 indicative of an application web server being used (such as the JSESSIONID
 provided by some J2EE servers), or to rewrite URLs automatically
 to do session tracking.
+
 Authentication back ends (such as LDAP directories, relational databases,
 or RADIUS servers) however, are not as easy to detect from an
 external point of view in an immediate way, since they will be hidden
 by the application itself.
+
 The use of a back end database can be determined simply by navigating
 an application. If there is highly dynamic content generated “on the
 fly,” it is probably being extracted from some sort of database by the
