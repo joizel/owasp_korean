@@ -4,22 +4,11 @@ OTG-INPVAL-014 (Buffer Overflow 침투 테스트)
 
 |
 
-개요
-============================================================================================
-
-To find out more about buffer overflow vulnerabilities, please go
-to Buffer Overflow pages.
-See the OWASP article on Buffer Overflow Attacks.
-See the OWASP article on Buffer Overflow Vulnerabilities.
-
-|
-
 테스트 방법
 ============================================================================================
 
-Different types of buffer overflow vulnerabilities have different
-testing methods. Here are the testing methods for the common
-types of buffer overflow vulnerabilities.
+Different types of buffer overflow vulnerabilities have different testing methods. 
+Here are the testing methods for the common types of buffer overflow vulnerabilities.
 
 - 힙 오버플로우 취약점 테스트
 - 스택 오버플로우 취약점 테스트
@@ -184,7 +173,7 @@ size_t variable. But if it’s going to be ‘-1’, the argument wraps to
 buffer.
 
 Static code analysis tools can also help in locating heap related
-vulnerabilities such as “double free” etc. A variety of tools like
+vulnerabilities such as "double free" etc. A variety of tools like
 RATS, Flawfinder and ITS4 are available for analyzing C-style
 languages.
 
@@ -193,7 +182,7 @@ languages.
 Tools
 ============================================================================================
 
-- OllyDbg: “A windows based debugger used for analyzing buffer overflow vulnerabilities”: http://www.ollydbg.de
+- OllyDbg: "A windows based debugger used for analyzing buffer overflow vulnerabilities": http://www.ollydbg.de
 - Spike, A fuzzer framework that can be used to explore vulnerabilities and perform length testing: http://www.immunitysec.com/downloads/SPIKE2.9.tgz
 - Brute Force Binary Tester (BFB), A proactive binary checker: http://bfbtester.sourceforge.net
 - Metasploit, A rapid exploit development and Testing frame work - http://www.metasploit.com
@@ -206,8 +195,8 @@ References
 Whitepapers
 -------------------------------------------------------------------------------------------
 
-- w00w00: “Heap Overflow Tutorial”: http://www.cgsecurity.org/exploit/heaptut.txt
-- David Litchfield: “Windows Heap Overflows”: http://www.blackhat.com/presentations/win-usa-04/bhwin-04-litchfield/bh-win-04-litchfield.ppt
+- w00w00: "Heap Overflow Tutorial": http://www.cgsecurity.org/exploit/heaptut.txt
+- David Litchfield: "Windows Heap Overflows": http://www.blackhat.com/presentations/win-usa-04/bhwin-04-litchfield/bh-win-04-litchfield.ppt
 
 |
 
@@ -271,7 +260,7 @@ by using disassemblers. In this case, various sections are
 scanned for signatures of vulnerable assembly fragments. This
 is often termed as reverse engineering and is a tedious process.
 As a simple example, consider the following technique employed
-while testing an executable “sample.exe” for stack overflows:
+while testing an executable "sample.exe" for stack overflows:
 
 .. code-block:: c
 
@@ -279,7 +268,7 @@ while testing an executable “sample.exe” for stack overflows:
     int main(int argc, char *argv[])
     {
      char buff[20];
-     printf(“copying into buffer”);
+     printf("copying into buffer");
      strcpy(buff,argv[1]);
      return 0;
     }
@@ -325,11 +314,11 @@ For example consider the following function:-
     char b[1024];
     if (severity == 1)
     {
-    strcat(b,”Error occurred on”);
-    strcat(b,”:”);
+    strcat(b,"Error occurred on");
+    strcat(b,":");
     strcat(b,inpt);
-    FILE *fd = fopen (“logfile.log”, “a”);
-    fprintf(fd, “%s”, b);
+    FILE *fd = fopen ("logfile.log", "a");
+    fprintf(fd, "%s", b);
     fclose(fd);
     . . . . . .
     }
@@ -400,7 +389,7 @@ analyzing C-style languages.
 Tools
 ============================================================================================
 
-- OllyDbg: “A windows based debugger used for analyzing buffer overflow vulnerabilities” - http://www.ollydbg.de
+- OllyDbg: "A windows based debugger used for analyzing buffer overflow vulnerabilities" - http://www.ollydbg.de
 - Spike, A fuzzer framework that can be used to explore vulnerabilities and perform length testing - http://www.immunitysec.com/downloads/SPIKE2.9.tgz
 - Brute Force Binary Tester (BFB), A proactive binary checker: http://bfbtester.sourceforge.net/
 - Metasploit, A rapid exploit development and Testing frame work - http://www.metasploit.com
@@ -413,7 +402,7 @@ References
 Whitepapers
 --------------------------------------------------------------------------------------------
 
-- Aleph One: “Smashing the Stack for Fun and Profit”: http://insecure.org/stf/smashstack.html
+- Aleph One: "Smashing the Stack for Fun and Profit": http://insecure.org/stf/smashstack.html
 - The Samba trans2open stack overflow vulnerability: http://www.securityfocus.com/archive/1/317615
 - Windows RPC DCOM vulnerability details: http://www.xfocus.org/documents/200307/2.html
 
@@ -511,8 +500,8 @@ Take the instance of code (1) :
 
     int main(int argc, char **argv)
     {
-    printf(“The string entered is\n”);
-    printf(“%s”,argv[1]);
+    printf("The string entered is\n");
+    printf("%s",argv[1]);
     return 0;
     }
 
@@ -520,7 +509,7 @@ when the disassembly is examined using IDA Pro, the address of a
 format type specifier being pushed on the stack is clearly visible before
 a call to printf is made.
 
-On the other hand, when the same code is compiled without “%s” as
+On the other hand, when the same code is compiled without "%s" as
 an argument , the variation in assembly is apparent. As seen below,
 there is no offset being pushed on the stack before calling printf.
 
@@ -559,10 +548,8 @@ of format strings once their argument usage has been understood.
 Tools
 ============================================================================================
 
-- ITS4: “A static code analysis tool for identifying format string
-vulnerabilities using source code” - http://www.cigital.com/its4
-- An exploit string builder for format bugs - http://seclists.org/
-lists/pen-test/2001/Aug/0014.html
+- ITS4: "A static code analysis tool for identifying format string vulnerabilities using source code": http://www.cigital.com/its4
+- An exploit string builder for format bugs - http://seclists.org/lists/pen-test/2001/Aug/0014.html
 
 |
 
@@ -573,8 +560,8 @@ Whitepapers
 --------------------------------------------------------------------------------------------
 
 - Format functions manual page: http://www.die.net/doc/linux/man/man3/fprintf.3.html
-- Tim Newsham: “A paper on format string attacks”: http://comsec.theclerk.com/CISSP/FormatString.pdf
-- Team Teso: “Exploiting Format String Vulnerabilities”: http://www.cs.ucsb.edu/~jzhou/security/formats-teso.html
+- Tim Newsham: "A paper on format string attacks": http://comsec.theclerk.com/CISSP/FormatString.pdf
+- Team Teso: "Exploiting Format String Vulnerabilities": http://www.cs.ucsb.edu/~jzhou/security/formats-teso.html
 - Analysis of format string bugs: http://julianor.tripod.com/format-bug-analysis.pdf
 
 |

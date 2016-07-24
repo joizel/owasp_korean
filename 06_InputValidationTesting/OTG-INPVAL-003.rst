@@ -52,14 +52,17 @@ If methods such as HEAD or OPTIONS are required for your application, this incre
 As the HTML standard does not support request methods other than GET or POST, we will need to craft custom HTTP requests to test the other methods. We highly recommend using a tool to do this, although we will demonstrate how to do manually as well. 
 
 
-Manual HTTP verb tampering testing
------------------------------------------------------------------------------------------
+수동 HTTP 행위 변조 테스트
+-------------------------------------------------------------------------------------------
 
 This example is written using the netcat package from openbsd (standard with most Linux distributions). You may also use telnet (included with Windows) in a similar fashion. 
 
-1. Crafting custom HTTP requests 
- 
-- Each HTTP 1.1 request follows the following basic formatting and syntax. Elements surrounded by brackets [ ] are contextual to your application. The empty newline at the end is required. 
+1. 사용자 정의 HTTP 요청 제작
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- Each HTTP 1.1 request follows the following basic formatting and syntax. 
+Elements surrounded by brackets [ ] are contextual to your application. 
+The empty newline at the end is required. 
 - In order to craft separate requests, you can manually type each 
 
 .. code-block:: html
@@ -67,8 +70,11 @@ This example is written using the netcat package from openbsd (standard with mos
     [METHOD] /[index.htm] HTTP/1.1 
     host: [www.example.com] 
 
-request into netcat or telnet and examine the response. However, to speed up testing, you may also store each request in a separate file. 
-This second approach is what we'll demonstrate in these examples. Use your favorite editor to create a text file for each method. Modify for your application's landing page and domain. 
+request into netcat or telnet and examine the response. 
+However, to speed up testing, you may also store each request in a separate file. 
+This second approach is what we'll demonstrate in these examples. 
+Use your favorite editor to create a text file for each method. 
+Modify for your application's landing page and domain. 
 
 
 1.1 OPTIONS 
@@ -129,7 +135,8 @@ This second approach is what we'll demonstrate in these examples. Use your favor
 
 |
 
-2. Sending HTTP requests 
+2. HTTP 요청 보내기
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 - For each method and/or method text file, send the request to 
 
@@ -141,7 +148,8 @@ your web server via netcat or telnet on port 80 (HTTP):
 
 |
 
-3. Parsing HTTP responses 
+3. HTTP 응답 파싱
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 - Although each HTTP method can potentially return different results, there is only a single valid result for all methods other than GET and POST. The web server should either ignore the request completely or return an error. Any other response indicates a test failure as the server is responding to methods/verbs that are unnecessary. These methods should be disabled. 
 - An example of a failed test (ie, the server supports OPTIONS despite no need for it): 
@@ -154,12 +162,3 @@ If you are able to analyze your application via simple HTTP status codes (200 OK
 Code copied verbatim from the Penetration Testing Lab blog [5] 
 
 |
-
-References 
-============================================================================================
-
-Whitepapers 
---------------------------------------------------------------------------------------------
-
-- Arshan Dabirsiaghi "Bypassing URL Authentication and Authorization with HTTP Verb Tampering": http://www.aspectsecurity. com/research-presentations/bypassing-vbaac-with-http-verbtampering 
-

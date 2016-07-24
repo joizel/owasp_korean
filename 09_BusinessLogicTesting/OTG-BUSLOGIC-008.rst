@@ -28,22 +28,24 @@ Suppose a picture sharing application allows users to upload a .gif or .jpg grap
 일반 테스트 방법
 -----------------------------------------------------------------------------------------
 
-- Review the project documentation and perform some exploratory testing looking for file types that should be "unsupported" by the application/system. 
-- Try to upload these "unsupported" files an verify that it are properly rejected. 
-- If multiple files can be uploaded at once, there must be tests in place to verify that each file is properly evaluated. 
+- 프로젝트 문서 검토 및 어플리케이션/시스템에서 "지원하지 않는" 파일 형식을 참는 탐지 테스트 수행
+- "지원하지 않는" 파일을 업로드하고 적절하게 차단하는 지 확인
+- 만약 여러 파일을 한 번에 업로드 할 수 있는 경우, 각 파일이 제대로 차단되었는지 테스트를 해야합니다.
 
+|
 
 구체적인 테스트 방법 1 
 -----------------------------------------------------------------------------------------
 
-- Study the applications logical requirements. 
-- Prepare a library of files that are "not approved" for upload that may contain files such as: jsp, exe, or html files containing script. 
-- In the application navigate to the file submission or upload mechanism. 
-- Submit the "not approved" file for upload and verify that they are properly prevented from uploading 
+- 어플리케이션 로직 요구사항 연구
+- JSP, EXE, 또는 스크립트가 포함 된 HTML 파일 같은 파일을 포함하여 업로드를 하기 위해
+"승인하지 않음"이 있는 파일 라이브러리 준비
+- 어플리케이션에서 파일 제출 또는 업로드 메카니즘으로 이동
+- 업로드를 하기 위해 "승인하지 않음" 파일 제출하고 업로드로부터 제대로 차단하는지 확인
 
 |
 
-Related Test Cases 
+관련 테스트 케이스
 ============================================================================================
 
 - 민감한 정보를 확인하기 위해 파일 확장자 처리 테스트 (OTG-CONFIG-003) 
@@ -54,11 +56,10 @@ Related Test Cases
 References 
 ============================================================================================
 
-- OWASP - Unrestricted File Upload: https://www.owasp.org index.php/Unrestricted_File_Upload 
-- File upload security best practices: Block a malicious file upload: http://www.computerweekly.com/answer/Fileupload-security-best-practices-Block-a-malicious-file-upload 
-- Stop people uploading malicious PHP files via forms: http:/ stackoverflow.com/questions/602539/stop-peopleuploading-malicious-php-files-via-forms 
+- OWASP - Unrestricted File Upload: https://www.owasp.org/index.php/Unrestricted_File_Upload 
+- Stop people uploading malicious PHP files via forms: http://stackoverflow.com/questions/602539/stop-peopleuploading-malicious-php-files-via-forms 
 - CWE-434: Unrestricted Upload of File with Dangerous Type: http://cwe.mitre.org/data/definitions/434.html 
-- Secure Programming Tips - Handling File Uploads: https:/ www.datasprings.com/resources/dnn-tutorials/artmid/535/ articleid/65/secure-programming-tips-handling-file-uploads? AspxAutoDetectCookieSupport=1 
+- Secure Programming Tips - Handling File Uploads: https://www.datasprings.com/resources/dnn-tutorials/artmid/535/articleid/65/secure-programming-tips-handling-file-uploads?AspxAutoDetectCookieSupport=1 
 
 |
 

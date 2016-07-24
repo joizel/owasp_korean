@@ -23,7 +23,7 @@ An authenticated user undertakes the following (unlikely) sequence of actions:
 4. Adds an extra parameter 
 5. Duplicates a parameter name/value pair The application is monitoring for misuse and responds after the 5th event with extremely high confidence the user is an attacker. For example the application: 
 
-- Disables critical functionality 
+- 크리티컬 기능 사용안 함
 - Enables additional authentication steps to the remaining functionality 
 - Adds time-delays into every request-response cycle 
 - Begins to record additional data about the user's interactions (e.g. sanitized HTTP request headers, bodies and response bodies) 
@@ -37,21 +37,22 @@ If the application does not respond in any way and the attacker can continue to 
 
 This test is unusual in that the result can be drawn from all the other tests performed against the web application. While performing all the other tests, take note of measures that might indicate the application has in-built self-defense: 
 
-- Changed responses 
-- Blocked requests 
-- Actions that log a user out or lock their account 
+- 변경된 응답
+- 차단된 요청
+- 사용자가 로그아웃하거나 계정 잠금
 
 These may only be localised. Common localized (per function) defenses are: 
 
-- Rejecting input containing certain characters 
-- Locking out an account temporarily after a number of authentication failures 
+- 정확한 문자를 포함한 입력 차단
+- 다 수 인증 실패 이 후 계정 임시 잠금
 
 Localized security controls are not sufficient. There are often no defenses against general mis-use such as: 
 
-- Forced browsing 
-- Bypassing presentation layer input validation 
-- Multiple access control errors 
-- Additional, duplicated or missing parameter names 
+- 강제 브라우징
+- 프레젠테이션 층 입력 검증 우회
+- 다양한 접근 제어 에러
+- 추가, 복제 또는 누락된 파라미터 명
+
 - Multiple input validation or business logic verification failures with values that cannot be the result user mistakes or typos 
 - Structured data (e.g. JSPN, XML) of an invalid format is received 
 - Blatant cross-site scripting or SQL injection payloads are received 
@@ -67,17 +68,17 @@ Not all the above need to be monitored by the application, but there is a proble
 
 |
 
-Related Test Cases 
+관련 테스트 케이스
 ============================================================================================
 
-All other test cases are relevant. 
+- 모든 테스트 케이스가 연관성이 있음
 
 |
 
 Tools 
 ============================================================================================
 
-The tester can use many of the tools used for the other test cases. 
+- 다른 테스트에서 사용된 툴들 사용 
 
 |
 

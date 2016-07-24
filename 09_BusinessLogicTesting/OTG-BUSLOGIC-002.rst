@@ -62,31 +62,27 @@ Also, if an attacker was able to see through a proxy that the application has a 
 
 |
 
-Related Test Cases 
+관련 테스트 케이스
 ============================================================================================
 
-- Testing for Exposed Session Variables (OTG-SESS-004) 
-- Testing for Cross Site Request Forgery (CSRF) (OTG-SESS-005) 
-- Testing for Account Enumeration and Guessable User Account (OTG-IDENT-004) 
+- 노출 세션 변수 테스트 (OTG-SESS-004) 
+- 크로스 사이트 요청 위조 테스트 (OTG-SESS-005) 
+- 계정 리스트 및 추측 가능한 사용자 테스트 (OTG-IDENT-004) 
 
 |
 
 Tools 
 ============================================================================================
 
-- OWASP Zed Attack Proxy (ZAP) - https://www.owasp.org index.php/OWASP_Zed_Attack_Proxy_Project 
+- OWASP Zed Attack Proxy (ZAP)
 
 |
 
 References 
 ============================================================================================
 
-- Cross Site Request Forgery - Legitimizing Forged Requests 
-http://fragilesecurity.blogspot.com/2012/11/cross-siterequest-forgery-legitimazing.html 
-- Debugging features which remain present in the final game 
-http://glitchcity.info/wiki/index.php/List_of_video_games_ with_debugging_features#Debugging_features_which_remain_present_in_the_final_game 
 - Easter egg - http://en.wikipedia.org/wiki/Easter_egg_(media) 
-Top 10 Software Easter Eggs - http://lifehacker.com/371083/ top-10-software-easter-eggs 
+- Top 10 Software Easter Eggs - http://lifehacker.com/371083/ top-10-software-easter-eggs 
 
 |
 

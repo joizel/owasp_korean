@@ -51,7 +51,8 @@ Black Box testing
 
 블랙 박스 테스트는 최소한 3가지 과정을 포함해야합니다.
 
-(1) 입력 벡터 탐지.
+1. 입력 벡터 탐지.
+
 침투 테스터는 각각의 웹 페이지에서 모든 웹 어플리케이션의 사용자 정의 변수와 
 그들이 입력되는 방법을 확인해야 합니다.
 이것은 HTTP 파라미터, POST 데이터, 숨겨진 form 필드 값, 그리고 미리 정의된 radio
@@ -59,7 +60,8 @@ Black Box testing
 일반적으로 브라우저 내에 HTML 에디터 또는 웹 프록시는 숨겨진 변수를 보는 데 사용할 
 수 있습니다.
 
-(2) 잠재적인 취약점을 탐지하기 위해 각각의 입력 벡터 분석.
+2. 잠재적인 취약점을 탐지하기 위해 각각의 입력 벡터 분석.
+
 XSS 취약점을 탐지하기 위해, 침투 테스터는 각각의 입력 벡터에 특별하게 조작한 입력 
 데이터를 사용할 것입니다.
 그러한 입력 데이터는 일반적으로 해롭지 않지만, 취약점이 나타난 웹 브라우저로 부터
@@ -79,7 +81,7 @@ XSS 취약점을 탐지하기 위해, 침투 테스터는 각각의 입력 벡�
 
 더 자세한 목록은 XSS Filter Evasion Cheat Sheet을 참고
 
-(3) 이 전 과정에서 시도된 입력값으로, 침투 테스터는 결과를 분석할 수 있습니다. 
+3. 이 전 과정에서 시도된 입력값으로, 침투 테스터는 결과를 분석할 수 있습니다. 
 그리고, 웹 어플리케이션의 보안에 실제 영향을 주는 취약점을 나타내는 경우를 결정합니다.
 이것은 HTML 웹 페이지 결과와 침투테스트 입력 검색 테스트가 요구됩니다.
 발견되면, 침투 테스터는 인코딩된 것, 대체된 것, 또는 필터링 된 것에 대해 적합하지 않은 
@@ -87,6 +89,7 @@ XSS 취약점을 탐지하기 위해, 침투 테스터는 각각의 입력 벡�
 필터링 되지 않은 취약한 특수 문자 집합은 HTML의 섹션 컨텍스트에 따라 달라집니다.
 
 모든 HTML 특수 문자가 HTML 엔티티로 교체되는 지 식별합니다.
+
 식별할 키 HTML 엔티티
 
 .. code-block:: html
@@ -114,7 +117,7 @@ HTML 액션 또는 자바스크립트 코드의 컨텍스트에서 다른 특수
 
 |
 
-Example 1
+예제 1
 -------------------------------------------------------------------------------------------
 
 예를 들어, "Welcome %username%"를 출력하는 사이트가 있다고 합시다. 그리고,
@@ -136,7 +139,7 @@ Example 1
 
 |
 
-Example 2
+예제 2
 -------------------------------------------------------------------------------------------
 
 .. code-block:: html
@@ -149,7 +152,7 @@ Example 2
 
 |
 
-Example 3
+예제 3
 -------------------------------------------------------------------------------------------
 
 .. code-block:: html
@@ -162,7 +165,7 @@ Example 3
 
 |
 
-Example 4
+예제 4
 -------------------------------------------------------------------------------------------
 
 .. code-block:: html
@@ -176,7 +179,7 @@ Example 4
 
 |
 
-Example 5
+예제 5
 -------------------------------------------------------------------------------------------
 
 .. code-block:: html
@@ -185,7 +188,7 @@ Example 5
 
 |
 
-Example 6
+예제 6
 -------------------------------------------------------------------------------------------
 
 .. code-block:: php
@@ -211,7 +214,7 @@ Example 6
 
 |
 
-Example 7
+예제 7
 -------------------------------------------------------------------------------------------
 
 .. code-block:: html
@@ -229,9 +232,9 @@ Example 7
 Gray Box testing
 -------------------------------------------------------------------------------------------
 
-Gray Box testing is similar to Black box testing. In gray box testing,
-the pen-tester has partial knowledge of the application. In
-this case, information regarding user input, input validation controls,
+Gray Box testing은 Black box testing과 유사합니다. 
+In gray box testing, the pen-tester has partial knowledge of the application. 
+In this case, information regarding user input, input validation controls,
 and how the user input is rendered back to the user might be
 known by the pen-tester.
 
@@ -266,9 +269,9 @@ OWASP Resources
 Books
 --------------------------------------------------------------------------------------------
 
-- Joel Scambray, Mike Shema, Caleb Sima - “Hacking Exposed Web Applications”, Second Edition, McGraw-Hill, 2006 - ISBN 0-07-226229-0
-- Dafydd Stuttard, Marcus Pinto - “The Web Application’s Handbook - Discovering and Exploiting Security Flaws”, 2008, Wiley, ISBN 978-0-470-17077-9
-- Jeremiah Grossman, Robert “RSnake” Hansen, Petko “pdp” D. Petkov, Anton Rager, Seth Fogie - “Cross Site Scripting Attacks: XSS Exploits and Defense”, 2007, Syngress, ISBN-10: 1-59749-154-3
+- Joel Scambray, Mike Shema, Caleb Sima - "Hacking Exposed Web Applications", Second Edition, McGraw-Hill, 2006 - ISBN 0-07-226229-0
+- Dafydd Stuttard, Marcus Pinto - "The Web Application’s Handbook - Discovering and Exploiting Security Flaws", 2008, Wiley, ISBN 978-0-470-17077-9
+- Jeremiah Grossman, Robert "RSnake" Hansen, Petko "pdp" D. Petkov, Anton Rager, Seth Fogie - "Cross Site Scripting Attacks: XSS Exploits and Defense", 2007, Syngress, ISBN-10: 1-59749-154-3
 
 Whitepapers
 --------------------------------------------------------------------------------------------

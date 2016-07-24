@@ -56,11 +56,11 @@ Suppose a precious metals e-commerce site allows users to make purchases with a 
 
 |
 
-Related Test Cases 
+관련 테스트 케이스
 ============================================================================================
 
-- Testing for Cookies attributes (OTG-SESS-002) 
-- Test Session Timeout (OTG-SESS-007) 
+- 쿠키 속성 테스트 (OTG-SESS-002) 
+- 세션 타임아웃 테스트 (OTG-SESS-007) 
 
 |
 

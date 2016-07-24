@@ -4,10 +4,10 @@ OTG-INPVAL-006 (LDAP 인젝션 테스트)
 
 |
 
-Summary
+개요
 ============================================================================================
 
-Lightweight Directory Access Protocol (LDAP)는 사용자, 호스트, 수많은 오브젝트에 관한
+Lightweight Directory Access Protocol(LDAP)는 사용자, 호스트, 수많은 오브젝트에 관한
 정보를 저장하기 위해 사용됩니다.
 LDAP 인젝션은 서버 사이드 공격으로, 공개, 수정, 삽입 할 LDAP 구조에 표시된 사용자와 호스트에 관한 
 민감한 정보입니다.
@@ -51,10 +51,11 @@ allow the tester to:
 
 |
 
-How to Test
+테스트 방법
 ============================================================================================
 
-**Example 1: Search Filters**
+**예제 1: Search Filters**
+-------------------------------------------------------------------------------------------
 
 다음과 같은 검색 필터를 사용하는 웹 어플리케이션을 가지고 있다고 가정합시다.
 
@@ -91,7 +92,8 @@ LDAP에 연결된 사용자의 권한에 의존하는 사용자의 속성의 일
 
 |
 
-**Example 2: Login**
+**예제 2: Login**
+-------------------------------------------------------------------------------------------
 
 If a web application uses LDAP to check user credentials during
 the login process and it is vulnerable to LDAP injection, it is possible
@@ -126,9 +128,7 @@ logged-in status as the first user in LDAP tree.
 Tools
 ============================================================================================
 
-- Softerra LDAP Browser
-
-http://www.ldapadministrator.com/
+- Softerra LDAP Browser: http://www.ldapadministrator.com/
 
 
 |
@@ -137,19 +137,9 @@ References
 ============================================================================================
 
 Whitepapers
+-------------------------------------------------------------------------------------------
 
-- Sacha Faust: “LDAP Injection: Are Your Applications Vulnerable?”
+- Sacha Faust: "LDAP Injection: Are Your Applications Vulnerable?": http://www.networkdls.com/articles/ldapinjection.pdf
+- RFC 1960: "A String Representation of LDAP Search Filters": http://www.ietf.org/rfc/rfc1960.txt
 
-http://www.networkdls.com/articles/ldapinjection.pdf
-
-- Bruce Greenblatt: “LDAP Overview” -
-
-http://www.directory-applications.com/ldap3_files/frame.htm
-
-- IBM paper: “Understanding LDAP” -
-
-http://www.redbooks.ibm.com/redbooks/SG244986.html
-
-- RFC 1960: “A String Representation of LDAP Search Filters” -
-
-http://www.ietf.org/rfc/rfc1960.txt
+|

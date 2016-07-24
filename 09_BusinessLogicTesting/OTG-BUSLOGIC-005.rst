@@ -31,7 +31,7 @@ Suppose an eCommerce site allows users to take advantage of any one of many disc
 
 |
 
-Related Test Cases 
+관련 테스트 케이스
 ============================================================================================
 
 - 계정 리스트 및 추측 가능한 사용자 테스트 (OTG-IDENT-004) 
@@ -43,7 +43,6 @@ References
 ============================================================================================
 
 - InfoPath Forms Services business logic exceeded the maximum limit of operations Rule - http://mpwiki.viacode.com/default.aspx?g=posts&t=115678 
-- Gold Trading Was Temporarily Halted On The CME This Morning - http://www.businessinsider.com/gold-halted-on-cme-forstop-logic-event-2013-10 
 
 |
 

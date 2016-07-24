@@ -86,7 +86,7 @@ Many systems include logging for auditing and troubleshooting purposes. But, how
 
 |
 
-Related Test Cases 
+관련 테스트 케이스
 ============================================================================================
 
 - 모든 입력 유효성 검사 테스트 케이스
@@ -96,8 +96,7 @@ Related Test Cases
 Tools 
 ============================================================================================
 
-- Various system/application tools such as editors and file manipulation tools. 
-- OWASP Zed Attack Proxy (ZAP) - https://www.owasp.org/index.php/OWASP_Zed_Attack_Proxy_Project 
+- OWASP Zed Attack Proxy (ZAP)
 
 
 |
@@ -105,10 +104,8 @@ Tools
 References 
 ============================================================================================
 
-- Implementing Referential Integrity and Shared Business Logic in a RDB - http://www.agiledata.org/essayreferentialIntegrity. html 
-- On Rules and Integrity Constraints in Database Systems http://www.comp.nus.edu.sg/~lingtw/papers/IST92.teopk.pdf 
-- Use referential integrity to enforce basic business rules in Oracle - http://www.techrepublic.com/article/use-referentialintegrity-to-enforce-basic-business-rules-in-oracle/ 
-- Maximizing Business Logic Reuse with Reactive Logic - http:/ architects.dzone.com/articles/maximizing-business-logic 
+- On Rules and Integrity Constraints in Database Systems: http://www.comp.nus.edu.sg/~lingtw/papers/IST92.teopk.pdf 
+- Maximizing Business Logic Reuse with Reactive Logic: http://architects.dzone.com/articles/maximizing-business-logic 
 - Tamper Evidence Logging - http://tamperevident.cs.rice.edu/Logging.html 
 
 |

@@ -15,8 +15,10 @@ By itself, this is not necessarily an indication of vulnerability. However, if t
 
 As often in security, unexpected behaviors are a usual source of weaknesses that could lead to HTTP Parameter Pollution attacks in this case. To better introduce this class of vulnerabilities and the outcome of HPP attacks, it is interesting to analyze some real-life examples that have been discovered in the past. 
 
+|
 
-Input Validation and filters bypass 
+입력 유효성 검사와 필터링 우회
+--------------------------------------------------------------------------------------
 
 In 2009, immediately after the publication of the first research on HTTP Parameter Pollution, the technique received attention from the security community as a possible way to bypass web application firewalls. One of these flaws, affecting ModSecurity SQL Injection Core Rules, represents a perfect example of the impedance mismatch between applications and filters. The ModSecurity filter would correctly blacklist the following string: select 1,2,3 from table, thus blocking this example URL from being processed by the web server: /index.aspx?page=select 1,2,3 from table. However, by exploiting the concatenation of multiple HTTP parameters, an attacker could cause the application server to concatenate the string after the ModSecurity filter already accepted the input. 
 
@@ -25,7 +27,10 @@ from table would not trigger the ModSecurity filter, yet the application layer w
 
 Another HPP vulnerability turned out to affect Apple Cups, the well-known printing system used by many UNIX systems. Exploiting HPP, an attacker could easily trigger a Cross-Site Scripting vulnerability using the following URL: http://127.0.0.1:631/admin /?kerberos=onmouseover=alert(1)&kerberos. The application validation checkpoint could be bypassed by adding an extra kerberos argument having a valid string (e.g. empty string). As the validation checkpoint would only consider the second occurrence, the first kerberos parameter was not properly sanitized before being used to generate dynamic HTML content. Successful exploitation would result in Javascript code execution under the context of the hosting web site. 
 
-Authentication bypass 
+|
+
+인증 우회
+--------------------------------------------------------------------------------------
 
 An even more critical HPP vulnerability was discovered in Blogger, the popular blogging platform. The bug allowed malicious users to take ownership of the victim's blog by using the following HTTP request: The flaw resided in the authentication mechanism used by the 
 
@@ -45,6 +50,22 @@ Expected Behavior by Application Server
 The following table illustrates how different web technologies behave in presence of multiple occurrences of the same HTTP parameter. 
 Given the URL and querystring: http://example.com/?color=red&color=blue 
 
+.. csv-table:: 
+
+    "Web Application Server Backend","ASP","JSP"
+    "ASP.NET/IIS","쉼표로 연결된 모든 것 발생","color=red,blue"
+    "ASP/IIS","쉼표로 연결된 모든 것 발생","color=red,blue"
+    "PHP/Apache","마지막만 발생","color=blue"
+    "PHP/Zeus","마지막만 발생","color=blue"
+    "JSP,Servlet/Apache Tomcat","처음만 발생","color=red"
+    "JSP,Servlet/Oracle Application Server 10g","처음만 발생","color=red"
+    "JSP,Servlet/Jetty","처음만 발생","color=red"
+    "IBM Lotus Domino","마지막만 발생","color=blue"
+    "IBM HTTP Server","처음만 발생","color=red"
+    "mod_perl,libapreq2/Apache","처음만 발생","color=red"
+    "Perl CGI/Apache","처음만 발생","color=red"
+    "mod_wsgi(Python)/Apache","처음만 발생","color=red"
+    "Python/Zope","리스트 데이터에 있는 모든 것 발생","color=['red','blue']"
 
 |
 
@@ -57,6 +78,7 @@ Luckily, because the assignment of HTTP parameters is typically handled via the 
 
 
 Server-side HPP 
+------------------------------------------------------------------------------------------
 
 To test for HPP vulnerabilities, identify any form or action that allows user-supplied input. Query string parameters in HTTP GET requests are easy to tweak in the navigation bar of the browser. If the form action submits data via POST, the tester will need to use an intercepting proxy to tamper with the POST data as it is sent to the server. Having identified a particular input parameter to test, one can edit the GET or POST data by intercepting the request, or change the query string after the response page loads. To test for HPP vulnerabilities simply append the same parameter to the GET or POST data but with a different value assigned. 
 
@@ -86,6 +108,7 @@ A more in-depth analysis would require three HTTP requests for each HTTP paramet
 Crafting a full exploit from a parameter pollution weakness is beyond the scope of this text. See the references for examples and details. 
 
 Client-side HPP 
+------------------------------------------------------------------------------------------
 
 Similarly to server-side HPP, manual testing is the only reliable technique to audit web applications in order to detect parameter pollution vulnerabilities affecting client-side components. While in the server-side variant the attacker leverages a vulnerable web application to access protected data or perform actions that either not permitted or not supposed to be executed, client-side attacks aim at subverting client-side components and technologies. 
 To test for HPP client-side vulnerabilities, identify any form or action that allows user input and shows a result of that input back to the user. A search page is ideal, but a login box might not work (as it might not show an invalid username back to the user). 

@@ -35,31 +35,36 @@ Suppose a picture sharing application allows users to upload their .gif or .jpg 
 -----------------------------------------------------------------------------------------
 
 - Review the project documentation and use exploratory testing looking at the application/system to identify what constitutes and "malicious" file in your environment. 
-- Develop or acquire a known "malicious" file. 
-- Try to upload the malicious file to the application/system and verify that it is correctly rejected. 
-- If multiple files can be uploaded at once, there must be tests in place to verify that each file is properly evaluated. 
+- 알려진 "악성" 파일 개발 또는 획득
+- 어플리케이션 및 시스템에 악성 파일을 업로드하고, 올바르게 차단되는지 확인하십시오.
+- 만약 여러 파일을 한 번에 업로드 할 수 있는 경우, 각 파일이 제대로 차단되었는지 테스트를 해야합니다.
+
+|
 
 구체적인 테스트 방법 1 
 -----------------------------------------------------------------------------------------
 
-- Using the Metasploit payload generation functionality generates a shellcode as a Windows executable using the Metasploit "msfpayload" command. 
-- Submit the executable via the application's upload functionality and see if it is accepted or properly rejected. 
+- 메타스플로잇 페이로드 생성 기능을 사용하면, 메타스플로잇 "msfpayload" 명령을 사용하여 윈도우 실행 파일로 쉘 코드를 생성합니다.
+- 어플리케이션 업로드 기능을 통해 실행 파일 제출하고, 적절하게 승인 또는 차단되는 지 확인
+
+|
 
 구체적인 테스트 방법 2
 -----------------------------------------------------------------------------------------
 
-- Develop or create a file that should fail the application malware detection process. There are many available on the Internet such as ducklin.htm or ducklin-html.htm. 
-- Submit the executable via the application's upload functionality and see if it is accepted or properly rejected. 
+- 어플리케이션의 악성 코드 탐지 프로세를 실패하는 파일을 만들거나 개발.
+ducklin.htm 또는 ducklin-html.htm과 같이 인터넷에서 많이 이용할 수 있습니다.
+- 어플리케이션 업로드 기능을 통해 실행 파일 제출하고, 적절하게 승인 또는 차단되는 지 확인
 
 구체적인 테스트 방법 3
 -----------------------------------------------------------------------------------------
 
-- Set up the intercepting proxy to capture the "valid" request for an accepted file. 
-- Send an "invalid" request through with a valid/acceptable file extension and see if the request is accepted or properly rejected. 
+- 프록시를 통해 승인된 파일에 대한 "valid" 요청을 캡쳐 설정
+- 유효/승인할 수 있는 확장자를 통해 "invalie" 요청을 보내고, 적절하게 승인 또는 차단되는 지 확인
 
 |
 
-Related Test Cases 
+관련 테스트 케이스
 ============================================================================================
 
 - 민감한 정보를 확인하기 위해 파일 확장자 처리 테스트 (OTG-CONFIG-003) 
@@ -70,7 +75,7 @@ Related Test Cases
 Tools 
 ============================================================================================
  
-- Metasploit의 payload 생성 기능
+- 메타스플로잇의 페이로드 생성 기능
 - Intercepting proxy 
 
 |
@@ -78,17 +83,11 @@ Tools
 References 
 ============================================================================================
 
-- OWASP - Unrestricted File Upload: https://www.owasp.org index.php/Unrestricted_File_Upload 
-- Why File Upload Forms are a Major Security Threat: http:/ www.acunetix.com/websitesecurity/upload-forms-threat/ 
-- File upload security best practices: Block a malicious file upload: http://www.computerweekly.com/answer/File-uploadsecurity-best-practices-Block-a-malicious-file-upload 
-- Overview of Malicious File Upload Attacks: http:/securitymecca.com/article/overview-of-malicious-fileupload-attacks/ 
+- OWASP - Unrestricted File Upload: https://www.owasp.org/index.php/Unrestricted_File_Upload 
+- Why File Upload Forms are a Major Security Threat: http:/www.acunetix.com/websitesecurity/upload-forms-threat/ 
 - Stop people uploading malicious PHP files via forms - http://stackoverflow.com/questions/602539/stop-peopleuploading-malicious-php-files-via-forms 
-- How to Tell if a File is Malicious - http://www.techsupportalert.com/content/how-tell-if-filemalicious.htm 
 - CWE-434: Unrestricted Upload of File with Dangerous Type - http://cwe.mitre.org/data/definitions/434.html 
-- Implementing Secure File Upload - http://infosecauditor.wordpress.com/tag/malicious-fileupload/ 
-- Watchful File Upload - http://palizine.plynt.com/issues/2011Apr/file-upload/ 
-- Matasploit Generating Payloads - http://www.offensive-security.com/metasploit-unleashed/ Generating_Payloads 
-- Project Shellcode . Shellcode Tutorial 9: Generating - Shellcode Using Metasploit http://www.projectshellcode. com/?q=node/29 
+- Matasploit Generating Payloads - http://www.offensive-security.com/metasploit-unleashed/Generating_Payloads 
 - Anti-Malware Test file - http://www.eicar.org/86-0-Intended use.html 
 
 |

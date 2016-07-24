@@ -61,7 +61,7 @@ An electronic bulletin board system may be designed to ensure that initial posts
 
 |
 
-Related Test Cases 
+관련 테스트 케이스
 ============================================================================================
 
 - 디렉토리 트레버셜 및 파일 인클루트 테스트 (OTG-AUTHZ-001) 
@@ -82,8 +82,9 @@ References
 ============================================================================================
 
 - OWASP Detail Misuse Cases: https://www.owasp.org/index php/Detail_misuse_cases 
-- Real-Life Example of a Business Logic Defect - http://h30501 www3.hp.com/t5/Following-the-White-Rabbit-A/Real-LifeExample-of-a-Business-Logic-Defect-Screen-Shots/bap/22581 
-- Top 10 Business Logic Attack Vectors Attacking and Exploiting Business Application Assets and Flaws . Vulnerability Detection to Fix -http://www.ntobjectives.com/go/business-logicattack-vectors-white-paper/ and http://www.ntobjectives. com/files/Business_Logic_White_Paper.pdf 
+- Top 10 Business Logic Attack Vectors Attacking and Exploiting Business Application Assets and Flaws . Vulnerability Detection to Fix: 
+http://www.ntobjectives.com/go/business-logicattack-vectors-white-paper/, 
+http://www.ntobjectives.com/files/Business_Logic_White_Paper.pdf 
 - CWE-840: Business Logic Errors - http://cwe.mitre.org/data definitions/840.html 
 
 |

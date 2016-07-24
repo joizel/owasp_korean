@@ -84,7 +84,7 @@ Whitepapers
 --------------------------------------------------------------------------------------------
 
 - References from Testing for SQL Injection are applicable to ORM Injection
-- Wikipedia - ORM http://en.wikipedia.org/wiki/Object-relational_mapping
+- Wikipedia - ORM: http://en.wikipedia.org/wiki/Object-relational_mapping
 - OWASP Interpreter Injection
 
 |

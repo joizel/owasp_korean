@@ -186,5 +186,5 @@ Whitepapers
 - Apache: "Module mod_include": http://httpd.apache.org/docs/1.3/mod/mod_include.html
 - Apache: "Security Tips for Server Configuration": http://httpd.apache.org/docs/1.3/misc/security_tips.html#ssi
 - Header Based Exploitation: http://www.cgisecurity.net/papers/header-based-exploitation.txt
-- SSI Injection instead of JavaScript Malware: http://jeremiahgrossman.blogspot.com/2006/08/ssi-injectioninstead-of-javascript.html
-- IIS: "Notes on Server-Side Includes (SSI) syntax": http://blogs.iis.net/robert_mcmurray/archive/2010/12/28/iis-notes-onserver-side-includes-ssi-syntax-kb-203064-revisited.aspx
+
+|

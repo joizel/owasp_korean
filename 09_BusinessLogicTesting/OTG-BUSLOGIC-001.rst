@@ -60,7 +60,7 @@ Many credit card systems are now downloading account balances nightly so the cus
 
 |
 
-Related Test Cases 
+관련 테스트 케이스
 ============================================================================================
 
 - 모든 입력 유효성 검사 테스트 케이스
@@ -73,7 +73,7 @@ Related Test Cases
 Tools 
 ============================================================================================
 
-- OWASP Zed Attack Proxy (ZAP) - https://www.owasp.org index.php/OWASP_Zed_Attack_Proxy_Project
+- OWASP Zed Attack Proxy (ZAP)
 
 |
 
