@@ -1,10 +1,6 @@
 ==========================================================================================
-OTG-AUTHN-009
+OTG-AUTHN-009 (취약한 패스워드 바꾸기 또는 초기화 기능 테스트)
 ==========================================================================================
-
-|
-
-취약한 패스워드 바꾸기 또는 초기화 기능 테스트
 
 |
 
@@ -26,19 +22,20 @@ passwords are stored in plain text or in a decryptable format.
 테스트 목적
 ==========================================================================================
 
-[1] Determine the resistance of the application to subversion
+- 누군가 계정의 패스워드를 변경할 수 있도록 계정 변경 처리의 
+서브버전에 대한 어플리케이션 저항력 확인
+
+Determine the resistance of the application to subversion
 of the account change process allowing someone to change the 
 password of an account.
-[2] Determine the resistance of the passwords reset functionality
-against guessing or bypassing.
+- 추측 또는 우회에 대한 보안으로 패스워드 재설정 기능 저항력 확인
 
 |
 
 테스트 방법
 ==========================================================================================
 
-For both password change and password reset it is important to
-check:
+패스워드 변경과 패스워드 초기화 모두 중요한 체크입니다.
 
 1. if users, other than administrators, can change or reset passwords
 for accounts other than their own.
@@ -47,7 +44,10 @@ process to change or reset the password of another user or
 administrator.
 3. if the password change or reset process is vulnerable to CSRF.
 
-Test Password Reset
+|
+
+패스워드 초기화 테스트
+--------------------------------------------------------------------------------------
 
 In addition to the previous checks it is important to verify the following:
 • What information is required to reset the password?
@@ -97,7 +97,8 @@ link to the user with a random token, and only if the user visits the
 link then the reset procedure is completed. This ensures that the
 current password will still be valid until the reset has been confirmed.
 
-Test Password Change
+패스워드 변경 테스트
+--------------------------------------------------------------------------------------
 
 In addition to the previous test it is important to verify:
 • Is the old password requested to complete the change?
@@ -124,3 +125,5 @@ The password change or reset function is a sensitive function
 and requires some form of protection, such as requiring users to
 re-authenticate or presenting the user with confirmation screens
 during the process.
+
+|

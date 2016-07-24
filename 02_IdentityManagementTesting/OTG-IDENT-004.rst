@@ -1,14 +1,10 @@
 ============================================================================================
-OTG-IDENT-004
+OTG-IDENT-004 (계정 리스트 및 추측 가능한 사용자 테스트)
 ============================================================================================
 
 |
 
-계정 리스트 및 추측 가능한 사용자 테스트
-
-|
-
-Summary
+개요
 ============================================================================================
 
 The scope of this test is to verify if it is possible to collect a set of valid usernames by interacting with the authentication mechanism of the application. This test will be useful for brute force testing, in which the tester verifies if, given a valid username, it is possible to find the corresponding password. 
@@ -21,7 +17,7 @@ In some cases, a message is received that reveals if the provided credentials ar
 
 |
 
-How to Test 
+테스트 방법
 ============================================================================================
 
 |
@@ -34,7 +30,7 @@ Black Box testing
 
 |
 
-HTTP Response message를 통한 사용자 리스팅
+HTTP 응답 메시지를 통한 사용자 리스팅
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 **유효한 사용자 및 올바른 패스워드 테스트**

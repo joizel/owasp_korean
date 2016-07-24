@@ -1,34 +1,30 @@
 ============================================================================================
-OTG-IDENT-005
+OTG-IDENT-005 (취약 또는 강제 사용자 이름 정책 테스트)
 ============================================================================================
 
 |
 
-취약 또는 강제 사용자 이름 정책 테스트
-
-|
-
-Summary 
+개요 
 ============================================================================================
 
 User account names are often highly structured (e.g. Joe Bloggs account name is jbloggs and Fred Nurks account name is fnurks) and valid account names can easily be guessed. 
 
 |
 
-Test objectives 
+테스트 목적 
 ============================================================================================
 
 Determine whether a consistent account name structure renders the application vulnerable to account enumeration. Determine whether the application's error messages permit account enumeration. 
 
 |
 
-How to test 
+테스트 방법 
 ============================================================================================
 
-- Determine the structure of account names. 
-- Evaluate the application's response to valid and invalid account names. 
-- Use different responses to valid and invalid account names to enumerate valid account names. 
-- Use account name dictionaries to enumerate valid account names. 
+- 계정 이름의 구조 결정
+- 유효/유효하지 않은 계정 명에 어플리케이션 응답을 평가
+- 유효한 계정 명을 리스트화 하기 위해 유효/유효하지 않은 계정 명에 다른 응답 사용
+- 유효한 계정 명을 리스트화 하기 위해 계정명 사전 사용
 
 |
 

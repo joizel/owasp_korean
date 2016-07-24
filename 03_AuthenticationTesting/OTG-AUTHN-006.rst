@@ -1,10 +1,6 @@
 ==========================================================================================
-OTG-AUTHN-006
+OTG-AUTHN-006 (브라우저 캐시 취약점 테스트)
 ==========================================================================================
-
-|
-
-브라우저 캐시 취약점 테스트
 
 |
 
@@ -30,7 +26,8 @@ button
 테스트 방법
 ==========================================================================================
 
-**Browser History**
+Browser History
+----------------------------------------------------------------------------------------
 
 Technically, the “Back” button is a history and not a cache (see
 http://www.w3.org/Protocols/rfc2616/rfc2616-sec13.html#sec13.13).
@@ -56,8 +53,10 @@ This can be done by:
 • Delivering the page over HTTPS.
 • Setting Cache-Control: must-re-validate
 
+|
 
-**Browser Cache**
+Browser Cache
+----------------------------------------------------------------------------------------
 
 Here testers check that the application does not leak any sensitive
 data into the browser cache. In order to do that, they can

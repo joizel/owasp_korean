@@ -1,10 +1,6 @@
 ============================================================================================
-OTG-AUTHZ-003
+OTG-AUTHZ-003 (권한 상승 테스트)
 ============================================================================================
-
-|
-
-권한 상승 테스트
 
 |
 
@@ -24,7 +20,7 @@ The degree of escalation depends on what privileges the attacker is authorized t
 
 Testing for role/privilege manipulation In every portion of the application where a user can create information in the database (e.g., making a payment, adding a contact, or sending a message), can receive information (statement of account, order details, etc.), or delete information (drop users, messages, etc.), it is necessary to record that functionality. The tester should try to access such functions as another user in order to verify if it is possible to access a function that should not be permitted by the user's role/privilege (but might be permitted as another user). 
 
-예제:
+**예제**
 
 The following HTTP POST allows the user that belongs to grp001 to access order #0001: 
 
@@ -38,7 +34,7 @@ The following HTTP POST allows the user that belongs to grp001 to access order #
 
 Verify if a user that does not belong to grp001 can modify the value of the parameters 'groupID' and 'orderID' to gain access to that privileged data. 
 
-예제:
+**예제**
 
 The following server's answer shows a hidden field in the HTML returned to the user after a successful authentication. 
 
@@ -67,7 +63,7 @@ The following server's answer shows a hidden field in the HTML returned to the u
 What if the tester modifies the value of the variable "profile" to "SysAdmin"? Is it possible to become administrator? 
 
 
-예제:
+**예제**
 
 In an environment where the server sends an error message contained as a value in a specific parameter in a set of answer codes, as the following: 
 

@@ -21,7 +21,7 @@ Try to access the application as an administrative user and track all the admini
 
 |
 
-How to test 
+테스트 방법
 ==========================================================================================
 
 Testing for access to administrative functions For example, suppose that the 'AddUser.jsp' function is part of the administrative menu of the application, and it is possible to access it by requesting the following URL: 
@@ -55,3 +55,4 @@ Tools
 - OWASP WebScarab: OWASP WebScarab Project 
 - OWASP Zed Attack Proxy (ZAP) 
 
+|

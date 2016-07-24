@@ -1,10 +1,6 @@
 ============================================================================================
-OTG-AUTHN-007
+OTG-AUTHN-007 (취약한 패스워드 정책 테스트)
 ============================================================================================
-
-|
-
-취약한 패스워드 정책 테스트
 
 |
 
@@ -69,3 +65,5 @@ controls (i.e. two-factor authentication) or introduce a
 strong password policy. The simplest and cheapest of these is the
 introduction of a strong password policy that ensures password
 length, complexity, reuse and aging.
+
+|

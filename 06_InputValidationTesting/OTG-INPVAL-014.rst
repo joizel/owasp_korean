@@ -1,10 +1,6 @@
 ============================================================================================
-OTG-INPVAL-014
+OTG-INPVAL-014 (Buffer Overflow 침투 테스트)
 ============================================================================================
-
-|
-
-Buffer Overflow 침투 테스트
 
 |
 
@@ -25,9 +21,9 @@ Different types of buffer overflow vulnerabilities have different
 testing methods. Here are the testing methods for the common
 types of buffer overflow vulnerabilities.
 
-- Testing for heap overflow vulnerability
-- Testing for stack overflow vulnerability
-- Testing for format string vulnerability
+- 힙 오버플로우 취약점 테스트
+- 스택 오버플로우 취약점 테스트
+- 포맷 스트링 취약점 테스트
 
 Code Review
 -----------------------------------------------------------------------------------------
@@ -43,8 +39,12 @@ Remediation
 See the OWASP Development Guide article on how to Avoid Buffer
 Overflow Vulnerabilities.
 
+|
+
+|
+
 ============================================================================================
-Testing for Heap Overflow
+힙 오버플로우 취약점 테스트
 ============================================================================================
 
 개요
@@ -193,15 +193,10 @@ languages.
 Tools
 ============================================================================================
 
-• OllyDbg: “A windows based debugger used for analyzing buffer
-overflow vulnerabilities” - http://www.ollydbg.de
-• Spike, A fuzzer framework that can be used to explore
-vulnerabilities and perform length testing -
-http://www.immunitysec.com/downloads/SPIKE2.9.tgz
-• Brute Force Binary Tester (BFB), A proactive binary checker -
-http://bfbtester.sourceforge.net
-• Metasploit, A rapid exploit development and Testing frame
-work - http://www.metasploit.com
+- OllyDbg: “A windows based debugger used for analyzing buffer overflow vulnerabilities”: http://www.ollydbg.de
+- Spike, A fuzzer framework that can be used to explore vulnerabilities and perform length testing: http://www.immunitysec.com/downloads/SPIKE2.9.tgz
+- Brute Force Binary Tester (BFB), A proactive binary checker: http://bfbtester.sourceforge.net
+- Metasploit, A rapid exploit development and Testing frame work - http://www.metasploit.com
 
 |
 
@@ -211,17 +206,15 @@ References
 Whitepapers
 -------------------------------------------------------------------------------------------
 
-• w00w00: “Heap Overflow Tutorial” -
-http://www.cgsecurity.org/exploit/heaptut.txt
-• David Litchfield: “Windows Heap Overflows” -
-http://www.blackhat.com/presentations/win-usa-04/bhwin-04-litchfield/bh-win-04-litchfield.ppt
+- w00w00: “Heap Overflow Tutorial”: http://www.cgsecurity.org/exploit/heaptut.txt
+- David Litchfield: “Windows Heap Overflows”: http://www.blackhat.com/presentations/win-usa-04/bhwin-04-litchfield/bh-win-04-litchfield.ppt
 
 |
 
 |
 
 ============================================================================================
-Testing for Stack Overflow
+스택 오버플로우 취약점 테스트
 ============================================================================================
 
 개요
@@ -237,11 +230,9 @@ often ridden with instances of this vulnerability. In fact almost
 every platform is vulnerable to stack overflows with the following
 notable exceptions:
 
-• J2EE – as long as native methods or system calls are not
-invoked
-• .NET – as long as /unsafe or unmanaged code is not invoked
-(such as the use of P/Invoke or COM Interop)
-• PHP – as long as external programs and vulnerable PHP
+- J2EE – as long as native methods or system calls are not invoked
+- .NET – as long as /unsafe or unmanaged code is not invoked (such as the use of P/Invoke or COM Interop)
+- PHP – as long as external programs and vulnerable PHP
 
 extensions written in C or C++ are not called can suffer from
 stack overflow issues.
@@ -294,7 +285,6 @@ while testing an executable “sample.exe” for stack overflows:
     }
 
 File sample.exe is launched in a debugger, in our case OllyDbg.
-
 
 Since the application is expecting command line arguments, a
 large sequence of characters such as ‘A’, can be supplied in the
@@ -404,28 +394,40 @@ the overhead associated with finding low hanging fruits,
 like strcpy() and sprintf() bugs.
 A variety of tools like RATS, Flawfinder and ITS4 are available for
 analyzing C-style languages.
+
+|
+
 Tools
-• OllyDbg: “A windows based debugger used for analyzing buffer
-overflow vulnerabilities” - http://www.ollydbg.de
-• Spike, A fuzzer framework that can be used to explore
-vulnerabilities and perform length testing - http://www.
-immunitysec.com/downloads/SPIKE2.9.tgz
-• Brute Force Binary Tester (BFB), A proactive binary checker -
-http://bfbtester.sourceforge.net/
-• Metasploit, A rapid exploit development and Testing frame
-work - http://www.metasploit.com
+============================================================================================
+
+- OllyDbg: “A windows based debugger used for analyzing buffer overflow vulnerabilities” - http://www.ollydbg.de
+- Spike, A fuzzer framework that can be used to explore vulnerabilities and perform length testing - http://www.immunitysec.com/downloads/SPIKE2.9.tgz
+- Brute Force Binary Tester (BFB), A proactive binary checker: http://bfbtester.sourceforge.net/
+- Metasploit, A rapid exploit development and Testing frame work - http://www.metasploit.com
+
+|
+
 References
+============================================================================================
+
 Whitepapers
-• Aleph One: “Smashing the Stack for Fun and Profit” -
-http://insecure.org/stf/smashstack.html
-• The Samba trans2open stack overflow vulnerability -
-http://www.
-securityfocus.com/archive/1/317615
-• Windows RPC DCOM vulnerability details -
-http://www.xfocus.
-org/documents/200307/2.html
-Testing for Format String
-Summary
+--------------------------------------------------------------------------------------------
+
+- Aleph One: “Smashing the Stack for Fun and Profit”: http://insecure.org/stf/smashstack.html
+- The Samba trans2open stack overflow vulnerability: http://www.securityfocus.com/archive/1/317615
+- Windows RPC DCOM vulnerability details: http://www.xfocus.org/documents/200307/2.html
+
+|
+
+|
+
+============================================================================================
+포맷 스트링 취약점 테스트
+============================================================================================
+
+개요
+============================================================================================
+
 This section describes how to test for format string attacks that can
 be used to crash a program or to execute harmful code. The problem
 stems from the use of unfiltered user input as the format string
@@ -459,8 +461,17 @@ called, execution passes to the malicious code.
 Denial of Service: If the adversary is not in a position to supply malicious
 code for execution, the vulnerable application can be crashed
 by supplying a sequence of %x followed by %n.
-How to Test
+
+|
+
+테스트 방법
+============================================================================================
+
+|
+
 Black Box testing
+--------------------------------------------------------------------------------------------
+
 The key to testing format string vulnerabilities is supplying format
 type specifiers in application input.
 For example, consider an application that processes the URL string
@@ -470,6 +481,7 @@ processing this information, supplying a URL like http://xyzhost.
 com/html/en/index.htm%n%n%n or passing %n in one of the form
 fields might crash the application creating a core dump in the hosting
 folder.
+
 Format string vulnerabilities manifest mainly in web servers, application
 servers, or web applications utilizing C/C++ based code or CGI
 scripts written in C. In most of these cases, an error reporting or logging
@@ -477,3 +489,92 @@ function like syslog( ) has been called insecurely.
 When testing CGI scripts for format string vulnerabilities, the input
 parameters can be manipulated to include %x or %n type specifiers.
 For example a legitimate request like
+
+.. code-block:: html
+
+    http://hostname/cgi-bin/query.cgi?name=john&code=45765 
+
+.. code-block:: html
+
+    http://hostname/cgi-bin/query.cgi?name=john%x.%x.%x
+    &code=45765%x.%x
+
+If a format string vulnerability exists in the routine processing this
+request, the tester will be able to see stack data being printed out
+to browser.
+If code is unavailable, the process of reviewing assembly fragments
+(also known as reverse engineering binaries) would yield substantial
+information about format string bugs.
+Take the instance of code (1) :
+
+.. code-block:: html
+
+    int main(int argc, char **argv)
+    {
+    printf(“The string entered is\n”);
+    printf(“%s”,argv[1]);
+    return 0;
+    }
+
+when the disassembly is examined using IDA Pro, the address of a
+format type specifier being pushed on the stack is clearly visible before
+a call to printf is made.
+
+On the other hand, when the same code is compiled without “%s” as
+an argument , the variation in assembly is apparent. As seen below,
+there is no offset being pushed on the stack before calling printf.
+
+|
+
+Gray Box testing
+--------------------------------------------------------------------------------------------
+
+While performing code reviews, nearly all format string vulnerabilities
+can be detected by use of static code analysis tools. Subjecting
+the code shown in (1) to ITS4, which is a static code analysis tool,
+gives the following output. 
+
+The functions that are primarily responsible for format string vulnerabilities
+are ones that treat format specifiers as optional. Therefore
+when manually reviewing code, emphasis can be given to functions
+such as:
+
+.. code-block:: html
+
+    printf
+    fprintf
+    sprintf
+    snprintf
+    vfprintf
+    vprintf
+    vsprintf
+    vsnprintf
+
+There can be several formatting functions that are specific to the
+development platform. These should also be reviewed for absence
+of format strings once their argument usage has been understood.
+
+|
+
+Tools
+============================================================================================
+
+- ITS4: “A static code analysis tool for identifying format string
+vulnerabilities using source code” - http://www.cigital.com/its4
+- An exploit string builder for format bugs - http://seclists.org/
+lists/pen-test/2001/Aug/0014.html
+
+|
+
+References
+============================================================================================
+
+Whitepapers
+--------------------------------------------------------------------------------------------
+
+- Format functions manual page: http://www.die.net/doc/linux/man/man3/fprintf.3.html
+- Tim Newsham: “A paper on format string attacks”: http://comsec.theclerk.com/CISSP/FormatString.pdf
+- Team Teso: “Exploiting Format String Vulnerabilities”: http://www.cs.ucsb.edu/~jzhou/security/formats-teso.html
+- Analysis of format string bugs: http://julianor.tripod.com/format-bug-analysis.pdf
+
+|

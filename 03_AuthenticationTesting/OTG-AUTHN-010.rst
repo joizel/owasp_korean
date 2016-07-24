@@ -1,10 +1,6 @@
 ==========================================================================================
-OTG-AUTHN-010
+OTG-AUTHN-010 (교체 채널에서 취약한 인증을 위한 테스트)
 ==========================================================================================
-
-|
-
-교체 채널에서 취약한 인증을 위한 테스트
 
 |
 
@@ -21,22 +17,24 @@ the primary channel, or expose information that can then
 be used to assist an attack against the primary channel. Some of
 these channels may themselves be separate web applications using
 different host names or paths. For example:
-• Standard website
-• Mobile, or specific device, optimized website
-• Accessibility optimized website
-• Alternative country and language websites
-• Parallel websites that utilize the same user accounts
+
+- Standard website
+- Mobile, or specific device, optimized website
+- Accessibility optimized website
+- Alternative country and language websites
+- Parallel websites that utilize the same user accounts
 (e.g. another website offering different functionally of the same
 organization, a partner website with which user accounts are
 shared)
-• Development, test, UAT and staging versions of the standard
+- Development, test, UAT and staging versions of the standard
  website
 
 But they could also be other types of application or business processes:
-• Mobile device app
-• Desktop application
-• Call center operators
-• Interactive voice response or phone tree systems
+
+- Mobile device app
+- Desktop application
+- Call center operators
+- Interactive voice response or phone tree systems
 
 Note that the focus of this test is on alternative channels; some
 authentication alternatives might appear as different content
@@ -44,25 +42,26 @@ delivered via the same website and would almost certainly be
 in scope for testing. These are not discussed further here, and
 should have been identified during information gathering and primary
 authentication testing. For example:
-• Progressive enrichment and graceful degradation that change
-functionality
-• Site use without cookies
-• Site use without JavaScript
-• Site use without plugins such as for Flash and Java
+
+- Progressive enrichment and graceful degradation that change functionality
+- Site use without cookies
+- Site use without JavaScript
+- Site use without plugins such as for Flash and Java
+
 Even if the scope of the test does not allow the alternative channels
 to be tested, their existence should be documented. These
 may undermine the degree of assurance in the authentication
 mechanisms and may be a precursor to additional testing.
 
-Example
-The primary website is:
+**예제** 
+
+주요 웹 사이트
 
 .. code-block: console
 
     http://www.example.com
 
-and authentication functions always take place on pages using
-Transport Layer Security:
+그리고 전송 계층 보안을 사용한 페이지에 인증 기능 사용
 
 .. code-block: console
 
@@ -81,30 +80,41 @@ recovery mechanism:
 테스트 방법
 ==========================================================================================
 
-Understand the primary mechanism
+주요 메카니즘 이해
+---------------------------------------------------------------------------------------
+
 Fully test the website’s primary authentication functions. This
 should identify how accounts are issued, created or changed and
 how passwords are recovered, reset, or changed. Additionally
 knowledge of any elevated privilege authentication and authentication
 protection measures should be known. These precursors
 are necessary to be able to compare with any alternative channels.
-Identify other channels
+
+|
+
+또다른 채널 확인
+---------------------------------------------------------------------------------------
+
 Other channels can be found by using the following methods:
-• Reading site content, especially the home page, contact us, help
+
+- Reading site content, especially the home page, contact us, help
 pages, support articles and FAQs, T&Cs, privacy notices, the robots.txt
 file and any sitemap.xml files.
-• Searching HTTP proxy logs, recorded during previous information
+- Searching HTTP proxy logs, recorded during previous information
 gathering and testing, for strings such as “mobile”, “android”,
 blackberry”, “ipad”, “iphone”, “mobile app”, “e-reader”, “wireless”,
 “auth”, “sso”, “single sign on” in URL paths and body content.
-• Use search engines to find different websites from the same
+- Use search engines to find different websites from the same
 organization, or using the same domain name, that have similar
 home page content or which also have authentication mechanisms.
 For each possible channel confirm whether user accounts are
 shared across these, or provide access to the same or similar
 functionality.
 
-Enumerate authentication functionality
+|
+
+인증 기능 열거
+---------------------------------------------------------------------------------------
 
 For each alternative channel where user accounts or functionality
 are shared, identify if all the authentication functions of the primary
@@ -124,7 +134,10 @@ channels (e.g. cookies scoped to the same parent domain name,
 concurrent sessions allowed across channels, but not on the same
 channel).
 
-Review and test
+|
+
+검토 및 테스트
+---------------------------------------------------------------------------------------
 
 Alternative channels should be mentioned in the testing report,
 even if they are marked as “information only” and/or “out of
