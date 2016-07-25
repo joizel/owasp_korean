@@ -7,26 +7,31 @@ OTG-CRYPST-001 (취약한 SSL/TLS 암호, 불충분한 전송 계층 보호 침�
 개요
 ==========================================================================================
 
-민감한 데이터는 네트워크를 통해 전송될 때 보호되어야 하기 때문에, 사용자 자격 증명과 신용 카드를 포함하고 있어야 합니다. 경험적으로, 데이터가 저장될 때 보호되어야 하는 경우, 전송 시에도 역시 보호되어야 합니다.
+민감한 데이터는 네트워크를 통해 전송될 때 보호되어야 하기 때문에, 
+사용자 자격 증명과 신용 키를 포함하고 있어야 합니다. 
+데이터가 저장될 때 보호되어야 하는 경우, 전송 시에도 역시 보호되어야 합니다.
 
 HTTP는 평문 프로토콜으로 일반적으로 SSL/TLS 터널을 통해 보안되며, 이를 HTTPS 트래픽이라고 합니다.
 HTTPS 프로토콜 사용은 기밀성 뿐만 아니라 인증 역시 보장합니다. 
 서버가 디지털 인증서를 사용하여 인증되고, 상호 인증을 위해 클라이언트 인증을 사용하여야 합니다.
 
-오늘날 일반적으로 사용되고 지원하는 고급 암호 메커니즘인 경우에도, 서버에 일부 잘못된 설정이 공격자 접속을 허용하는 잘못된 암호 메커니즘 사용으로 강제 사용될 수 있습니다.
+오늘날 일반적으로 사용되고 지원하는 고급 암호 메커니즘인 경우에도, 서버에 일부 잘못된 설정이 
+공격자 접속을 허용하는 잘못된 암호 메커니즘 사용으로 강제 사용될 수 있습니다.
 일부 잘못된 설정은 서비스 거부 공격에 사용될 수 있습니다.
 
+|
 
-**일반적인 문제**
+일반적인 문제
+-------------------------------------------------------------------------------------------
 
-취약점은 HTTP 프로토콜에서 민감한 정보 전송 시 사용된다면 발생할 수 있습니다.
+취약점은 민감한 정보 전송 시 HTTP 프로토콜을 사용하면 발생할 수 있습니다.
 
-SSL/TLS 서비스가 존재하는 경우에는 양호하지만 공격 표면을 증가시키고 다음 취약점이 존재할 수 있습니다.
+SSL/TLS 서비스가 존재하는 경우에는 양호하지만, 공격 표면을 증가시키고 다음 취약점이 존재할 수 있습니다.
 
-- SSL/TLS 프로토콜, Ciphers, Keys 그리고 renegotiation이 제대로 설정되어 있어야합니다.
+- SSL/TLS 프로토콜, Ciphers, Keys 그리고 재협상이 제대로 설정되어 있어야합니다.
 - 인증서 유효 기간이 보장되어야합니다.
 
-이 링크 다른 취약점은 다음과 같습니다:
+이와 관련한 또 다른 취약점
 
 - 노출된 소프트웨어이기에 취약점이 알려진 경우 업데이트 해야 합니다.
 - Session 쿠키를 위해 Secure 플래그 사용
@@ -34,14 +39,18 @@ SSL/TLS 서비스가 존재하는 경우에는 양호하지만 공격 표면을 
 - 트래픽을 차단하는 데 사용할 수 있는 HTTP 및 HTTPS 존재
 - 정보 누출에 사용되 수 있는 동일한 페이지에 혼합 HTTPS 및 HTTP 컨텐츠의 존재
 
+|
 
-**민감한 데이터 평문 전송**
+민감한 데이터 평문 전송
+-------------------------------------------------------------------------------------------
 
 어플리케이션은 암호화되지 않은 채널을 통해 민감한 정보를 전송하지 말아야합니다.
 일반적으로 HTTP를 통해 기본 인증을 사용할 경우, HTTP를 통해 전송한 입력 비밀번호 또는 세션 쿠키와 규정, 법률 또는 조직 정책에 의해 고려될 일반 정보 등을 발견 할 수 있습니다.
 
+|
 
-**취약한 SSL/TLS Ciphers/Protocols/Keys**
+취약한 SSL/TLS Ciphers/Protocols/Keys
+-------------------------------------------------------------------------------------------
 
 역사적으로, 암호 시스템은 최대 40 비트 크기 이하의 키라면 파괴 될 수 있고, 통신의 암호 해독을 허용되기 때문에 미국 정부에서 설정한 제한이 있었습니다.
 이 후 암호화는 최대 키 크기가 128 비트로 규제가 완화되어 출력되었습니다.
@@ -58,7 +67,10 @@ It is possible (for example, by means of configuration directives) to specify wh
 2. The server sends a ServerHelloDone message and waits for a client response. 
 3. Upon receipt of the ServerHelloDone message, the client verifies the validity of the server's digital certificate. 
 
-**SSL certificate validity . client and server**
+|
+
+SSL 인증 유효성 테스트 - 클라이언트와 서버
+-------------------------------------------------------------------------------------------
 
 When accessing a web application via the HTTPS protocol, a secure channel is established between the client and the server. The identity of one (the server) or both parties (client and server) is then established by means of digital certificates. So, once the cipher suite is determined, the "SSL Handshake" continues with the exchange of the certificates: 
 
@@ -78,7 +90,10 @@ Let's examine each check more in detail.
 - Certificates have an associated period of validity, therefore they may expire. Again, we are warned by the browser about this. A public service needs a temporally valid certificate; otherwise, it means we are talking with a server whose certificate was issued by someone we trust, but has expired without being renewed. 
 - What if the name on the certificate and the name of the server do not match? If this happens, it might sound suspicious. For a number of reasons, this is not so rare to see. A system may host a number of name-based virtual hosts, which share the same IP address and are identified by means of the HTTP 1.1 Host: header information. In this case, since the SSL handshake checks the server certificate before the HTTP request is processed, it is not possible to assign different certificates to each virtual server. Therefore, if the name of the site and the name reported in the certificate do not match, we have a condition which is typically signaled by the browser. To avoid this, IP-based virtual servers must be used. [33] and [34] describe techniques to deal with this problem and allow name-based virtual hosts to be correctly referenced. 
 
-**Other vulnerabilities**
+|
+
+또 다른 취약점
+-------------------------------------------------------------------------------------------
 
 The presence of a new service, listening in a separate tcp port may introduce vulnerabilities such as infrastructure vulnerabilities if the software is not up to date [4]. Furthermore, for the correct protection of data during transmission the Session Cookie must use the Secure flag [5] and some directives should be sent to the browser to accept only secure traffic (e.g. HSTS [6], CSP). 
 Also there are some attacks that can be used to intercept traffic if the web server exposes the application on both HTTP and HTTPS [6], [7] or in case of mixed HTTP and HTTPS resources in the same page. 
@@ -93,11 +108,18 @@ Also there are some attacks that can be used to intercept traffic if the web ser
 민감한 데이터를 평문으로 전송하는 테스트
 -----------------------------------------------------------------------------------------
 
-Various types of information which must be protected can be also transmitted in clear text. It is possible to check if this information is transmitted over HTTP instead of HTTPS. Please refer to specific tests for full details, for credentials [3] and other kind of data [2]. 
+보안되어야 하는 다양한 정보들은 평문으로 전송될 수 있습니다.
+정보들이 HTTPS 대신 HTTP로 전송되는지 확인해야 합니다.
 
-**Example 1. HTTP를 통해 기본 인증**
+|
+
+예제 1. HTTP를 통해 기본 인증
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
 
 A typical example is the usage of Basic Authentication over HTTP because with Basic Authentication, after log in, credentials are encoded - and not encrypted - into HTTP Headers. 
+
+로그인 이후 기본 인증으로 인코딩되어 있기 때문에 일반적인 예는 HTTP를 통한 기본 인증의 사용입니다.
 
 .. code-block:: console
 
@@ -124,17 +146,30 @@ A typical example is the usage of Basic Authentication over HTTP because with Ba
 -----------------------------------------------------------------------------------------
 
 The large number of available cipher suites and quick progress in cryptanalysis makes testing an SSL server a non-trivial task. 
-At the time of writing these criteria are widely recognized as minimum checklist: 
- 
-- Weak ciphers must not be used (e.g. less than 128 bits [10]; no NULL ciphers suite, due to no encryption used; no Anonymous Diffie-Hellmann, due to not provides authentication). 
-- Weak protocols must be disabled (e.g. SSLv2 must be disabled, due to known weaknesses in protocol design [11]). 
-- Renegotiation must be properly configured (e.g. Insecure Renegotiation must be disabled, due to MiTM attacks [12] and Client-initiated Renegotiation must be disabled, due to Denial of Service vulnerability [13]). 
-- No Export (EXP) level cipher suites, due to can be easly broken [10]. 
-- X.509 certificates key length must be strong (e.g. if RSA or DSA is used the key must be at least 1024 bits). 
-- X.509 certificates must be signed only with secure hashing algoritms (e.g. not signed using MD5 hash, due to known collision attacks on this hash). 
-- Keys must be generated with proper entropy (e.g, Weak Key Generated with Debian) [14]. 
 
-A more complete checklist includes: 
+이러한 기준은 아래의 최소한의 체크리스트로 인식됩니다.
+ 
+- 취약한 ciphers를 사용해서는 안됩니다. 
+(예제. less than 128 bits [10]; no NULL ciphers suite, due to no encryption used; no Anonymous Diffie-Hellmann, due to not provides authentication). 
+
+- 취약한 protocols은 비활성화 해야합니다. 
+(예제. SSLv2 must be disabled, due to known weaknesses in protocol design [11]). 
+
+- 재협상이 제대로 구성되어야 합니다.
+(예제. Insecure Renegotiation must be disabled, due to MiTM attacks [12] and Client-initiated Renegotiation must be disabled, due to Denial of Service vulnerability [13]). 
+
+- No Export (EXP) level cipher suites, due to can be easly broken [10]. 
+
+- X.509 인증 키 길이는 강해야합니다.
+(예제. if RSA or DSA is used the key must be at least 1024 bits). 
+
+- X.509 인증은 보안 해쉬 알고리즘으로만 서명해야합니다.
+(예제. not signed using MD5 hash, due to known collision attacks on this hash). 
+
+- 키는 적절한 엔트로피로 생성되어야 합니다.
+(예제. Weak Key Generated with Debian) [14]. 
+
+더 완벽한 체크리스트는 다음과 같습니다.
 
 - Secure Renegotiation should be enabled. 
 - MD5 should not be used, due to known collision attacks. [35] 
@@ -153,10 +188,15 @@ Some tools and scanners both free (e.g. SSLAudit [28] or SSLScan [29]) and comme
 
 Sometimes the SSL/TLS enabled service is not directly accessible and the tester can access it only via a HTTP proxy using CONNECT method [36]. Most of the tools will try to connect to desired tcp port to start SSL/TLS handshake. This will not work since desired port is accessible only via HTTP proxy. The tester can easily circumvent this by using relaying software such as socat [37]. 
 
-**Example 2. nmap을 통해 SSL 서비스 인식**
+|
 
-The first step is to identify ports which have SSL/TLS wrapped services. Typically tcp ports with SSL for web and mail services are but not limited to - 443 (https), 465 (ssmtp), 585 (imap4-ssl), 993 (imaps), 995 (ssl-pop). 
-In this example we search for SSL services using nmap with "-sV" option, used to identify services and it is also able to identify SSL services [31]. Other options are for this particular example and must be customized. Often in a Web Application Penetration Test scope is limited to port 80 and 443. 
+예제 2. nmap을 통해 SSL 서비스 인식
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+우선적으로 SSL/TLS 서비스를 하는 포트를 식별해야합니다. 
+일반적으로 tcp 포트 443(https), 465(ssmtp), 585(imap4-ssl), 993(imaps), 995(ssl-pop)을 사용합니다.
+
+이번 예제에서는 nmap에서 "-sV" 옵션으로 SSL 서비스를 찾습니다.
 
 .. code-block:: console
 
@@ -185,10 +225,13 @@ In this example we search for SSL services using nmap with "-sV" option, used to
     at http://nmap.org/submit/ . 
     Nmap done: 1 IP address (1 host up) scanned in 131.38 seconds 
 
+|
 
-**Example 3. nmap을 통해 Ciphers, SSLv2, Certificate 정보 확인**
+예제 3. nmap을 통해 Ciphers, SSLv2, Certificate 정보 확인
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Nmap has two scripts for checking Certificate 정보, Weak Ciphers and SSLv2 [31]. 
+Nmap은 인증서 정보 체크 및 취약한 암호와 SSLv2(sl-cert,ssl-enum-ciphers)를 위한 
+두가지 스크립트를 가지고 있습니다.
 
 .. code-block:: console
 
@@ -246,10 +289,17 @@ Nmap has two scripts for checking Certificate 정보, Weak Ciphers and SSLv2 [31
     | ciphers: 
     | TLS_RSA_WITH_CAMELLIA_128_CBC_SHA - strong | TLS_RSA_WITH_CAMELLIA_256_CBC_SHA - strong | TLS_RSA_WITH_RC4_128_SHA - strong | compressors: | NULL |_ least strength: strong 993/tcp open imaps | ssl-cert: Subject: commonName=*.exapmple.com | Issuer: commonName=******* | Public Key type: rsa | Public Key bits: 2048 | Not valid before: 2010-01-23T00:00:00+00:00 | Not valid after:  2020-02-28T23:59:59+00:00 | MD5: ******* |_SHA-1: ******* | ssl-enum-ciphers: | SSLv3: | ciphers: | TLS_RSA_WITH_CAMELLIA_128_CBC_SHA - strong | TLS_RSA_WITH_CAMELLIA_256_CBC_SHA - strong | TLS_RSA_WITH_RC4_128_SHA - strong | compressors: | NULL | TLSv1.0: | ciphers: | TLS_RSA_WITH_CAMELLIA_128_CBC_SHA - strong | TLS_RSA_WITH_CAMELLIA_256_CBC_SHA - strong | TLS_RSA_WITH_RC4_128_SHA - strong | compressors: | NULL |_ least strength: strong 995/tcp open pop3s | ssl-cert: Subject: commonName=*.exapmple.com | Issuer: commonName=******* | Public Key type: rsa | Public Key bits: 2048 | Not valid before: 2010-01-23T00:00:00+00:00 | Not valid after:  2020-02-28T23:59:59+00:00 | MD5: ******* |_SHA-1: ******* | ssl-enum-ciphers: | SSLv3: | ciphers: | TLS_RSA_WITH_CAMELLIA_128_CBC_SHA - strong | TLS_RSA_WITH_CAMELLIA_256_CBC_SHA - strong | TLS_RSA_WITH_RC4_128_SHA - strong | compressors: | NULL | TLSv1.0: | ciphers: | TLS_RSA_WITH_CAMELLIA_128_CBC_SHA - strong | TLS_RSA_WITH_CAMELLIA_256_CBC_SHA - strong | TLS_RSA_WITH_RC4_128_SHA - strong | compressors: | NULL |_ least strength: strong Nmap done: 1 IP address (1 host up) scanned in 8.64 seconds 
 
+|
 
-**Example 4 openssl을 통해 Client-initiated Renegotiation과 Secure Renegotiation 확인**
+예제 4. openssl을 통해 Client-initiated Renegotiation과 Secure Renegotiation 테스트
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Openssl [30] can be used for testing manually SSL/TLS. In this example the tester tries to initiate a renegotiation by client [m] connecting to server with openssl. The tester then writes the fist line of an HTTP request and types "R" in a new line. He then waits for renegotiaion and completion of the HTTP request and checks if secure renegotiaion is supported by looking at the server output. Using manual requests it is also possible to see if Compression is enabled for TLS and to check for CRIME [13], for ciphers and for other vulnerabilities. 
+Openssl은 수동으로 SSL/TLS를 테스트할 수 있습니다. 이번 예제에서 테스터는 openssl으로 서버에 연결된
+클라이언트에 재협상을 초기화하려 합니다.
+HTTP 요청의 첫 라인을 쓰고나서, 새로운 라인에 "R"을 입력합니다.
+그리고나서 재협상을 기다리고 완벽한 HTTP 요청과 보안 재협상이 서버 출력으로 지원되는지 확인합니다.
+
+Using manual requests it is also possible to see if Compression is enabled for TLS and to check for CRIME [13], for ciphers and for other vulnerabilities. 
 
 .. code-block:: console
 
@@ -326,11 +376,21 @@ Openssl [30] can be used for testing manually SSL/TLS. In this example the teste
 
     read:errno=0 
 
+|
 
-**Example 5. TestSSLServer를 통해 지원하는 Cipher Suites, BEAST, CRIME 공격 테스트**
+예제 5. TestSSLServer를 통해 암호화 방식, BEAST, CRIME 공격 테스트
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-TestSSLServer [32] is a script which permits the tester to check the cipher suite and also for BEAST and CRIME attacks. BEAST (Browser Exploit Against SSL/TLS) exploits a vulnerability of CBC in TLS 1.0. CRIME (Compression Ratio Info-leak Made Easy) exploits a vulnerability of TLS Compression, that should be disabled. What is interesting is that the first fix for BEAST was the use of RC4, but this is now discouraged due to a crypto-analytical attack to RC4 [15]. 
-An online tool to check for these attacks is SSL Labs, but can be used only for internet facing servers. Also consider that target data will be stored on SSL Labs server and also will result some connection from SSL Labs server [21]. 
+TestSSLServer는 암호화 방식과 BEAST, CRIME 공격을 확인하기 위해 테스터가 사용할 수 있는 스크립트입니다.
+
+BEAST(Browser Exploit Against SSL/TLS)은 TLS 1.0에 CBC 취약점을 공격합니다.
+
+CRIME (Compression Ratio Info-leak Made Easy)은 TLS 압축 취약점을 공격하고, 그것을 비활성화합니다.
+재밌는 것은 BEAST를 방어할 수 있는 것은 RC4를 사용하는 것이지만, RC4에서는 암호화 분석 공격 때문에 
+권장하지 않습니다.
+
+이 공격을 확인하기 위한 온라인 툴은 SSL 연구소에 있지만, 인터넷과 연결된 서버에만 이용할 수 있습니다.
+또한, 확인 결과가 SSL 연구소 서버에 저장될 것이기에 온라인 툴 사용은 고려되어야 합니다.
 
 .. code-block:: console
 
@@ -393,10 +453,13 @@ An online tool to check for these attacks is SSL Labs, but can be used only for 
     BEAST status: vulnerable 
     CRIME status: protected 
 
+|
 
-**Example 6. sslyze로 SSL/TLS 취약점 테스트**
+예제 6. sslyze 테스트
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Sslyze [33] is a python script which permits mass scanning and XML output. The following is an example of a regular scan. It is one of the most complete and versatile tools for SSL/TLS testing
+Sslyze는 대량 스캐닝과 XML 출력을 수행할 수 있는 파이썬 스크립트입니다.
+일반적인 스캔 에제는 아래와 같습니다.
 
 .. code-block:: console
 
@@ -471,11 +534,15 @@ Sslyze [33] is a python script which permits mass scanning and XML output. The f
      SCAN COMPLETED IN 9.68 S
      -----------------------
 
+|
 
-**Example 7. SSL/TLS with testssl.sh로 SSL/TLS 테스트**
 
-Testssl.sh [38] is a Linux shell script which provides clear output to facilitate good decision making. It can not only check web servers but also services on other ports, supports STARTTLS, SNI, SPDY and does a few check on the HTTP header as well. 
-It's a very easy to use tool. Here's some sample output (without colors): 
+예제 7. testssl.sh 테스트
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Testssl.sh는 리눅스 쉘 스크립트로, 웹 서버 확인 뿐만 아니라, 다른 포트 서비스 및 STARTTLS, SNI, SPDY 그리고 HTTP 헤더에 대한 몇가지 검사를 지원합니다.
+
+아래 간단한 출력 예제입니다.
 
 .. code-block:: console
 
@@ -552,17 +619,28 @@ It's a very easy to use tool. Here's some sample output (without colors):
     Done now (2014-04-17 15:07) ---> owasp.org:443 <--
     user@myhost: %    
 
-STARTTLS would be tested via testssl.sh -t smtp.gmail.com:587 smtp, each ciphers with testssl -e <target>, each ciphers per protocol with testssl -E <target>. To just display what local ciphers that are installed for openssl see testssl -V. For a thorough check it is best to dump the supplied OpenSSL binaries in the path or the one of testssl.sh. 
-The interesting thing is if a tester looks at the sources they learn how features are tested, see e.g. Example 4. What is even better is that it does the whole handshake for heartbleed in pure / bin/bash with /dev/tcp sockets -- no piggyback perl/python/you name it. 
-Additionally it provides a prototype (via "testssl.sh -V") of mapping to RFC cipher suite names to OpenSSL ones. The tester needs the file mapping-rfc.txt in same directory. 
+STARTTLS는 testssl.sh -t smtp.gmail.com:587 smtp를 통해 테스트할 수 있고,
+각 암호문은 testssl -e <target>로,
+각 프로토콜별 암호문은 testssl -E <target>으로 테스트할 수 있습니다.
+openssl을 통해 설치된 암호문이 어떤 것이 있는지 보기 위해서는 testssl -V 명령 입력 
 
+For a thorough check it is best to dump the supplied OpenSSL binaries in the path or the one of testssl.sh. 
+The interesting thing is if a tester looks at the sources they learn how features are tested, see e.g. 
 
-**Example 8. Testing SSL/TLS with SSL Breacher**
+Example 4. What is even better is that it does the whole handshake for heartbleed in pure /bin/bash with /dev/tcp sockets -- no piggyback perl/python/you name it. 
+Additionally it provides a prototype (via "testssl.sh -V") of mapping to RFC cipher suite names to OpenSSL ones. 
+The tester needs the file mapping-rfc.txt in same directory. 
 
-This tool [99] is combination of several other tools plus some additional checks in complementing most comprehensive SSL tests. It supports the following checks: 
+|
+
+예제 8. SSL Breacher 테스트
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+이 툴은 여러 가지 다른 툴들 중 가장 포괄적인 SSL 테스트를 보완한 툴입니다. 
+다음과 같은 검사를 지원합니다.
 
 - HeartBleed 
-- ChangeCipherSpec Injection 
+- ChangeCipherSpec 인젝션
 - BREACH 
 - BEAST 
 - Forward Secrecy support 
@@ -939,7 +1017,7 @@ This tool [99] is combination of several other tools plus some additional checks
 
 |
 
-Testing SSL certificate validity . client and server 
+SSL 인증서 유효성 검사 테스트 - 클라이언트와 서버
 -----------------------------------------------------------------------------------------
 
 Firstly upgrade the browser because CA certs expire and in every release of the browser these are renewed. Examine the validity of the certificates used by the application. Browsers will issue a warning when encountering expired certificates, certificates issued by untrusted CAs, and certificates which do not match name wise with the site to which they should refer. 
@@ -947,163 +1025,207 @@ By clicking on the padlock that appears in the browser window when visiting an H
 These checks must be applied to all visible SSL-wrapped communication channels used by the application. Though this is the usual https service running on port 443, there may be additional services involved depending on the web application architecture and on deployment issues (an HTTPS administrative port left open, HTTPS services on non-standard ports, etc.). Therefore, apply these checks to all SSL-wrapped ports which have been discovered. For example, the nmap scanner features a scanning mode (enabled by the .sV command line switch) which identifies SSL-wrapped services. The Nessus vulnerability scanner has the capability of performing SSL checks on all SSL/TLS-wrapped services. 
 
 
-**Example 1. Testing for certificate validity (manually)**
+예제 1. 인증서 유효성 테스트 (수동)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Rather than providing a fictitious example, this guide includes an anonymized real-life example to stress how frequently one stumbles on https sites whose certificates are inaccurate with respect to naming. The following screenshots refer to a regional site of a high-profile IT company. 
 We are visiting a .it site and the certificate was issued to a .com site. Internet Explorer warns that the name on the certificate does not match the name of the site. 
 
+[그림]
 Warning issued by Microsoft Internet Explorer 
 
 The message issued by Firefox is different. Firefox complains because it cannot ascertain the identity of the .com site the certificate refers to because it does not know the CA which signed the certificate. In fact, Internet Explorer and Firefox do not come pre-loaded with the same list of CAs. Therefore, the behavior experienced with various browsers may differ. 
 
-
+[그림]
 Warning issued by Mozilla Firefox
 
-Testing for other vulnerabilities
-As mentioned previously, there are other types of vulnerabilities
-that are not related with the SSL/TLS protocol used, the cipher 
-suites or Certificates. Apart from other vulnerabilities discussed in other parts of this guide, a vulnerability exists when the server provides the website both with the HTTP and HTTPS protocols, and permits an attacker to force a victim into using a non-secure channel instead of a secure one. 
+|
+
+다른 취약점 테스트
+-----------------------------------------------------------------------------------------
+
+앞서 언급한 바와 같이, 사용된 SSL/TLS 프로토콜, 암호화 방식이나 인증서와 관련되지 않은 
+다른 유형의 취약점이 있습니다.
+
+서버가 HTTP 및 HTTPS 프로토콜 모두 웹 사이트에서 제공하고, 공격자가 안전한 하나 대신 비 보안 채널을 사용하여 피해자를 강제로 허용하는 경우 취약점이 존재합니다.
 
 |
 
 Surf Jacking 
------------------------------------------------------------------------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The Surf Jacking attack [7] was first presented by Sandro Gauci and permits to an attacker to hijack an HTTP session even when the victim's connection is encrypted using SSL or TLS. 
-The following is a scenario of how the attack can take place: 
-. 
-Victim logs into the secure website at https://somesecuresite/. 
+Surf Jacking 공격은 Sandro Gauci에 의해 발표되었고, 공격자는 피해자 연결이 SSL 또는 TLS를 사용하여 
+암호화되었을 경우 HTTP 세션을 하이재킹하여 수행합니다.
 
-. 
-The secure site issues a session cookie as the client logs in. 
+다음은 해당 공격에 대한 시나리오 입니다.
 
-. 
-While logged in, the victim opens a new browser window and goes to http:// examplesite/ 
-
-. 
-An attacker sitting on the same network is able to see the clear text traffic to http://examplesite. 
-
-. 
-The attacker sends back a "301 Moved Permanently" in response to the clear text traffic to http://examplesite. The response contains the header "Location: http://somesecuresite /", which makes it appear that examplesite is sending the web browser to somesecuresite. Notice that the URL scheme is HTTP not HTTPS. 
-
-. 
-The victim's browser starts a new clear text connection to http://somesecuresite/ and sends an HTTP request containing the cookie in the HTTP header in clear text 
-
-. 
-The attacker sees this traffic and logs the cookie for later use. 
+- 패해가자 https://somesecuresite/ 에 보안 웹 사이트로 로그인
+- 보안 사이트에서 클라이언트 로그인에 대한 세션 쿠키를 발행합니다.
+- 로그인 동안, 피해자는 새로운 브라우저 창을 열고 http://examplesite/로 접속
+- 동일 네트워크에 접속 상에 접속 중인 공격자는 http://examplesite에 평문 트래픽을 볼 수 있습니다.
+- 공격자는 http://examplesite에 평문 트래픽에 대한 응답으로 "301 Moved permanently"로 다시 전송
+응답은 examplesite가 somesecuresite로 보여지도록 "Location: http://somesecuresite/" 헤더를 포함합니다.
+URL 스키마는 HTTP이지 HTTPS가 아닌 것을 알 수 있습니다.
+- 피해자의 브라우저는 http://somesucuresite/로 새로운 평문 접속을 시작하고,
+평문으로 HTTP 헤더에 쿠키를 포함하여 전송합니다.
+- 공격자는 이 트래픽을 보고 나중에 사용하기 위해 쿠키를 기록합니다.
 
 
-To test if a website is vulnerable carry out the following tests: 
-[1] Check if website supports both HTTP and HTTPS protocols 
-[2] Check if cookies do not have the "Secure" flag 
+다음 테스트를 수행하여 웹 사이트 취약점 여부 확인
+
+1. HTTP와 HTTPS 프로토콜 둘다 지원하는 웹 사이트인지 체크protocols 
+2. "Secure" 플래그를 가지고 있지 않은 쿠키인지 확인
 
 |
 
 SSL Strip 
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+일부 어플리케이션은 HTTP와 HTTPS 둘다 지원합니다.
+
+either for usability or so users can type both addresses and get to the site. 
+
+종종 사용자는 링크 또는 리다이렉션에서 HTTPS 웹 사이트로 이동합니다.
+
+Typically personal banking sites have a similar configuration with an iframed log in or a form with action attribute over HTTPS but the page under HTTP. 
+An attacker in a privileged position can intercept traffic when the user is in the http site and manipulate it to get a Man-In-The-Middle attack under HTTPS. 
+어플리케이션이 HTTP와 HTTPS 둘다 지원한다면 취약합니다.
+
+
+|
+
+HTTP 프록시를 통한 테스트 
 -----------------------------------------------------------------------------------------
 
-Some applications supports both HTTP and HTTPS, either for usability or so users can type both addresses and get to the site. Often users go into an HTTPS website from link or a redirect. Typically personal banking sites have a similar configuration with an iframed log in or a form with action attribute over HTTPS but the page under HTTP. 
-An attacker in a privileged position -as described in SSL strip 
-[8] - can intercept traffic when the user is in the http site and manipulate it to get a Man-In-The-Middle attack under HTTPS. An application is vulnerable if it supports both HTTP and HTTPS. 
+기업 환경 내부에서 테스터는 직접 액세스할 수 없는 서비스가 있기 때문에, 
+CONNECT 메소드를 사용하여 HTTP 프록시를 통해서만 접근할 수 있습니다.
 
-Testing via HTTP proxy 
+대부분의 툴은 SSL/TLS 핸드쉐이크를 시작하려면 원하는 TCP 포트에서 연결을 시도하기 때문에, 
+이 시나리오에서 동작하지 않습니다.
 
-Inside corporate environments testers can see services that are not directly accessible and they can access them only via HTTP proxy using the CONNECT method [36]. 
-Most of the tools will not work in this scenario because they try to connect to the desired tcp port to start the SSL/TLS handshake. With the help of relaying software such as socat [37] testers can enable those tools for use with services behind an HTTP proxy. 
+socat과 같은 미들 소프트웨어의 도움으로 HTTP 프록시 뒤에 서비스로 사용 툴을 활성화 할 수 있습니다.
 
-**Example 8. Testing via HTTP proxy**
+|
 
-To connect to destined.application.lan:443 via proxy 10.13.37.100:3128 run socat as follows: 
+예제 8. HTTP proxy를 통한 테스트
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+프록시 10.13.37.100:3128을 통해 destined.application.lan:443에 접속하기 위해 socat을 다음과 같이 실행합니다.
 
 .. code-block:: console
 
-    $ socat TCP-LISTEN:9999,reuseaddr,fork 
-    PROXY:10.13.37.100:destined.application.lan:443,proxy
-    port=3128 
+    $ socat TCP-LISTEN:9999,reuseaddr,fork PROXY:10.13.37.100:destined.application.lan:443,proxyport=3128 
 
-Then the tester can target all other tools to localhost:9999: 
+테스터는 다음 명령을 통해 localhost:9999에 접속할 수 있습니다.
 
 .. code-block:: console
 
     $ openssl s_client -connect localhost:9999 
 
-All connections to localhost:9999 will be effectively relayed by socat via proxy to destined.application.lan:443. 
 
-Configuration Review 
-
-Testing for Weak SSL/TLS Cipher Suites 
------------------------------------------------------------------------------------------
-
-Check the configuration of the web servers that provide https services. If the web application provides other SSL/TLS wrapped services, these should be checked as well. 
-
-**Example 9. Windows Server**
-
-Check the configuration on a Microsoft Windows Server (2000, 2003 and 2008) using the registry key: 
-HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Con-
-trol\SecurityProviders\SCHANNEL\ 
-that has some sub-keys including Ciphers, Protocols and KeyExchangeAlgorithms. 
-Example 10: Apache 
-To check the cipher suites and protocols supported by the Apache2 web server, open the ssl.conf file and search for the SSLCipherSuite, SSLProtocol, SSLHonorCipherOrder,SSLInsecureRenegotiation and SSLCompression directives. 
+socat을 이용한 프록시를 통해 localhost:9999로 destined.application.lan:443에 접속할 수 있습니다.
 
 |
 
-Testing SSL certificate validity - client and server 
+설정 검토
+==========================================================================================
+
+|
+
+취약한 SSL/TLS 암호화 방식 테스트
 -----------------------------------------------------------------------------------------
 
-Examine the validity of the certificates used by the application at both server and client levels. The usage of certificates is primarily at the web server level, however, there may be additional communication paths protected by SSL (for example, towards the DBMS). Testers should check the application architecture to identify all SSL protected channels. Tools 
- 
-- [21][Qualys SSL Labs - SSL Server Test | https://www.ssllabs. com/ssltest/index.html]: internet facing scanner 
-- [27] [Tenable - Nessus Vulnerability Scanner | http://www. tenable.com/products/nessus]: includes some plugins to test different SSL related vulnerabilities, Certificates and the presence of HTTP Basic authentication without SSL. 
-- [32] [TestSSLServer | http://www.bolet.org/TestSSLServer/]: a java scanner - and also windows executable - includes tests for cipher suites, CRIME and BEAST 
-- [33] [sslyze | https://github.com/iSECPartners/sslyze]: is a python script to check vulnerabilities in SSL/TLS. 
-[28] [SSLAudit|https://code.google.com/p/sslaudit/]: a perl script/windows executable scanner which follows Qualys SSL Labs Rating Guide. 
-- [29] [SSLScan | http://sourceforge.net/projects/sslscan/] with [SSL Tests|http://www.pentesterscripting.com/discovery/ ssl_tests]: a SSL Scanner and a wrapper in order to enumerate SSL vulnerabilities. 
-- [31] [nmap|http://nmap.org/]: can be used primary to identify SSL-based services and then to check Certificate and SSL/TLS vulnerabilities. In particular it has some scripts to check [Certificate and SSLv2|http://nmap.org/nsedoc/scripts/ssl-cert.html] and supported [SSL/TLS protocols/ciphers|http://nmap.org/ nsedoc/scripts/ssl-enum-ciphers.html] with an internal rating. 
-- [30] [curl|http://curl.haxx.se/] and [openssl|http://www. openssl.org/]: can be used to query manually SSL/TLS services 
-- [9] [Stunnel|http://www.stunnel.org]: a noteworthy class of SSL clients is that of SSL proxies such as stunnel available at which can be used to allow non-SSL enabled tools to talk to SSL services) 
-- [37] [socat| http://www.dest-unreach.org/socat/]: Multipurpose relay 
-- [38] [testssl.sh| https://testssl.sh/ ] 
+HTTPS 서비스를 제공하는 웹 서버의 설정 체크
+만약 웹 어플리케이션이 SSL/TLS를 제공한다면, 다음을 확인합니다.
+
+|
+
+예제 9. 윈도우 서버
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+마이크로소프트 윈도우 서버에서 레지스트리 키를 사용하여 설정을 체크합니다.
+
+.. code-block:: html
+
+    HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\ 
+
+Ciphers, Protocols, KeyExchangeAlgorithms을 포함한 서브키를 가지고 있습니다.
+
+
+예제 10: 아파치
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+암호화 방식과 protocols를 확인하기 위해 아파치2 웹 서버에서 지원하는 ssl.conf를 열고,
+SSLCipherSuite, SSLProtocol, SSLHonorCipherOrder,SSLInsecureRenegotiation, SSLCompression을 검색합니다.
+
+|
+
+SSL 인증서 유효성 테스트 - 클라이언트와 서버
+-----------------------------------------------------------------------------------------
+
+서버와 클라이언트 레벨에서 어플리케이션에 의해 사용되는 인증서의 유효성을 검사합니다.
+웹 서버 레벨에서 주로 인증서가 이용되지만, SSL에 의해 보호할 통신 경로를 추가할 수 있습니다.
+테스터는 모든 SSL 보안 채널을 확인하기 위해 어플리케이션의 아키텍쳐를 확인해야합니다.
+
+Testers should check the application architecture to identify all SSL protected channels. 
+
+|
+
+Tools 
+==========================================================================================
+
+- Qualys SSL Labs - SSL Server Test: https://www.ssllabs.com/ssltest/index.html
+- Tenable - Nessus Vulnerability Scanner: http://www.tenable.com/products/nessus
+- TestSSLServer: http://www.bolet.org/TestSSLServer/
+- sslyze: https://github.com/iSECPartners/sslyze
+- SSLAudit: https://code.google.com/p/sslaudit/
+- SSLScan: http://sourceforge.net/projects/sslscan/
+- nmap
+- curl: http://curl.haxx.se/
+- Stunnel: http://www.stunnel.org
+- socat: http://www.dest-unreach.org/socat/
+- testssl.sh: https://testssl.sh/
 
 |
 
 References 
 ==========================================================================================
 
-|
-
 OWASP Resources 
 -----------------------------------------------------------------------------------------
  
-- [5] [OWASP Testing Guide - Testing for cookie attributes (OTG-SESS-002)|https://www.owasp.org/index.php/Testing_for_ cookies_attributes_(OTG-SESS-002)] 
-- [4][OWASP Testing Guide - Test Network/Infrastructure Configuration (OTG-CONFIG-001)|https://www.owasp.org/index. php/Test_Network/Infrastructure_Configuration_(OTG-CONFIG-001)] 
-- [6] [OWASP Testing Guide - Testing for HTTP_Strict_Transport_Security (OTG-CONFIG-007)|https://www.owasp.org/ index.php/Test_HTTP_Strict_Transport_Security_(OTG-CONFIG-007)] 
-- [2] [OWASP Testing Guide - Testing for Sensitive information sent via unencrypted channels (OTG-CRYPST-003)|https:// www.owasp.org/index.php/Testing_for_Sensitive_information_sent_via_unencrypted_channels_(OTG-CRYPST-003)] 
-- [3] [OWASP Testing Guide - Testing for Credentials Transported over an Encrypted Channel (OTG-AUTHN-001)|https://www. owasp.org/index.php/Testing_for_Credentials_Transported_ over_an_Encrypted_Channel_(OTG-AUTHN-001)] 
-- [22] [OWASP Cheat sheet - Transport Layer Protection|https://www.owasp.org/index.php/Transport_Layer_Protection_Cheat_Sheet] 
-- [23] [OWASP TOP 10 2013 - A6 Sensitive Data Exposure|https://www.owasp.org/index.php/Top_10_2013-A6-Sensitive_Data_Exposure] 
-- [24] [OWASP TOP 10 2010 - A9 Insufficient Transport Layer Protection|https://www.owasp.org/index.php/ Top_10_2010-A9-Insufficient_Transport_Layer_Protection] 
-- [25] [OWASP ASVS 2009 - Verification 10|https://code.google. com/p/owasp-asvs/wiki/Verification_V10]
-- [26] [OWASP Application Security FAQ - Cryptography/ SSL|https://www.owasp.org/index.php/OWASP_Application_ Security_FAQ#Cryptography.2FSSL] 
+- 쿠키 속성 테스트 (OTG-SESS-002)
+- 네트워크 및 인프라 설정 테스트 (OTG-CONFIG-001)
+- HTTP Strict Transport 보안 테스트 (OTG-CONFIG-007) 
+- 민감한 정보가 암호화되지 않은 채널에서 보내지는 경우 침투 테스트 (OTG-CRYPST-003)
+- 암호화된 채널에서 자격 증명 전송 테스트 (OTG-AUTHN-001)
+- OWASP Cheat sheet - Transport Layer Protection: https://www.owasp.org/index.php/Transport_Layer_Protection_Cheat_Sheet
+- OWASP TOP 10 2013 - A6 Sensitive Data Exposure: https://www.owasp.org/index.php/Top_10_2013-A6-Sensitive_Data_Exposure
+- OWASP TOP 10 2010 - A9 Insufficient Transport Layer Protection: https://www.owasp.org/index.php/Top_10_2010-A9-Insufficient_Transport_Layer_Protection
+- OWASP ASVS 2009 - Verification 10: https://code.google.com/p/owasp-asvs/wiki/Verification_V10
+- OWASP Application Security FAQ - Cryptography/SSL: https://www.owasp.org/index.php/OWASP_Application_ Security_FAQ#Cryptography.2FSSL
 
 |
 
 Whitepapers 
 -----------------------------------------------------------------------------------------
 
-- [1] [RFC5246 - The Transport Layer Security (TLS) Protocol Version 1.2 (Updated by RFC 5746, RFC 5878, RFC 6176)|http:// www.ietf.org/rfc/rfc5246.txt] 
-- [36] [RFC2817 - Upgrading to TLS Within HTTP/1.1|] 
-- [34] [RFC6066 - Transport Layer Security (TLS) Extensions: Extension Definitions|http://www.ietf.org/rfc/rfc6066.txt] 
-- [11] [SSLv2 Protocol Multiple Weaknesses |http://osvdb. org/56387] 
-- [12] [Mitre - TLS Renegotiation MiTM|http://cve.mitre.org/ cgi-bin/cvename.cgi?name=CVE-2009-3555] 
-- [13] [Qualys SSL Labs - TLS Renegotiation DoS|https://community.qualys.com/blogs/securitylabs/2011/10/31/tls-renegotiation-and-denial-of-service-attacks] 
-- [10] [Qualys SSL Labs - SSL/TLS Deployment Best Practices|https://www.ssllabs.com/projects/best-practices/index. html] 
-- [14] [Qualys SSL Labs - SSL Server Rating Guide|https://www. ssllabs.com/projects/rating-guide/index.html] 
-- [20] [Qualys SSL Labs - SSL Threat Model|https://www.ssllabs.com/projects/ssl-threat-model/index.html] 
-- [18] [Qualys SSL Labs - Forward Secrecy|https://community. qualys.com/blogs/securitylabs/2013/06/25/ssl-labs-deploying-forward-secrecy] 
-- [15] [Qualys SSL Labs - RC4 Usage|https://community.qualys. com/blogs/securitylabs/2013/03/19/rc4-in-tls-is-brokennow-what] 
-- [16] [Qualys SSL Labs - BEAST|https://community.qualys. com/blogs/securitylabs/2011/10/17/mitigating-the-beast-attack-on-tls] 
-- [17] [Qualys SSL Labs - CRIME|https://community.qualys. com/blogs/securitylabs/2012/09/14/crime-information-leakage-attack-against-ssltls] 
-- [7] [SurfJacking attack|https://resources.enablesecurity.com/ resources/Surf%20Jacking.pdf] 
-- [8] [SSLStrip attack|http://www.thoughtcrime.org/software/ sslstrip/] 
-- [19] [PCI-DSS v2.0|https://www.pcisecuritystandards.org/ security_standards/documents.php] 
-- [35] [Xiaoyun Wang, Hongbo Yu: How to Break MD5 and Other Hash Functions| http://link.springer.com/chapter/10.1007/11426639_2] 
+- RFC5246 - The Transport Layer Security (TLS) Protocol Version 1.2 (Updated by RFC 5746, RFC 5878, RFC 6176): http:// www.ietf.org/rfc/rfc5246.txt
+- RFC2817 - Upgrading to TLS Within HTTP/1.1
+- RFC6066 - Transport Layer Security (TLS) Extensions: Extension Definitions: http://www.ietf.org/rfc/rfc6066.txt 
+- SSLv2 Protocol Multiple Weaknesses: http://osvdb.org/56387
+- Mitre - TLS Renegotiation MiTM: http://cve.mitre.org/ cgi-bin/cvename.cgi?name=CVE-2009-3555
+- Qualys SSL Labs - TLS Renegotiation DoS: https://community.qualys.com/blogs/securitylabs/2011/10/31/tls-renegotiation-and-denial-of-service-attacks
+- Qualys SSL Labs - SSL/TLS Deployment Best Practices: https://www.ssllabs.com/projects/best-practices/index. html
+- Qualys SSL Labs - SSL Server Rating Guide: https://www.ssllabs.com/projects/rating-guide/index.html
+- Qualys SSL Labs - SSL Threat Model: https://www.ssllabs.com/projects/ssl-threat-model/index.html
+- Qualys SSL Labs - Forward Secrecy: https://community.qualys.com/blogs/securitylabs/2013/06/25/ssl-labs-deploying-forward-secrecy
+- Qualys SSL Labs - RC4 Usage: https://community.qualys.com/blogs/securitylabs/2013/03/19/rc4-in-tls-is-brokennow-what
+- Qualys SSL Labs - BEAST: https://community.qualys.com/blogs/securitylabs/2011/10/17/mitigating-the-beast-attack-on-tls
+- Qualys SSL Labs - CRIME: https://community.qualys.com/blogs/securitylabs/2012/09/14/crime-information-leakage-attack-against-ssltls
+- SurfJacking attack: https://resources.enablesecurity.com/resources/Surf%20Jacking.pdf
+- SSLStrip attack: http://www.thoughtcrime.org/software/sslstrip/
+- PCI-DSS v2.0: https://www.pcisecuritystandards.org/ security_standards/documents.php
+- Xiaoyun Wang, Hongbo Yu: How to Break MD5 and Other Hash Functions: http://link.springer.com/chapter/10.1007/11426639_2
+
+|
