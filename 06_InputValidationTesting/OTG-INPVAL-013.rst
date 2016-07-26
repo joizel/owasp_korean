@@ -1,5 +1,5 @@
 ============================================================================================
-OTG-INPVAL-013 (Command Injection 침투 테스트)
+OTG-INPVAL-013 (커멘드 인젝션 침투 테스트)
 ============================================================================================
 
 |
@@ -7,44 +7,45 @@ OTG-INPVAL-013 (Command Injection 침투 테스트)
 개요
 ============================================================================================
 
-This article describes how to test an application for OS command injection.
-The tester will try to inject an OS command through an HTTP
-request to the application.
-OS command injection is a technique used via a web interface in
-order to execute OS commands on a web server. The user supplies
-operating system commands through a web interface in order to execute
-OS commands. Any web interface that is not properly sanitized 
-is subject to this exploit. With the ability to execute OS commands,
-the user can upload malicious programs or even obtain passwords.
-OS command injection is preventable when security is emphasized
-during the design and development of applications.
+이 섹션은 OS 커멘드 인젝션으로 어플리케이션을 테스트하는 방법을 설명합니다.
+테스터는 어플리케이션에서 HTTP 요청을 통해 OS 명령을 삽입할 수 있습니다.
+OS 명령 인젝션은 웹 서버에 OS 명령을 실행하기 위해 웹 인터페이스를 사용하는 기술입니다.
+
+사용자는 웹 인터페이스를 통해 OS 명령을 실행하기 위해 운영체제 명령어를 입력합니다.
+제대로 필터링되지 않은 웹 인터페이스는 해당 공격에 취약할 수 있습니다.
+
+OS 명령을 실행하는 명령으로 사용자는 악성 프로그램을 업로드하거나 패스워드를 획득할 수 있습니다.
+OS 명령 인젝션은 어플리케이션 설계와 개발시 보안이 강조되어 야 예발될 수 있습니다.
 
 |
 
 테스트 방법
 ============================================================================================
 
-When viewing a file in a web application, the file name is often shown
-in the URL. Perl allows piping data from a process into an open statement.
-The user can simply append the Pipe symbol “|” onto the end
-of the file name.
+웹 어플리케이션에서 파일을 볼 때, 종종 URL에서 파일명이 보여집니다.
+Perl은 파이프 명령을 사용할 수 있습니다.
 
-Example URL before alteration:
+사용자는 간단하게 파일명 끝에 파이프 "|"" 기호를 추가할 수 있습니다.
+
+**예제**
+
+[변경 전]
 
 .. code-block:: html
 
     http://sensitive/cgi-bin/userData.pl?doc=user1.txt
 
-Example URL modified:
+[변경 후]
 
 .. code-block:: html
 
     http://sensitive/cgi-bin/userData.pl?doc=/bin/ls|
 
-This will execute the command “/bin/ls”.
-Appending a semicolon to the end of a URL for a .PHP page followed
-by an operating system command, will execute the command. %3B is
-url encoded and decodes to semicolon
+위와 같은 경우 "/bin/ls"를 실행할 것입니다.
+
+.PHP 페이지 URL 끝에 세미콜론을 추가하는 것으로 운영체제 명령이 실행될 것입니다.
+
+%3B는 세미콜론이 url 암호화된 것입니다.
 
 **예제**
 
@@ -52,15 +53,17 @@ url encoded and decodes to semicolon
     
     http://sensitive/something.php?dir=%3Bcat%20/etc/passwd
 
+|
+
 **예제**
 
-Consider the case of an application that contains a set of documents
-that you can browse from the Internet. If you fire up WebScarab, you
-can obtain a POST HTTP like the following:
-In this post request, we notice how the application retrieves the public
-documentation. Now we can test if it is possible to add an operating
-system command to inject in the POST HTTP. Try the following:
+인터넷으로부터 브라우징할 수 있는 문서 설정을 포함한 어플리케이션의 경우를 고려해봅시다.
+만약 당신이 WebScarab을 사용한다면, POST HTTP를 얻을 수 있습니다.
 
+이 post 요청에서, 어플리케이션이 공개 문서를 검색하는 방법을 알 수 있습니다.
+이제 POST HTTP에 운영체제 명령을 삽입하여 추가할 수 있는지 테스트 할 수 있습니다.
+
+다음을 시도해보십시오:
 
 .. code-block:: html
     
@@ -84,8 +87,7 @@ system command to inject in the POST HTTP. Try the following:
     
     Doc=Doc1.pdf
 
-If the application doesn’t validate the request, we can obtain the following
-result:
+만약 어플리케이션이 요청에 대한 유효성 검사를 하지 않는다면, 다음 결과를 획득할 수 있습니다.
 
 .. code-block:: html
 
@@ -109,12 +111,12 @@ result:
 
     Doc=Doc1.pdf+|+Dir c:\
 
-In this case, we have successfully performed an OS injection attack.
+이 경우, 성공적으로 OS 삽입 공격을 수행할 수 있습니다.
 
 .. code-block:: html
 
-    Exec Results for ‘cmd.exe /c type “C:\httpd\public\
-    doc\”Doc=Doc1.pdf+|+Dir c:\’
+    Exec Results for ‘cmd.exe /c type "C:\httpd\public\
+    doc\"Doc=Doc1.pdf+|+Dir c:\’
     Output...
     Il volume nell’unità C non ha etichetta.
     Numero di serie Del volume: 8E3F-4B61
@@ -151,8 +153,8 @@ In this case, we have successfully performed an OS injection attack.
 Tools
 ============================================================================================
 
-• OWASP WebScarab
-• OWASP WebGoat
+- OWASP WebScarab
+- OWASP WebGoat
 
 |
 
@@ -165,6 +167,8 @@ White papers
 - http://www.securityfocus.com/infocus/1709
 
 
+|
+
 Remediation
 ============================================================================================
 
@@ -172,9 +176,9 @@ Sanitization
 --------------------------------------------------------------------------------------
 
 The URL and form data needs to be sanitized for invalid characters.
-A “blacklist” of characters is an option but it may be difficult
+A "blacklist" of characters is an option but it may be difficult
 to think of all of the characters to validate against. Also there
-may be some that were not discovered as of yet. A “white list”
+may be some that were not discovered as of yet. A "white list"
 containing only allowable characters should be created to validate
 the user input. Characters that were missed, as well as undiscovered
 threats, should be eliminated by this list.

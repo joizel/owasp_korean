@@ -28,7 +28,7 @@ HTTPS 프로토콜 사용은 기밀성 뿐만 아니라 인증 역시 보장합�
 
 SSL/TLS 서비스가 존재하는 경우에는 양호하지만, 공격 표면을 증가시키고 다음 취약점이 존재할 수 있습니다.
 
-- SSL/TLS 프로토콜, Ciphers, Keys 그리고 재협상이 제대로 설정되어 있어야합니다.
+- SSL/TLS 프로토콜, 암호문, 키 그리고 재협상이 제대로 설정되어 있어야합니다.
 - 인증서 유효 기간이 보장되어야합니다.
 
 이와 관련한 또 다른 취약점
@@ -49,7 +49,7 @@ SSL/TLS 서비스가 존재하는 경우에는 양호하지만, 공격 표면을
 
 |
 
-취약한 SSL/TLS Ciphers/Protocols/Keys
+취약한 SSL/TLS 암호문/프로토콜/키
 -------------------------------------------------------------------------------------------
 
 역사적으로, 암호 시스템은 최대 40 비트 크기 이하의 키라면 파괴 될 수 있고, 통신의 암호 해독을 허용되기 때문에 미국 정부에서 설정한 제한이 있었습니다.
@@ -72,7 +72,8 @@ It is possible (for example, by means of configuration directives) to specify wh
 SSL 인증 유효성 테스트 - 클라이언트와 서버
 -------------------------------------------------------------------------------------------
 
-When accessing a web application via the HTTPS protocol, a secure channel is established between the client and the server. The identity of one (the server) or both parties (client and server) is then established by means of digital certificates. So, once the cipher suite is determined, the "SSL Handshake" continues with the exchange of the certificates: 
+HTTPS 프로토콜을 통해 웹 어플리케이션에 접속할 때, 보안 채널은 클라이언트와 서버 사이에 설립됩니다.
+The identity of one (the server) or both parties (client and server) is then established by means of digital certificates. So, once the cipher suite is determined, the "SSL Handshake" continues with the exchange of the certificates: 
 
 1. The server sends its Certificate message and, if client authentication is required, also sends a CertificateRequest message to the client. 
 2. The server sends a ServerHelloDone message and waits for a client response. 
@@ -105,7 +106,7 @@ Also there are some attacks that can be used to intercept traffic if the web ser
 
 |
 
-민감한 데이터를 평문으로 전송하는 테스트
+민감한 데이터 평문 전송 테스트
 -----------------------------------------------------------------------------------------
 
 보안되어야 하는 다양한 정보들은 평문으로 전송될 수 있습니다.
@@ -113,7 +114,7 @@ Also there are some attacks that can be used to intercept traffic if the web ser
 
 |
 
-예제 1. HTTP를 통해 기본 인증
+예제 1. HTTP를 통해 Basic 인증
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 
@@ -142,7 +143,7 @@ A typical example is the usage of Basic Authentication over HTTP because with Ba
 
 |    
 
-취약한 SSL/TLS Ciphers/Protocols/Keys 테스트
+취약한 SSL/TLS 암호문/프로토콜/키 테스트
 -----------------------------------------------------------------------------------------
 
 The large number of available cipher suites and quick progress in cryptanalysis makes testing an SSL server a non-trivial task. 
@@ -227,7 +228,7 @@ Sometimes the SSL/TLS enabled service is not directly accessible and the tester 
 
 |
 
-예제 3. nmap을 통해 Ciphers, SSLv2, Certificate 정보 확인
+예제 3. nmap을 통해 암호문, SSLv2, 인증서 정보 확인
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Nmap은 인증서 정보 체크 및 취약한 암호와 SSLv2(sl-cert,ssl-enum-ciphers)를 위한 
@@ -291,7 +292,7 @@ Nmap은 인증서 정보 체크 및 취약한 암호와 SSLv2(sl-cert,ssl-enum-c
 
 |
 
-예제 4. openssl을 통해 Client-initiated Renegotiation과 Secure Renegotiation 테스트
+예제 4. openssl을 통해 Client-initiated 재협상과 Secure 재협상 테스트
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Openssl은 수동으로 SSL/TLS를 테스트할 수 있습니다. 이번 예제에서 테스터는 openssl으로 서버에 연결된
@@ -1017,8 +1018,8 @@ The tester needs the file mapping-rfc.txt in same directory.
 
 |
 
-SSL 인증서 유효성 검사 테스트 - 클라이언트와 서버
------------------------------------------------------------------------------------------
+SSL 인증 유효성 테스트 - 클라이언트와 서버
+-------------------------------------------------------------------------------------------
 
 Firstly upgrade the browser because CA certs expire and in every release of the browser these are renewed. Examine the validity of the certificates used by the application. Browsers will issue a warning when encountering expired certificates, certificates issued by untrusted CAs, and certificates which do not match name wise with the site to which they should refer. 
 By clicking on the padlock that appears in the browser window when visiting an HTTPS site, testers can look at information related to the certificate . including the issuer, period of validity, encryption characteristics, etc. If the application requires a client certificate, that tester has probably installed one to access it. Certificate information is available in the browser by inspecting the relevant certificate(s) in the list of the installed certificates. 
@@ -1210,11 +1211,11 @@ OWASP Resources
 Whitepapers 
 -----------------------------------------------------------------------------------------
 
-- RFC5246 - The Transport Layer Security (TLS) Protocol Version 1.2 (Updated by RFC 5746, RFC 5878, RFC 6176): http:// www.ietf.org/rfc/rfc5246.txt
+- RFC5246 - The Transport Layer Security (TLS) Protocol Version 1.2 (Updated by RFC 5746, RFC 5878, RFC 6176): http://www.ietf.org/rfc/rfc5246.txt
 - RFC2817 - Upgrading to TLS Within HTTP/1.1
 - RFC6066 - Transport Layer Security (TLS) Extensions: Extension Definitions: http://www.ietf.org/rfc/rfc6066.txt 
 - SSLv2 Protocol Multiple Weaknesses: http://osvdb.org/56387
-- Mitre - TLS Renegotiation MiTM: http://cve.mitre.org/ cgi-bin/cvename.cgi?name=CVE-2009-3555
+- Mitre - TLS Renegotiation MiTM: http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2009-3555
 - Qualys SSL Labs - TLS Renegotiation DoS: https://community.qualys.com/blogs/securitylabs/2011/10/31/tls-renegotiation-and-denial-of-service-attacks
 - Qualys SSL Labs - SSL/TLS Deployment Best Practices: https://www.ssllabs.com/projects/best-practices/index. html
 - Qualys SSL Labs - SSL Server Rating Guide: https://www.ssllabs.com/projects/rating-guide/index.html
