@@ -163,7 +163,7 @@ Google Webmaster 툴을 사용하여 robots.txt 분석
 
 <META> 태그는 각 HTML 문서의 HEAD 섹션에 위치하고 있습니다.
 
-"<META NAME='ROBOTS' ... >"가 없다면 "Robots Exclusion Protocol"은 기본적으로 "INDEX,FOLLW"가 존재합니다.
+"<META NAME='ROBOTS' ... >"가 없다면 "Robots Exclusion Protocol"은 기본적으로 "INDEX,FOLLOW"가 존재합니다.
 그러므로, "Robots Exclusion Protocol"에 정의한 2개의 유효 항목은 "NOINDEX"와 "NOFOLLOW"와 같이 "No..."로 시작됩니다.
 
 Web spiders/robots/crawlers는 의도적으로 robots.txt 파일과 같은 "<META NAME='ROBOTS'" 태그를 무시할 수 있습니다.

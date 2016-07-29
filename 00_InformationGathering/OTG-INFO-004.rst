@@ -77,9 +77,14 @@ There are three factors influencing how many applications are related to a given
 The obvious entry point for a web application is www.example.com, i.e., with this shorthand notation we think of the web application originating at http://www.example.com/ (the same applies for https). 
 However, even though this is the most common situation, there is nothing forcing the application to start at "/".
 
-For example, the same symbolic name may be associated to three web applications such as: http://www.example.com/url1 http://www.example.com/url2 http://www.example.com/url3
+For example, the same symbolic name may be associated to three web applications such as: 
+
+- http://www.example.com/url1 
+- http://www.example.com/url2 
+- http://www.example.com/url3
 
 In this case, the URL http://www.example.com/ would not be associated with a meaningful page, and the three applications would be "hidden", unless the tester explicitly knows how to reach them, i.e., the tester knows url1, url2 or url3. 
+
 There is usually no need to publish web applications in this way, unless the owner doesn’t want them to be accessible in a standard way, and is prepared to inform the users about their exact location. 
 This doesn’t mean that these applications are secret, just that their existence and location is not explicitly advertised.
 
@@ -94,6 +99,7 @@ In fact, web applications may be associated with arbitrary TCP ports, and can be
 For example, http://www.example.com:20000/.
 
 nmap –PN –sT –sV –p0-65535 192.168.1.100
+
 Web Application Penetration Testing
 
 |
@@ -160,12 +166,12 @@ coullook like:
 
 It is sufficient to examine the output and look for http or the indication
 of SSL-wrapped services (which should be probed to confirm
-that they are https). For example, the output of the previous command
-coullook like:
+that they are https). 
+For example, the output of the previous command could look like:
 
 .. code-block:: console
 
-    901/tcp open http Samba SWAT administration server
+    901/tcp	 open http Samba SWAT administration server
     1241/tcp open ssl Nessus security scanner
     3690/tcp open unknown
     8000/tcp open http-alt?
@@ -213,21 +219,25 @@ popular applications or web interfaces which could otherwise go unnoticed
 Approaches to address issue 3 - virtual hosts
 -------------------------------------------------------------------------------------------
 
-There are a number of techniques which may be used to identify DNS names associated to a given IP address x.y.z.t.
+주어진 IP 주소 x.y.z.t에 할당된 DNS명을 식별하기 위해 사용할 수 있는 수많은 기술이 있습니다..
 
 DNS zone transfers
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 This technique has limited use nowadays, given the fact that zone 
-transfers are largely not honored by DNS servers. However, it may
+transfers are largely not honored by DNS servers. 
+However, it may
 be worth a try. First of all, testers must determine the name servers
-serving x.y.z.t. If a symbolic name is known for x.y.z.t (let it be www.
+serving x.y.z.t. 
+If a symbolic name is known for x.y.z.t (let it be www.
 example.com), its name servers can be determined by means of tools
 such as nslookup, host, or dig, by requesting DNS NS records.
+
 If no symbolic names are known for x.y.z.t, but the target definition
 contains at least a symbolic name, testers may try to apply the same
 process and query the name server of that name (hoping that x.y.z.t
-will be served as well by that name server). For example, if the target
+will be served as well by that name server). 
+For example, if the target
 consists of the IP address x.y.z.t and the name mail.example.com, determine
 the name servers for domain example.com.
 The following example shows how to identify the name servers for
@@ -278,7 +288,6 @@ This kind of search is akin to DNS zone transfer, but relies on webbased service
 One such service is the Netcraft Search DNS service, available at http://searchdns.netcraft.com/?host. 
 The tester may query for a list of names belonging to your domain of choice, such as example.com.
 Then they will check whether the names they obtained are pertinent to the target they are examining.
-
 
 Reverse-IP services
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

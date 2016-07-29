@@ -131,7 +131,7 @@ immediately obvious as the following:
 
 If part or the entire token appears to be encoded or hashed, it should
 be compared to various techniques to check for obvious obfuscation.
-For example the string “192.168.100.1:owaspuser:password:15:58”
+For example the string "192.168.100.1:owaspuser:password:15:58"
 is represented in Hex, Base64 and as an MD5 hash:
 
 .. code-block:: html
@@ -257,12 +257,12 @@ period of time and must be deleted from the disk or memory
 afterwards to avoid the risk of being replayed. This does not apply
 to cookies that store non-critical data that needs to be remembered
 across sessions (e.g., site look-and-feel).
-[4] “Secure” flag: a cookie whose value is critical for the integrity
+[4] "Secure" flag: a cookie whose value is critical for the integrity
 of the session should have this flag enabled in order to allow its
 transmission only in an encrypted channel to deter eavesdropping.
 The approach here is to collect a sufficient number of instances
 of a cookie and start looking for patterns in their value. The exact
-meaning of “sufficient” can vary from a handful of samples,
+meaning of "sufficient" can vary from a handful of samples,
 if the cookie generation method is very easy to break, to several
 thousands, if the tester needs to proceed with some mathematical
 analysis (e.g., chi-squares, attractors. See later for more information).
@@ -388,34 +388,23 @@ References
 Whitepapers
 ----------------------------------------------------------------------------------------
 
-- RFC 2965 “HTTP State Management Mechanism”
-- RFC 1750 “Randomness Recommendations for Security”
-- Michal Zalewski: “Strange Attractors and TCP/IP Sequence
-Number Analysis” (2001): http://lcamtuf.coredump.cx/oldtcp/
-tcpseq.html
-- Michal Zalewski: “Strange Attractors and TCP/IP Sequence
-Number Analysis - One Year Later” (2002):
-http://lcamtuf.coredump.cx/newtcp/
-- Correlation Coefficient:
-http://mathworld.wolfram.com/CorrelationCoefficient.html
-- Darrin Barrall: “Automated Cookie Analysis” –
-http://www.spidynamics.com/assets/documents/SPIcookies.
-pdf
+- RFC 2965 "HTTP State Management Mechanism"
+- RFC 1750 "Randomness Recommendations for Security"
+- Michal Zalewski: "Strange Attractors and TCP/IP Sequence Number Analysis" (2001): http://lcamtuf.coredump.cx/oldtcp/tcpseq.html
+- Michal Zalewski: "Strange Attractors and TCP/IP Sequence Number Analysis - One Year Later" (2002): http://lcamtuf.coredump.cx/newtcp/
+- Correlation Coefficient: http://mathworld.wolfram.com/CorrelationCoefficient.html
+- Darrin Barrall: "Automated Cookie Analysis": http://www.spidynamics.com/assets/documents/SPIcookies.pdf
 - ENT: http://fourmilab.ch/random/
 - http://seclists.org/lists/fulldisclosure/2005/Jun/0188.html
-- Gunter Ollmann: “Web Based Session Management” -
-http://www.technicalinfo.net
-- Matteo Meucci:”MMS Spoofing” -
-http://www.owasp.org/images/7/72/MMS_Spoofing.ppt
+- Gunter Ollmann: "Web Based Session Management": http://www.technicalinfo.net
+- Matteo Meucci:"MMS Spoofing": http://www.owasp.org/images/7/72/MMS_Spoofing.ppt
 
 |
 
 Videos
 ----------------------------------------------------------------------------------------
 
-- Session Hijacking in Webgoat Lesson -
-http://yehg.net/lab/pr0js/training/view/owasp/webgoat/
-WebGoat_SessionMan_SessionHijackingWithJHijack/
+- Session Hijacking in Webgoat Lesson: http://yehg.net/lab/pr0js/training/view/owasp/webgoat/WebGoat_SessionMan_SessionHijackingWithJHijack/
 
 |
 

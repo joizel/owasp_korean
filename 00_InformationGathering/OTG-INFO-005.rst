@@ -33,21 +33,21 @@ HTML 주석은 종종 어플리케이션에 관한 디버깅 정보를 포함하
 Black Box Testing
 -----------------------------------------------------------------------------------------
 
-Check HTML source code for comments containing sensitive information that can help the attacker gain more insight about the application.
-It might be SQL code, usernames and passwords, internal IP addresses, or debugging information.
+어플리케이션에 관한 민감한 정보를 포함하는 HTML 소스코드 주석을 확인하십시오.
+SQL 코드, 사용자명, 패스워드, 내부 IP 주소, 디버깅 정보등이 그것입니다.
 
 .. code-block:: html
 
     ...
     <div class="table2">
-     <div class="col1">1</div><div class="col2">Mary</div>
-     <div class="col1">2</div><div class="col2">Peter</div>
-     <div class="col1">3</div><div class="col2">Joe</div>
+        <div class="col1">1</div><div class="col2">Mary</div>
+        <div class="col1">2</div><div class="col2">Peter</div>
+        <div class="col1">3</div><div class="col2">Joe</div>
     <!-- Query: SELECT id, name FROM app.users WHERE active='1' -->
     </div>
     ...
 
-The tester may even find something like this:
+테스트를 하다보면 아래와 같은 주석 정보도 찾을 수 있습니다.
 
 .. code-block:: html
 
@@ -63,8 +63,7 @@ Check HTML version information for valid version numbers and Data Type Definitio
 - "loose.dtd" -- loose DTD
 - "frameset.dtd" -- DTD for frameset documents
 
-Some Meta tags do not provide active attack vectors but instead allow
-an attacker to profile an application to
+Some Meta tags do not provide active attack vectors but instead allow an attacker to profile an application to
 
 .. code-block:: html
 
@@ -76,19 +75,18 @@ Some Meta tags alter HTTP response headers, such as http-equiv that sets an HTTP
 
     <META http-equiv="Expires" content="Fri, 21 Dec 2012 12:34:56 GMT">
 
-which will result in the HTTP header:
+**예상 결과**
 
 .. code-block:: html
 
     Expires: Fri, 21 Dec 2012 12:34:56 GMT
 
-and
 
 .. code-block:: html
 
     <META http-equiv="Cache-Control" content="no-cache">
 
-will result in
+**예상 결과**
 
 .. code-block:: html
 
@@ -104,26 +102,21 @@ A common (but not WCAG compliant) Meta tag is the refresh.
 
     <META http-equiv="Refresh" content="15;URL=https://www.owasp.org/index.html">
 
-A common use for Meta tag is to specify keywords that a search engine
-may use to improve the quality of search results.
+A common use for Meta tag is to specify keywords that a search engine may use to improve the quality of search results.
 
 .. code-block:: html
 
     <META name="keywords" lang="en-us" content="OWASP, security,sunshine, lollipops">
 
-Although most web servers manage search engine indexing via the
-robots.txt file, it can also be managed by Meta tags. The tag below
-will advise robots to not index and not follow links on the HTML page
-containing the tag
+Although most web servers manage search engine indexing via the robots.txt file, it can also be managed by Meta tags. 
+The tag below will advise robots to not index and not follow links on the HTML page containing the tag
 
 .. code-block:: html
 
     <META name="robots" content="none"> 
 
 
-The Platform for Internet Content Selection (PICS) and Protocol for
-Web Description Resources (POWDER) provide infrastructure for associating
-meta data with Internet content.
+The Platform for Internet Content Selection (PICS) and Protocol for Web Description Resources (POWDER) provide infrastructure for associating meta data with Internet content.
 
 |
 

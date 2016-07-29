@@ -16,7 +16,6 @@ OTG-INFO-007 (애플리케이션을 통해 경로 실행 맵)
 ==========================================================================================
 
 대상 어플리케이션을 지도화하고 주요 워크플로우를 이해하기
-Map the target application and understand the principal workflows.
 
 |
 
@@ -45,6 +44,8 @@ Black Box Testing
 그런 다음 테스터는 응용 프로그램에서 결정 포인트 더 자세히보고 중요한 코드 경로가 발견 얼마나 많은 조사 할 수 있습니다.
 이 후 발견 된 경로의 URL을, 산문 및 스크린 샷 설명과 함께 스프레드 시트에 문서화되어야한다.
 
+|
+
 Gray/White Box testing
 -----------------------------------------------------------------------------------------
 
@@ -53,10 +54,12 @@ easier with the gray and white box approach to testing. Information
 solicited by and provided to the tester will ensure the minimum requirements
 for code coverage are met.
 
-Example
+|
+
+예제
 -----------------------------------------------------------------------------------------
 
-**Automatic Spidering**
+**자동 스파이더**
 
 자동 스파이더는 지정한 웹사이트에 새로운 리소스를 자동으로 발견하는 데 사용하는 툴입니다.
 스파이더 사직되는 방법에 따라 씨드라고 불리는 방문할 URL 리스트로 시작됩니다.
@@ -71,6 +74,7 @@ ZAP offers the following automatic spidering features, which can be selected bas
 - Spider URL - The seed list contains only the URI corresponding to the selected node (in the Site Tree).
 - Spider all in Scope - The seed list contains all the URIs the user has selected as being ‘In Scope’.
 
+|
 
 Tools
 ==========================================================================================

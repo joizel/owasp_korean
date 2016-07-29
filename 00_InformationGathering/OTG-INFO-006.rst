@@ -29,16 +29,12 @@ once enumeration and mapping have been completed.
 
 |
 
-Before any testing begins, the tester should always get a good understanding
-of the application and how the user and browser communicates
-with it. As the tester walks through the application, they should
-pay special attention to all HTTP requests (GET and POST Methods,
-also known as Verbs), as well as every parameter and form field that
-is passed to the application. In addition, they should pay attention to
-when GET requests are used and when POST requests are used to
-pass parameters to the application. It is very common that GET requests
-are used, but when sensitive information is passed, it is often
-done within the body of a POST request.
+모든 테스트를 시작하기 전에, 테스터는 어플리케이션과 사용자간의 통신하는 방법에 대해 잘 이해하고 있어야 합니다.
+
+As the tester walks through the application, they should pay special attention to all HTTP requests (GET and POST Methods, also known as Verbs), as well as every parameter and form field that is passed to the application.
+
+In addition, they should pay attention to when GET requests are used and when POST requests are used to pass parameters to the application. 
+It is very common that GET requests are used, but when sensitive information is passed, it is often done within the body of a POST request.
 
 Note that to see the parameters sent in a POST request, the tester will
 need to use a tool such as an intercepting proxy (for example, OWASP:
@@ -86,12 +82,18 @@ in this guide dedicated for testing these HTTP methods.
 Requests
 -----------------------------------------------------------------------------------------
 
-- Identify where GETs are used and where POSTs are used.
-- Identify all parameters used in a POST request (these are in the body of the request).
-- Within the POST request, pay special attention to any hidden parameters. When a POST is sent all the form fields (including hidden parameters) will be sent in the body of the HTTP message to the application. These typically aren’t seen unless a proxy or view the HTML source code is used. In addition, the next page shown, its data, and the level of access can all be different depending on the value of the hidden parameter(s).
-- Identify all parameters used in a GET request (i.e., URL), in particular the query string (usually after a ? mark).
-- Identify all the parameters of the query string. These usually are in a pair format, such as foo=bar. Also note that many parameters can be in one query string such as separated by a &, ~, :, or any other special character or encoding.
-- A special note when it comes to identifying multiple parameters in one string or within a POST request is that some or all of the parameters will be needed to execute the attacks. The tester needs to identify all of the parameters (even if encoded or encrypted) and identify which ones are processed by the application. Later sections of the guide will identify how to test these parameters. At this point, just make sure each one of them is identified.
+- GET을 사용한 곳과 POST를 사용한 곳에 대한 식별
+- POST 요청에서 사용하는 모든 파라미터 식별
+- POST 요청 내에 숨겨진 파라미터를 확인합니다. POST로 form 필드를 보낼 때, 어플리케이션에 HTTP body
+메시지로 보낼 것입니다. 추가적으로, 접속 권한에 따라 숨겨진 파라미터의 값이 다를 수 있습니다. 
+- GET 요청에서 사용하는 모든 파라미터 식별
+- 쿼리 문자열의 모든 파라미터 식별. 이것은 foo=bar와 같이 항상 한 쌍 형식으로 되어 있습니다.
+
+
+- A special note when it comes to identifying multiple parameters in one string or within a POST request is that some or all of the parameters will be needed to execute the attacks. 
+The tester needs to identify all of the parameters (even if encoded or encrypted) and identify which ones are processed by the application. 
+Later sections of the guide will identify how to test these parameters. 
+At this point, just make sure each one of them is identified.
 - Also pay attention to any additional or custom type headers not typically seen (such as debug=False).
 
 |
@@ -99,7 +101,8 @@ Requests
 Responses
 -----------------------------------------------------------------------------------------
 
-- Identify where new cookies are set (Set-Cookie header), modified, or added to.
+- 새로운 쿠키가 설정(Set-Cookie 헤더), 수정, 또는 추가된 걸 확인
+
 - Identify where there are any redirects (3xx HTTP status code), 400 status codes, in particular 403 Forbidden, and 500 internal server errors during normal responses (i.e., unmodified requests).
 - Also note where any interesting headers are used. For example, "Server: BIG-IP" indicates that the site is load balanced. Thus, if a site is load balanced and one server is incorrectly configured, then the tester might have to make multiple requests to access the vulnerable server, depending on the type of load balancing used.
 
@@ -112,7 +115,7 @@ Black Box Testing
 
 어플리케이션 엔트리 포인트를 체크하는 방법은 다음 두가지 예가 있습니다.
 
-EXAMPLE 1
+예제 1
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 이 예제는 온라인 쇼핑 어플리케이션으로 부터 아이템을 구매하는 GET 리퀘스트를 보여줍니다.
@@ -124,14 +127,14 @@ EXAMPLE 1
     Host: x.x.x.x
     Cookie: SESSIONID=Z29vZCBqb2IgcGFkYXdhIG15IHVzZXJuYW1lIGlzIGZvbyBhbmQgcGFzc3dvcmQgaXMgYmFy
 
-:Result Expected:
+**예상 결과**
 
 여기 테스터는 리퀘스트의 파라미터 모두를 기록해야 합니다.
 (CUSTOMERID, ITEM, PRICE, IP, Cookie)
 
 |
 
-EXAMPLE 2
+예제 2
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 이 예제는 어플리케이션으로 로그인하는 POST 리퀘스트를 보여줍니다.
@@ -149,7 +152,7 @@ EXAMPLE 2
 
     user=admin&pass=pass123&debug=true&fromtrustIP=true
 
-:Result Expected:
+**예상 결과**
 
 이 예제에서 테스터는 POST Body 상에 모든 파라미터를 기록해야 합니다.
 또한, Cookie값과 CustomCookie값 역시 기록합니다.
@@ -176,7 +179,7 @@ hasn’t already been identified during the black box testing).
 Tools
 ==========================================================================================
 
-Intercepting Proxy
+웹 프록시
 -----------------------------------------------------------------------------------------
 
 - OWASP: Zed Attack Proxy (ZAP)
@@ -184,7 +187,7 @@ Intercepting Proxy
 - Burp Suite
 - CAT
 
-Browser Plug-in
+브라우저 플러그인
 -----------------------------------------------------------------------------------------
 
 - Internet Explorer: TamperIE 

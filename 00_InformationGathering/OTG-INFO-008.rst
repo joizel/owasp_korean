@@ -167,10 +167,41 @@ It is still possible to stumble upon something like this at the bottom of the pa
 
 |
 
+일반적인 프레임워크
+-----------------------------------------------------------------------------------------
+
+.. csv-table:: Cookies
+    :header: "프레임워크","Cookie 이름"
+
+    "Zope", "BITRIX_"
+    "CakePHP","AMP"
+    "Laravel","django"
+
+.. csv-table:: HTML 소스 코드
+    :header: "일반적인 마커"
+
+    "%framework_name%"
+    "powered by"
+    "built upon"
+    "running"
+
+.. csv-table:: 특수 마커
+    :header: "프레임워크","키워드"
+
+    "Adobe ColdFusion", "<!-- START headerTags.cfm"
+    "Microsoft ASP.NET", "__VIEWSTATE"
+    "ZK", "<!-- ZK"
+    "Business Catalyst","<!-- BC_OBNW -->"
+    "Indexhibit","ndxz-studio"
+
+
+|
+
 특정 파일과 폴더
 -----------------------------------------------------------------------------------------
 
-Specific files and folders are different for each specific framework. It is recommended to install the corresponding framework
+Specific files and folders are different for each specific framework. 
+It is recommended to install the corresponding framework
 during penetration tests in order to have better understanding
 of what infrastructure is presented and what files might be left
 on the server. However, several good file lists already exist and
@@ -182,9 +213,6 @@ one good example is FuzzDB wordlists of predictable files/folders
 
 Tools
 ==========================================================================================
-
-A list of general and well-known tools is presented below. 
-There are also a lot of other utilities, as well as framework-based fingerprinting tools.
 
 WhatWeb
 -----------------------------------------------------------------------------------------
