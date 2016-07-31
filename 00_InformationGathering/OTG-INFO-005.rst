@@ -127,7 +127,6 @@ Not applicable.
 
 |
 
-
 Tools
 ==========================================================================================
 
@@ -135,18 +134,5 @@ Tools
 - Browser "view source" function
 - Eyeballs
 - Curl
-
-
-|
-
-References
-==========================================================================================
-
-Whitepapers
------------------------------------------------------------------------------------------
-
-- http://www.w3.org/TR/1999/REC-html401-19991224 HTML version 4.01
-- http://www.w3.org/TR/2010/REC-xhtml-basic-20101123/ XHTML(for small devices)
-- http://www.w3.org/TR/html5/ HTML version 5
 
 |
