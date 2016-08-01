@@ -11,8 +11,10 @@ OTG-SESS-001 (세션 관리 스키마 우회 테스트)
 웹 어플리케이션은 정의된 시간 범위 동안 자격 증명을 저장하고 유효하게 하기 위해
 다양한 메카니즘을 구현합니다.
 
-These mechanisms are known as Session Management and while they are important in order to increase the ease of use and user-friendliness of the application, they can be exploited by a penetration tester to gain access to a user account, without the need to provide correct credentials.
-In this test, the tester wants to check that cookies and other session tokens are created in a secure and unpredictable way. 
+쿠키 메카니즘은 세션 관리로 알려져있는데, 해당 메카니즘은 애플리케이션 사용자 편의성과 사용의 용이성을 증가시키기 위해선 중요하지만, 침투 테스터에게 정확한 인증 정보를 제공할 필요없이 사용자 계정 액세스에 이용 될 수 있습니다.
+해당 테스트에서, 테스터는 쿠키와 다른 세션 토큰이 보안과 예측할 수 없는 방법으로 생성되었는 지 확인하길 원합니다.
+
+취약한 쿠키를 예측하고 위조할 수 있는 공격자는 합법 사용자 세션을 쉽게 하이재킹할 수 있습니다.
 An attacker who is able to predict and forge a weak cookie can easily hijack the sessions of legitimate users.
 Cookies are used to implement session management and are described
 in detail in RFC 2965. 
