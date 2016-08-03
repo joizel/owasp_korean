@@ -7,29 +7,19 @@ OTG-SESS-003 (쿠키 고정 테스트)
 개요
 ============================================================================================
 
-When an application does not renew its session cookie(s) after a
-successful user authentication, it could be possible to find a session
-fixation vulnerability and force a user to utilize a cookie known by
-the attacker. In that case, an attacker could steal the user session
-(session hijacking).
+When an application does not renew its session cookie(s) after a successful user authentication, it could be possible to find a session fixation vulnerability and force a user to utilize a cookie known by the attacker. 
+In that case, an attacker could steal the user session (session hijacking).
+
 Session fixation vulnerabilities occur when:
-• A web application authenticates a user without first invalidating
-the existing session ID, thereby continuing to use the session ID
-already associated with the user.
-• An attacker is able to force a known session ID on a user so
-that, once the user authenticates, the attacker has access to the
-authenticated session.
-In the generic exploit of session fixation vulnerabilities, an attacker
-creates a new session on a web application and records the associated
-session identifier. The attacker then causes the victim to
-authenticate against the server using the same session identifier,
-giving the attacker access to the user’s account through the active
-session.
-Furthermore, the issue described above is problematic for sites
-that issue a session identifier over HTTP and then redirect the user
-to a HTTPS log in form. If the session identifier is not reissued upon
-authentication, the attacker can eavesdrop and steal the identifier
-and then use it to hijack the session.
+
+- A web application authenticates a user without first invalidating the existing session ID, thereby continuing to use the session ID already associated with the user.
+- An attacker is able to force a known session ID on a user so that, once the user authenticates, the attacker has access to the authenticated session.
+
+In the generic exploit of session fixation vulnerabilities, an attacker creates a new session on a web application and records the associated session identifier. 
+The attacker then causes the victim to authenticate against the server using the same session identifier, giving the attacker access to the user’s account through the active session.
+
+Furthermore, the issue described above is problematic for sites that issue a session identifier over HTTP and then redirect the user to a HTTPS log in form. 
+If the session identifier is not reissued upon authentication, the attacker can eavesdrop and steal the identifier and then use it to hijack the session.
 
 |
 
@@ -39,16 +29,15 @@ and then use it to hijack the session.
 Black Box Testing
 -----------------------------------------------------------------------------------
 
-Testing for Session Fixation vulnerabilities:
+- 요청
 
-The first step is to make a request to the site to be tested (example
-www.example.com). If the tester requests the following:
-
-Web Application Penetration Testing
+.. code-block:: html
 
     GET www.example.com
 
-They will obtain the following answer:
+- 응답
+
+.. code-block:: html
 
     HTTP/1.1 200 OK
     Date: Wed, 14 Aug 2008 08:45:11 GMT
@@ -62,11 +51,9 @@ They will obtain the following answer:
     Content-Type: text/html;charset=Cp1254
     Content-Language: en-US
 
-The application sets a new session identifier JSESSIONID=0000d-
-8eyYq3L0z2fgq10m4v-rt4:-1 for the client.
+- 어플리케이션은 클라이언트로 JSESSIONID=0000d-8eyYq3L0z2fgq10m4v-rt4:-1 세션 설정
 
-Next, if the tester successfully authenticates to the application
-with the following POST HTTPS:
+- POST 요청
 
 .. code-block:: html
 
@@ -88,11 +75,9 @@ with the following POST HTTPS:
 
     Name=Meucci&wpPassword=secret!&wpLoginattempt=Log+in
 
-The tester observes the following response from the server:
-
+- 응답
 
 .. code-block:: html
-
 
     HTTP/1.1 200 OK
     Date: Thu, 14 Aug 2008 14:52:58 GMT
@@ -108,30 +93,30 @@ The tester observes the following response from the server:
     HTML data
     ...
 
-As no new cookie has been issued upon a successful authentication
-the tester knows that it is possible to perform session hijacking.
-Result Expected: The tester can send a valid session identifier to
-a user (possibly using a social engineering trick), wait for them to
-authenticate, and subsequently verify that privileges have been
-assigned to this cookie.
+
+- 세션 하이재킹 가능 확인
+
+**예상 결과**
+
+The tester can send a valid session identifier to a user (possibly using a social engineering trick), wait for them to authenticate, and subsequently verify that privileges have been assigned to this cookie.
 
 |
 
 Gray Box Testing
 --------------------------------------------------------------------------------
 
-Talk with developers and understand if they have implemented a
-session token renew after a user successful authentication.
-Result Expected: The application should always first invalidate
-the existing session ID before authenticating a user, and if the authentication
-is successful, provide another sessionID.
+개발자들과 이야기 하고 세션 토큰이 사용자 인증이 성공한 후 새로운 세션 토큰을 구현하는 경우에 대해 이해합니다.
+
+**예상 결과** 
+
+어플리케이션은 사용자를 인증하기 전에 항상 먼저 기존 session ID를 무효화하고, 인증에 성공하면 다른 sessionID를 제공합니다.
 
 |
 
 Tools
 ============================================================================================
 
-- Hijack - a numeric session hijacking tool: http://yehg.net/lab/pr0js/files.php/jhijackv0.2beta.zip
+- Hijack: http://yehg.net/lab/pr0js/files.php/jhijackv0.2beta.zip
 - OWASP WebScarab: OWASP_WebScarab_Project
 
 |

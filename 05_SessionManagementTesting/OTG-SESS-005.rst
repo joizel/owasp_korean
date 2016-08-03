@@ -7,8 +7,7 @@ OTG-SESS-005 (크로스 사이트 요청 위조 테스트)
 개요
 ============================================================================================
 
-CSRF is an attack which forces an end user to execute unwanted
-actions on a web application in which he/she is currently authenticated.
+CSRF is an attack which forces an end user to execute unwanted actions on a web application in which he/she is currently authenticated.
 With a little help of social engineering (like sending a link
 via email or chat), an attacker may force the users of a web application
 to execute actions of the attacker’s choosing. A successful
@@ -18,6 +17,7 @@ account, a CSRF attack can compromise the entire web
 application.
 
 CSRF relies on the following:
+
 [1] Web browser behavior regarding the handling of session-re
 lated information such as cookies and http authentication information;
 [2] Knowledge by the attacker of valid web application URLs;
