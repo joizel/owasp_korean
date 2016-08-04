@@ -71,7 +71,7 @@ There are three factors influencing how many applications are related to a given
 
 |
 
-1. Different base URL
+1. 다른 기본 URL
 -------------------------------------------------------------------------------------------
 
 The obvious entry point for a web application is www.example.com, i.e., with this shorthand notation we think of the web application originating at http://www.example.com/ (the same applies for https). 
@@ -90,7 +90,7 @@ This doesn’t mean that these applications are secret, just that their existenc
 
 |
 
-2. Non-standard ports
+2. 비표준 포트
 -------------------------------------------------------------------------------------------
 
 While web applications usually live on port 80 (http) and 443 (https), there is nothing magic about these port numbers. 
@@ -343,6 +343,6 @@ Tools
 References
 ==========================================================================================
 
-- Whitepapers RFC 2616 – Hypertext Transfer Protocol – HTTP 1.1
+- RFC 2616: Hypertext Transfer Protocol – HTTP 1.1
 
 |
