@@ -53,7 +53,7 @@ Suppose a picture sharing application allows users to upload a .gif or .jpg grap
 
 |
 
-References 
+참고 문헌 
 ============================================================================================
 
 - OWASP - Unrestricted File Upload: https://www.owasp.org/index.php/Unrestricted_File_Upload 
@@ -63,7 +63,7 @@ References
 
 |
 
-Remediation 
+개선 방안 
 ============================================================================================
 
 Applications should be developed with mechanisms to only accept and manipulate "acceptable" files that the rest of the application functionality is ready to handle and expecting. Some specific examples include: Black or White listing of file extensions, using "Content-Type" from the header, or using a file type recognizer, all to only allow specified file types into the system. 

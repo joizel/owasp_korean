@@ -39,14 +39,15 @@ Suppose an eCommerce site allows users to take advantage of any one of many disc
 
 |
 
-References 
+참고 문헌 
 ============================================================================================
 
-- InfoPath Forms Services business logic exceeded the maximum limit of operations Rule - http://mpwiki.viacode.com/default.aspx?g=posts&t=115678 
+- InfoPath Forms Services business logic exceeded the maximum limit of operations Rule 
+- http://mpwiki.viacode.com/default.aspx?g=posts&t=115678 
 
 |
 
-Remediation 
+개선 방안 
 ============================================================================================
 
 The application should have checks to ensure that the business logic is being followed and that if a function/action can only be executed a certain number of times, when the limit is reached the user can no longer execute the function. To prevent users from using a function over the appropriate number of times the application may use mechanisms such as cookies to keep count or through sessions not allowing users to access to execute the function additional times. 

@@ -93,7 +93,7 @@ Many systems include logging for auditing and troubleshooting purposes. But, how
 
 |
 
-Tools 
+도구 
 ============================================================================================
 
 - OWASP Zed Attack Proxy (ZAP)
@@ -101,7 +101,7 @@ Tools
 
 |
 
-References 
+참고 문헌 
 ============================================================================================
 
 - On Rules and Integrity Constraints in Database Systems: http://www.comp.nus.edu.sg/~lingtw/papers/IST92.teopk.pdf 
@@ -110,7 +110,7 @@ References
 
 |
 
-Remediation 
+개선 방안 
 ============================================================================================
 
 The application must be smart enough to check for relational edits and not allow users to submit information directly to the server that is not valid, trusted because it came from a non-editable controls or the user is not authorized to submit through the front end. Additionally, any component that can be edited must have mechanisms in place to prevent unintentional/intentional writing or updating. 

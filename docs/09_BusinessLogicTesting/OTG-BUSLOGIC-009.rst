@@ -72,7 +72,7 @@ ducklin.htm 또는 ducklin-html.htm과 같이 인터넷에서 많이 이용할 �
 
 |
 
-Tools 
+도구 
 ============================================================================================
  
 - 메타스플로잇의 페이로드 생성 기능
@@ -80,7 +80,7 @@ Tools
 
 |
 
-References 
+참고 문헌 
 ============================================================================================
 
 - OWASP - Unrestricted File Upload: https://www.owasp.org/index.php/Unrestricted_File_Upload 
@@ -92,7 +92,7 @@ References
 
 |
 
-Remediation 
+개선 방안 
 ============================================================================================
 
 While safeguards such as black or white listing of file extensions, using "Content-Type" from the header, or using a file type recognizer may not always be protections against this type of vulnerability. Every application that accepts files from users must have a mechanism to verify that the uploaded file does not contain malicious code. Uploaded files should never be stored where the users or attackers can directly access them. 

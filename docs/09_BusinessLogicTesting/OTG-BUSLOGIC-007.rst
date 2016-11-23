@@ -75,14 +75,14 @@ Not all the above need to be monitored by the application, but there is a proble
 
 |
 
-Tools 
+도구 
 ============================================================================================
 
 - 다른 테스트에서 사용된 툴들 사용 
 
 |
 
-References 
+참고 문헌 
 ============================================================================================
 
 - Resilient Software, Software Assurance, US Department Homeland Security 

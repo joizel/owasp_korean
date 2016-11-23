@@ -1,5 +1,5 @@
 ==========================================================================================
-OTG-INFO-004 (웹 서버에 어플리케이션 확인)
+OTG-INFO-004 (웹 서버에 응용 프로그램 확인)
 ==========================================================================================
 
 |
@@ -7,46 +7,42 @@ OTG-INFO-004 (웹 서버에 어플리케이션 확인)
 개요
 ==========================================================================================
 
-웹 어플리케이션 취약점 테스트에서 가장 중요한 단계는 웹 서버에 호스팅되어 있는 특정 어플리케이션을 찾는 것입니다.
-많은 어플리케이션들이 원격 관리 권한을 획득하거나 데이터를 얻기위한 알려져있는 취약점과 알려져있는 공격 전략이 있습니다.
-추가적으로, 많은 어플리케이션들이 내부적으로 사용한다는 인식 때문에 대부분 잘못된 설정을 하거나 최신으로 업데이트 하지 않아, 위협이 존재할 수 있습니다.
+웹 응용 프로그램 취약점 테스트에서 가장 중요한 단계는 웹 서버에 호스팅되어 있는 특정 응용 프로그램을 찾는 것입니다.
+많은 응용 프로그램들이 원격 관리 권한을 획득하거나 데이터를 얻기 위해 알려진 취약점 및 공격 기법들이 있습니다.
+추가적으로, 많은 응용 프로그램들이 내부적으로 사용한다는 인식 때문에 대부분 잘못된 설정을 하거나 최신으로 업데이트 하지 않아, 위협이 존재할 수 있습니다.
 
 가상 웹 서버 확산으로 기존의 IP와 웹서버의 1:1 형식은 원래 의미를 잃었습니다.
-동일한 IP 주소로 확인된 도메인 명이 여러 웹 사이트 또는 어플리케이션을 가지는게 드문 일이 아닙니다.
+
+동일한 IP 주소로 확인된 도메인 명이 여러 웹 사이트 또는 응용 프로그램을 가지는게 드문 일이 아닙니다.
 이 시나리오는 호스팅 환경에 한정되지 않지만, 통상적으로 기업에 적용됩니다.
 
 보안 전문가들에게는 때때로 침투 테스트 대상으로 IP 주소가 주어지기도 합니다.
-IP로 주어지는 침투 테스트 시나리오는 대상을 통해 접근할 수 있는 모든 웹 어플리케이션을 테스트하기 위한 경우 입니다.
+IP로 주어지는 침투 테스트 시나리오는 대상을 통해 접근할 수 있는 모든 웹 응용 프로그램을 테스트하기 위한 경우 입니다.
 문제는 주어진 IP 주소가 포트 80에서 HTTP 서비스를 호스팅하는 것이지만, 만약 테스터가 IP 주소를 지정하여 접근하면, "No web server configured at this address" 또는 이와 유사한 메시지가 보고됩니다.
 
-But that system could "hide" a number of web applications, associated to unrelated symbolic (DNS) names. 
+그러나, 시스템은 관련없는 DNS에 연결된 웹 응용 프로그램의 수를 숨길 수 있습니다.
 
-Obviously, the extent of the analysis is deeply affected by the tester tests all applications or only tests the applications that they are aware of.
+분명히 분석의 범위는 테스터가 모든 응용 프로그램을 테스트하는 데 큰 영향을 받습니다.
 
-테스터는 모든 응용 프로그램을 테스트하거나 그들 만이 알고있는 응용 프로그램을 테스트하여 분명히, 분석의 범위는 깊이 영향을받습니다.
+때때로, 대상 특성이 더 풍부해집니다.
 
-Sometimes, the target specification is richer. 
+테스터는 IP 주소와 그에 상응하는 DNS를 제공받을 수 있습니다.
 
-The tester may be given a list of IP addresses and their corresponding symbolic names. 
+그럼에도 불구하고, 이 리스트는 부분적인 정보를 전달할 것입니다. 즉, DNS를 생략할 수 있고, 클라이언트는 그것을 인식하지 못할 수도 있습니다. (이것은 큰 조직에서 발생할 가능성이 더 큽니다.)
 
-Nevertheless, this list might convey partial information, i.e., 
-it could omit some symbolic names and the client may not even being aware of that 
-(this is more likely to happen in large organizations).
-
-Other issues affecting the scope of the assessment are represented by web applications published at non-obvious URLs 
-(e.g., http://www.example.com/some-strange-URL), 
-which are not referenced else where. 
+평가 범위에 영향을 미치는 다른 문제는 명확하지 않은 URL에 게시된 응용 프로그램에 의해 표현됩니다.
+(예제> http://www.example.com/some-strange-URL), 
 
 이것은 설정 실수와 같은 에러나 알려지지 않은 관리자 인터페이스와 같이 의도적으로 발생될 수 있습니다. 
 
-이러한 문제를 해결하기 위해서는, 웹 애플리케이션의 검색을 수행 할 필요가 있습니다.
+이러한 문제를 해결하기 위해서는, 웹 응용 프로그램의 검색을 수행 할 필요가 있습니다.
 
 |
 
 테스트 목적
 ==========================================================================================
 
-웹 서버에 존재하는 애플리이케이션 확인
+웹 서버에 존재하는 응용 프로그램 확인
    
 |
 
@@ -59,8 +55,9 @@ which are not referenced else where.
 Black Box Testing
 -------------------------------------------------------------------------------------------
 
-웹 어플리케이션 발견은 주어진 인프라에서 웹 어플리케이션을 식별하기 위한 과정입니다.
+웹 응용 프로그램 발견은 주어진 인프라에서 웹 응용 프로그램을 식별하기 위한 과정입니다.
 후자는 일반적으로 IP 주소의 집합으로 지정되지만, DNS 명 또는 이들 조합으로 구성될 수 있습니다.
+
 This information is handed out prior to the execution of an assessment, be it a classic-style penetration test or an application-focused assessment. 
 In both cases, unless the rules of engagement specify otherwise (e.g., "test only the application located at the URL http://www.example.com/"), the assessment should strive to be the most comprehensive in scope, i.e. it should identify all the applications accessible through the given target. 
 The following examples examine a few techniques that can be employed to achieve this goal.
@@ -77,13 +74,14 @@ There are three factors influencing how many applications are related to a given
 The obvious entry point for a web application is www.example.com, i.e., with this shorthand notation we think of the web application originating at http://www.example.com/ (the same applies for https). 
 However, even though this is the most common situation, there is nothing forcing the application to start at "/".
 
-For example, the same symbolic name may be associated to three web applications such as: 
+예를 들어, 다음과 같은 세 가지 웹 응용 프로그램에 동일한 기호 이름을 연결할 수 있습니다.
 
 - http://www.example.com/url1 
 - http://www.example.com/url2 
 - http://www.example.com/url3
 
-In this case, the URL http://www.example.com/ would not be associated with a meaningful page, and the three applications would be "hidden", unless the tester explicitly knows how to reach them, i.e., the tester knows url1, url2 or url3. 
+이 경우 URL http://www.example.com/은 의미있는 페이지로 연결되지 않으며, 세 가지 응용 프로그램은 테스터가 정확하게 연결하는 방법을 알지 못하는 한 "숨김"상태가 됩니다.
+즉, 테스터는 url1, url2 또는 url3로 알고 있습니다.
 
 There is usually no need to publish web applications in this way, unless the owner doesn’t want them to be accessible in a standard way, and is prepared to inform the users about their exact location. 
 This doesn’t mean that these applications are secret, just that their existence and location is not explicitly advertised.
@@ -328,7 +326,7 @@ Not applicable.
 
 |
 
-Tools
+도구
 ==========================================================================================
 
 - DNS lookup tools: nslookup, dig.
@@ -340,7 +338,7 @@ Tools
 
 |
 
-References
+참고 문헌
 ==========================================================================================
 
 - RFC 2616: Hypertext Transfer Protocol – HTTP 1.1

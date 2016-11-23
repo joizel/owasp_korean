@@ -9,11 +9,15 @@ OTG-BUSLOGIC-001 (비즈니스 로직 데이터 인증 테스트)
 
 어플리케이션은 논리적으로 프론트 엔드에서 뿐만 아니라 시스템 어플리케이션의 서버 측에서도 유효한 데이터 입력이 되도록 해야합니다. 
 
+서버에서 데이터를 로컬에서만 확인하면 프록시를 통한 인젝션이나 다른 시스템 이관시 응용 프로그램이 취약해질 수 있습니다.
 
-Only verifying data locally may leave applications vulnerable to server injections through proxies or at handoffs with other systems. This is different from simply performing Boundary Value Analysis (BVA) in that it is more difficult and in most cases cannot be simply verified at the entry point, but usually requires checking some other system. 
-For example: An application may ask for your Social Security Number. In BVA the application should check formats and semantics (is the value 9 digits long, not negative and not all 0's) for the data entered, but there are logic considerations also. SSNs are grouped and categorized. Is this person on a death file? Are they from a certain part of the country? 
-Vulnerabilities related to business data validation is unique in that they are application specific and different from the vulnerabilities related to forging requests in that they are more concerned about logical data as opposed to simply breaking the business logic workflow. 
-The front end and the back end of the application should be verifying and validating that the data it has, is using and is passing along is logically valid. Even if the user provides valid data to an application the business logic may make the application behave differently depending on data or circumstances. 
+이것은 범위 값 분석(BVA)을 수행하는 것과는 조금 다르며, 대부분의 경우 엔트리 포인트에서 간단히 확인할 수는 없지만 대개 다른 시스템을 확인해야합니다.
+
+비즈니스 데이터 유효성 검사 관련 취약점은 응용 프로그램에 따라 다르며, 단순한 비즈니스 논리 워크 플로우를 위반하는 것이 아니라, 논리 데이터에 더 관심을 두기 때문에 요청 변조 관련 취약점과는 다릅니다.
+
+응용 프로그램의 프론트 엔드와 백 엔드는 사용하고 전달되는 데이터가 논리적으로 유효하다는 것을 검증하고 확인해야 합니다.
+
+사용자가 응용 프로그램에 유효한 데이터를 제공하더라도, 비즈니스 논리로 인해 응용 프로그램이 상황에 따라 다르게 동작할 수 있습니다.
 
 |
 
@@ -28,14 +32,17 @@ The front end and the back end of the application should be verifying and valida
 사용자가 카펫을 주문 할 수 있는 멀티미디어 전자상 거래 사이트를 운영한다고 가정합니다.
 사용자는 카펫, 사이즈, 지불 방법을 선택하고, 프론트 엔드 어플리케이션은 모든 입력 정보가 정확하고 유효한지 확인합니다.
 But, the business logic in the background has two paths, if the carpet is in stock it is directly shipped from your warehouse, but if it is out of stock in your warehouse a call is made to a partner's system and if they have it in-stock they will ship the order from their warehouse and reimbursed by them.
-What happens if an attacker is able to continue a valid in-stock transaction and send it as out-of-stock to your partner? What happens if an attacker is able to get in the middle and send messages to the partner warehouse ordering carpet without payment? 
+What happens if an attacker is able to continue a valid in-stock transaction and send it as out-of-stock to your partner? 
+What happens if an attacker is able to get in the middle and send messages to the partner warehouse ordering carpet without payment? 
 
 |
 
 예제 2
 -----------------------------------------------------------------------------------------
 
-Many credit card systems are now downloading account balances nightly so the customers can check out more quickly for amounts under a certain value. The inverse is also true. I f I pay my credit card off in the morning I may not be able to use the available credit in the evening. Another example may be if I use my credit card at multiple locations very quickly it may be possible to exceed my limit if the systems are basing decisions on last night's data. 
+Many credit card systems are now downloading account balances nightly so the customers can check out more quickly for amounts under a certain value. The inverse is also true. 
+If I pay my credit card off in the morning I may not be able to use the available credit in the evening. 
+Another example may be if I use my credit card at multiple locations very quickly it may be possible to exceed my limit if the systems are basing decisions on last night's data. 
 
 |
 
@@ -70,23 +77,24 @@ Many credit card systems are now downloading account balances nightly so the cus
 
 |
 
-Tools 
+도구 
 ============================================================================================
 
 - OWASP Zed Attack Proxy (ZAP)
 
 |
 
-References 
+참고 문헌 
 ============================================================================================
 
-- Beginning Microsoft Visual Studio LightSwitch Development - http://books.google.com/books?id=x76L_kaTgdEC&pg=PA280&lpg=PA280&dq=business+logic+example+valid+data+example&source=bl&ots=GOfQ-7f4Hu&sig=4jOejZVligZOrvjBFRAT4-jy8DI&hl=en&sa=X&ei=mydYUt6qE-OX54APu7IDgCQ&ved=0CFIQ6AEwBDgK#v=onepage&q=business%20logic%20example%20valid%20data%20example&f=false 
+- Beginning Microsoft Visual Studio LightSwitch Development
+- http://books.google.com/books?id=x76L_kaTgdEC&pg=PA280&lpg=PA280&dq=business+logic+example+valid+data+example&source=bl&ots=GOfQ-7f4Hu&sig=4jOejZVligZOrvjBFRAT4-jy8DI&hl=en&sa=X&ei=mydYUt6qE-OX54APu7IDgCQ&ved=0CFIQ6AEwBDgK#v=onepage&q=business%20logic%20example%20valid%20data%20example&f=false 
 
 |
 
-Remediation 
+개선 방안 
 ============================================================================================
 
-The application/system must ensure that only "logically valid" data is accepted at all input and hand off points of the application or system and data is not simply trusted once it has entered the system. 
+응용 프로그램/시스템은 응용 프로그램이나 시스템의 모든 입력 및 전달 지점에서 "논리적으로 유효한" 데이터 만 받아 들여지고, 시스템에 일단 입력되면 데이터가 단순하게 신뢰되지 않도록 해야 합니다.
 
 |

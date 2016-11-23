@@ -78,20 +78,22 @@ An electronic bulletin board system may be designed to ensure that initial posts
 
 |
 
-References 
+참고 문헌 
 ============================================================================================
 
 - OWASP Detail Misuse Cases: https://www.owasp.org/index php/Detail_misuse_cases 
-- Top 10 Business Logic Attack Vectors Attacking and Exploiting Business Application Assets and Flaws . Vulnerability Detection to Fix: 
-http://www.ntobjectives.com/go/business-logicattack-vectors-white-paper/, 
-http://www.ntobjectives.com/files/Business_Logic_White_Paper.pdf 
+- Top 10 Business Logic Attack Vectors Attacking and Exploiting Business Application Assets and Flaws. 
+    - Vulnerability Detection to Fix: 
+    - http://www.ntobjectives.com/go/business-logicattack-vectors-white-paper/, 
+    - http://www.ntobjectives.com/files/Business_Logic_White_Paper.pdf 
 - CWE-840: Business Logic Errors - http://cwe.mitre.org/data definitions/840.html 
 
 |
 
-Remediation 
+개선 방안 
 ============================================================================================
 
-The application must be self-aware and have checks in place ensuring that the users complete each step in the work flow process in the correct order and prevent attackers from circumventing/skipping/or repeating any steps/processes in the workflow. Test for workflow vulnerabilities involves developing business logic abuse/misuse cases with the goal of successfully completing the business process while not completing the correct steps in the correct order. 
+The application must be self-aware and have checks in place ensuring that the users complete each step in the work flow process in the correct order and prevent attackers from circumventing/skipping/or repeating any steps/processes in the workflow. 
+Test for workflow vulnerabilities involves developing business logic abuse/misuse cases with the goal of successfully completing the business process while not completing the correct steps in the correct order. 
 
 |
