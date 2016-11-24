@@ -58,21 +58,20 @@ Black Box Testing
 웹 응용 프로그램 발견은 주어진 인프라에서 웹 응용 프로그램을 식별하기 위한 과정입니다.
 후자는 일반적으로 IP 주소의 집합으로 지정되지만, DNS 명 또는 이들 조합으로 구성될 수 있습니다.
 
-This information is handed out prior to the execution of an assessment, be it a classic-style penetration test or an application-focused assessment. 
-In both cases, unless the rules of engagement specify otherwise (e.g., "test only the application located at the URL http://www.example.com/"), the assessment should strive to be the most comprehensive in scope, i.e. it should identify all the applications accessible through the given target. 
-The following examples examine a few techniques that can be employed to achieve this goal.
+이 정보는 고전적인 스타일의 침투 테스트 또는 응용 프로그램 중심의 평가 일지라도 평가 수행 전에 전달됩니다.
 
-Note: Some of the following techniques apply to Internet-facing web servers, namely DNS and reverse-IP web-based search services and the use of search engines. Examples make use of private IP addresses (such as 192.168.1.100), which, unless indicated otherwise, represent generic IP addresses and are used only for anonymity purposes.
+두 가지 경우 모두 침투 테스트 규칙에 따로 명시하지 않는 한, 평가는 범위에서 가장 포괄적이 되도록 노력해야 합니다. 즉, 주어진 대상을 통해 액세스 할 수 있는 모든 응용 프로그램을 식별해야 합니다.
 
-There are three factors influencing how many applications are related to a given DNS name (or an IP address):
+다음 예제들은 이 목표를 달성하는 데 사용할 수 있는 몇 가지 기술을 검토합니다.
 
 |
 
 1. 다른 기본 URL
 -------------------------------------------------------------------------------------------
 
-The obvious entry point for a web application is www.example.com, i.e., with this shorthand notation we think of the web application originating at http://www.example.com/ (the same applies for https). 
-However, even though this is the most common situation, there is nothing forcing the application to start at "/".
+웹 응용 프로그램에서 명백한 입력 지점은 www.example.com 입니다. 즉, http://www.example.com/ 에서 시작하는 웹 응용 프로그램의 단축 표기번을 생각해볼 수 있습니다.
+
+위와 같은 경우가 일반적인 상황이지만, "/"에서 응용 프로그램을 시작하지 않아도 됩니다.
 
 예를 들어, 다음과 같은 세 가지 웹 응용 프로그램에 동일한 기호 이름을 연결할 수 있습니다.
 
@@ -83,163 +82,147 @@ However, even though this is the most common situation, there is nothing forcing
 이 경우 URL http://www.example.com/은 의미있는 페이지로 연결되지 않으며, 세 가지 응용 프로그램은 테스터가 정확하게 연결하는 방법을 알지 못하는 한 "숨김"상태가 됩니다.
 즉, 테스터는 url1, url2 또는 url3로 알고 있습니다.
 
-There is usually no need to publish web applications in this way, unless the owner doesn’t want them to be accessible in a standard way, and is prepared to inform the users about their exact location. 
-This doesn’t mean that these applications are secret, just that their existence and location is not explicitly advertised.
+소유자가 표준 방식으로 액세스하기를 원하지 않는 한 일반적으로 이러한 방식으로 웹 응용 프로그램을 게시할 필요는 없으며, 정확한 위치를 사용자에게 알릴 준비가 되어 있습니다.
+
+이것은 응용 프로그램이 보안되어 있다는걸 의미하진 않으며, 프로그램의 존재 및 위치가 분명하게 공개되지 않았음을 의미합니다.
 
 |
 
 2. 비표준 포트
 -------------------------------------------------------------------------------------------
 
-While web applications usually live on port 80 (http) and 443 (https), there is nothing magic about these port numbers. 
-In fact, web applications may be associated with arbitrary TCP ports, and can be referenced by specifying the port number as follows: http[s]://www.example.com:port/. 
+웹 응용 프로그램은 일반적으로 포트 80(http) 및 443(https)에 있지만, 이러한 포트 번호에 대해서는 별다른 변화가 없습니다.
 
-For example, http://www.example.com:20000/.
+사실 상, 웹 응용 프로그램은 임의의 TCP 포트와 연괼될 수 있으며, 다음과 같이 포트 번호를 지정하여 참조할 수 있습니다.
 
-nmap –PN –sT –sV –p0-65535 192.168.1.100
+.. code-block:: console
 
-Web Application Penetration Testing
+    http://www.example.com:20000/
 
 |
 
 3. Virtual hosts
 -------------------------------------------------------------------------------------------
 
-DNS allows a single IP address to be associated with one or more
-symbolic names. For example, the IP address 192.168.1.100 might
-be associated to DNS names www.example.com, helpdesk.example.
-com, webmail.example.com. It is not necessary that all the names
-belong to the same DNS domain. This 1-to-N relationship may be reflected
-to serve different content by using so called virtual hosts. The
-information specifying the virtual host we are referring to is embedded
-in the HTTP 1.1 Host: header [1].
+DNS는 단일 IP 주소가 하나 이상의 심볼릭 네임과 연결되도록 허용합니다.
+예를 들어, IP 주소 192.168.1.100은 DNS 네임 www.example.com, helpdesk.example.com, webmail.example.com으로 할당할 수 있습니다. 모든 이름이 동일한 DNS 도메인에 속할 필요는 없습니다.
 
-One would not suspect the existence of other web applications in addition
-to the obvious www.example.com, unless they know of helpdesk.example.com
-and webmail.example.com.
+이 1-to-N 관계는 소위 virtual host를 사용하여 다른 컨텐츠를 제공하기 위해 반영될 수 있습니다.
+참조하고 있는 virtual host를 지정하는 정보는 HTTP 1.1 Host: header에 내장되어 있습니다.
+
+helpdesk.example.com과 webmail.example.com을 알지 못한다면, 분명한 www.example.com 외에 다른 웹 응용 프로그램의 존재를 의심하지 않아도 됩니다.
 
 |
 
-Approaches to address issue 1 - non-standard URLs
+|
+
+문제를 해결하기 위한 접근 방식 1 - non-standard URLs
 -------------------------------------------------------------------------------------------
 
-There is no way to fully ascertain the existence of non-standardnamed web applications. 
+비표준 웹 응용 프로그램의 존재를 완전히 확인할 수 있는 방법은 없습니다.
 
-Being non-standard, there is no fixed criteria governing the naming convention, however there are a number of techniques that the tester can use to gain some additional insight.
-First, if the web server is mis-configured and allows directory browsing, it may be possible to spot these applications. 
-Vulnerability scanners may help in this respect.
+비표준이기 때문에 명명 규칙을 관리하는 고정 된 기준은 없지만, 테스터가 몇 가지 추가적인 통찰력을 얻기 위해 사용할 수 있는 여러 기술이 있습니다.
 
-Second, these applications may be referenced by other web pages and there is a chance that they have been spidered and indexed by web search engines. 
-If testers suspect the existence of such "hidden" applications on www.example.com they could search using the site operator and examining the result of a query for "site: www.example.com".
-Among the returned URLs there could be one pointing to such a non-obvious application.
+첫째, 웹 서버가 잘못 구성되어 있고 디렉토리 검색이 가능하다면 이러한 응용 프로그램을 발견 할 수 있습니다.
 
-Another option is to probe for URLs which might be likely candidates for non-published applications. 
-For example, a web mail front end might be accessible from URLs such as https://www.example.com/webmail, https://webmail.example.com/, or https://mail.example.com/. 
-The same holds for administrative interfaces, which may be published at hidden URLs (for example, a Tomcat administrative interface), and yet not referenced anywhere. 
-So doing a bit of dictionary-style searching(or "intelligent guessing") could yield some results. Vulnerability scanners may help in this respect.
+취약점 스캐너가 이러한 측면에서 도움이 될 수 있습니다.
+
+둘째, 이러한 응용 프로그램은 다른 웹 페이지에서 참조할 수 있으며 웹 검색 엔진에서 수집 및 색인을 생성 할 가능성이 있습니다.
+
+테스터가 www.example.com에서 이러한 "숨겨진" 응용 프로그램의 존재를 의심하면, "site : www.example.com"에 대한 쿼리 결과를 검사 할 수 있습니다.
+
+반환된 URL 중에는 이러한 명백하지 않은 응용 프로그램을 가리키는 URL이 있을 수 있습니다.
+
+또 다른 옵션은 게시되지 않은 응용 프로그램의 후보가 될 수 있는 URL을 조사하는 것입니다.
+
+예를 들어, 웹 메일 프론트 엔드는 https://www.example.com/webmail, https://webmail.example.com/ 또는 https://mail.example.com/과 같은 URL에서 액세스 할 수 있습니다.
+
+숨겨진 URL에 게시 될 수 있지만 아직 참조되지 않은 관리 인터페이스의 경우에도 마찬가지 입니다.
+
+따라서 약간의 사전 스타일 검색 (또는 "지능적 추측")을 수행하면 몇 가지 결과를 얻을 수 있습니다. 취약점 스캐너가 이러한 측면에서 도움이 될 수 있습니다.
 
 |
 
-Approaches to address issue 2 - non-standard ports
+문제를 해결하기 위한 접근 방식 2 - non-standard ports
 -------------------------------------------------------------------------------------------
 
-It is easy to check for the existence of web applications on non-standard
-ports. A port scanner such as nmap [2] is capable of performing
-service recognition by means of the -sV option, and will identify http[s]
-services on arbitrary ports. What is required is a full scan of the whole
-64k TCP port address space.
+비표준 포트는 웹 응용 프로그램의 존재 여부를 쉽게 확인할 수 있습니다.
 
-For example, the following command will look up, with a TCP connect
-scan, all open ports on IP 192.168.1.100 and will try to determine what
-services are bound to them (only essential switches are shown – nmap
-features a broad set of options, whose discussion is out of scope):
-It is sufficient to examine the output and look for http or the indication
-of SSL-wrapped services (which should be probed to confirm
-that they are https). For example, the output of the previous command
-coullook like:
+nmap과 같은 포트 스캐너로 -s 옵션을 사용하여 서비스 인식을 수행 할 수 있으며, 임의의 포트에서 http[s] 서비스를 식별합니다. 
+
+필요한 것은 전체 64k TCP 포트 주소 공간을 전체적으로 검사하는 것입니다.
+
+예를 들어, 다음 명령은 TCP 연결 검사와 함께 IP 192.168.1.100에 있는 모든 열린 포트를 검색하고 어떤 서비스가 이들에 바인딩되어 있는지 확인하려고 시도합니다.
 
 .. code-block:: console
 
     nmap –PN –sT –sV –p0-65535 192.168.1.100
 
-It is sufficient to examine the output and look for http or the indication
-of SSL-wrapped services (which should be probed to confirm
-that they are https). 
-For example, the output of the previous command could look like:
-
-.. code-block:: console
-
-    901/tcp	 open http Samba SWAT administration server
-    1241/tcp open ssl Nessus security scanner
-    3690/tcp open unknown
-    8000/tcp open http-alt?
-    8080/tcp open http Apache Tomcat/Coyote JSP engine 1.1
-
-From this example, one see that:
-
-- There is an Apache http server running on port 80.
-- It looks like there is an https server on port 443 (but this needs to be confirmed, for example, by visiting https://192.168.1.100 with a browser).
-- On port 901 there is a Samba SWAT web interface.
-- The service on port 1241 is not https, but is the SSL-wrapped Nessus daemon.
-- Port 3690 features an unspecified service (nmap gives back its fingerprint - here omitted for clarity - together with instructions to submit it for incorporation in the nmap fingerprint database, provided you know which service it represents).
-- Another unspecified service on port 8000; this might possibly be http, since it is not uncommon to find http servers on this port. Let’s examine this issue:
-
-.. code-block:: console
-
     Interesting ports on 192.168.1.100:
-    (The 65527 ports scanned but not shown below are in state:
-    closed)
-    PORT STATE SERVICE VERSION
-    22/tcp open ssh OpenSSH 3.5p1 (protocol 1.99)
-    80/tcp open http Apache httpd 2.0.40 ((Red Hat Linux))
-    443/tcp open ssl OpenSSL
+    (The 65527 ports scanned but not shown below are in state: closed)
+    PORT      STATE SERVICE     VERSION
+    22/tcp    open  ssh         OpenSSH 3.5p1 (protocol 1.99)
+    80/tcp    open  http        Apache httpd 2.0.40 ((Red Hat Linux))
+    443/tcp   open  ssl         OpenSSL
+    901/tcp	  open  http        Samba SWAT administration server
+    1241/tcp  open  ssl         Nessus security scanner
+    3690/tcp  open  unknown
+    8000/tcp  open  http-alt?
+    8080/tcp  open  http        Apache Tomcat/Coyote JSP engine 1.1
 
-This confirms that in fact it is an HTTP server. Alternatively, testers
-could have visited the URL with a web browser; or used the GET or
-HEAD Perl commands, which mimic HTTP interactions such as the
-one given above (however HEAD requests may not be honored by all
-servers).
+이 예제로 부터 아래와 같은 내용을 확인할 수 있습니다.
 
-- Apache Tomcat running on port 8080.
+- Apache http 서버는 80 포트에서 실행되고 있음.
+- It looks like there is an 443 포트에서 https 서버가 있는 것으로 보임
+- 901 포트에 Samba SWAT 웹 인터페이스가 있음.
+- 1241 포트에 서비스는 https가 아니지만 SSL-wrapped Nessus daemon이 실행 중.
+- 포트 3690에는 지정되지 않은 서비스가 있습니다.
+- 포트 8000의 또 다른 알려지지 않은 서비스; 이 포트에서 http 서버를 찾는 것이 일반적이지 않기 때문에 아마도 http 일 수 있습니다.
 
-The same task may be performed by vulnerability scanners, but first
-check that the scanner of choice is able to identify http[s] services
-running on non-standard ports. For example, Nessus [3] is capable of
-identifying them on arbitrary ports (provided it is instructed to scan all
-the ports), and will provide, with respect to nmap, a number of tests
-on known web server vulnerabilities, as well as on the SSL configuration
-of https services. As hinted before, Nessus is also able to spot
-popular applications or web interfaces which could otherwise go unnoticed
-(for example, a Tomcat administrative interface).
+.. code-block:: console
+
+    $ telnet 192.168.10.100 8000
+    Trying 192.168.1.100...
+    Connected to 192.168.1.100.
+    Escape character is '^]'.
+    GET / HTTP/1.0
+
+    HTTP/1.0 200 OK
+    pragma: no-cache
+    Content-Type: text/html
+    Server: MX4J-HTTPD/1.0
+    expires: now
+    Cache-Control: no-cache
+
+    <html>
+    ...
+
+
+이는 실제로 HTTP 서버임을 확인합니다.
+
+- Apache Tomcat은 포트 8080에서 실행 중입니다.
 
 |
 
-Approaches to address issue 3 - virtual hosts
+문제를 해결하기 위한 접근 방식 3 - virtual hosts
 -------------------------------------------------------------------------------------------
 
 주어진 IP 주소 x.y.z.t에 할당된 DNS명을 식별하기 위해 사용할 수 있는 수많은 기술이 있습니다..
 
-DNS zone transfers
+DNS zone-transfers
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-This technique has limited use nowadays, given the fact that zone 
-transfers are largely not honored by DNS servers. 
-However, it may
-be worth a try. First of all, testers must determine the name servers
-serving x.y.z.t. 
-If a symbolic name is known for x.y.z.t (let it be www.
-example.com), its name servers can be determined by means of tools
-such as nslookup, host, or dig, by requesting DNS NS records.
+이 기술은 최근 DNS 서버가 zone-transfer 기능을 사용하지 않는다는 사실을 감안할 때 사용이 제한적입니다.
 
-If no symbolic names are known for x.y.z.t, but the target definition
-contains at least a symbolic name, testers may try to apply the same
-process and query the name server of that name (hoping that x.y.z.t
-will be served as well by that name server). 
-For example, if the target
-consists of the IP address x.y.z.t and the name mail.example.com, determine
-the name servers for domain example.com.
-The following example shows how to identify the name servers for
-www.owasp.org by using the host command:
+그러나, 시도해 볼 가치가 있습니다.
+
+우선, 테스터는 x.y.z.y를 제공하는 네임 서버를 결정해야 합니다. 
+만약 심볼릭 네임이 x.y.z.t로 알려져있다면, DNS 서버 레코드를 요청하여 nslookup, host 또는 dig와 같은 도구를 사용하여 네임 서버를 결정할 수 있습니다.
+
+만약 심볼릭 네임이 x.y.z.t로 알려져있지 않지만 대상 정의에 심볼릭 네임이 일부 포함되어 있다면, 테스터는 동일한 프로세스를 적용하고 네임 서버에 해당 이름을 쿼리하려고 시도할 수 있습니다.
+
+예를 들어, 만약 대상 IP 주소가 x.y.z.t로 구성되어 있고 mail.example.com이라면, 네임서버는 example.com으로 결정됩니다.
+다음 예제는 host 명령을 사용하여 www.owasp.org에 네임 서버를 식별하는 방법을 보여줍니다.
 
 .. code-block:: console
 
@@ -248,15 +231,13 @@ www.owasp.org by using the host command:
     owasp.org name server ns1.secure.net.
     owasp.org name server ns2.secure.net.
 
-A zone transfer may now be requested to the name servers for domain
-example.com. If the tester is lucky, they will get back a list of the
-DNS entries for this domain. This will include the obvious www.example.com
-and the not-so-obvious helpdesk.example.com and webmail.
-example.com (and possibly others). Check all names returned by the
-zone transfer and consider all of those which are related to the target
-being evaluated.
-Trying to request a zone transfer for owasp.org from one of its name
-servers:
+zone-transfer는 이제 example.com 도메인의 네임 서버에 요청할 수 있습니다.
+테스터가 운이 좋으면, 이 도메인의 DNS 항목 목록을 다시 가져옵니다.
+
+여기에는 명백한 www.example.com과 명확하지 않은 helpdesk.example.com 및 webmail.example.com이 포함됩니다.
+
+zone-transfer로 반환된 모든 이름을 확인하고 평가 대상과 연관된 모든 이름을 고려하십시오.
+그것의 네임 서버 중 하나로부터 owasp.org에 zone-transfer 요청을 시도합니다.
 
 .. code-block:: console
 
@@ -273,47 +254,41 @@ servers:
 DNS inverse queries
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-This process is similar to the previous one, but relies on inverse (PTR) DNS records.
-Rather than requesting a zone transfer, try setting the record type to PTR and issue a query on the given IP address. 
-If the testers are lucky, they may get back a DNS name entry. 
-This technique relies on the existence of IP-to-symbolic name maps, which is not guaranteed.
+이 과정은 위와 유사하지만, inverse DNS 레코드에 의존합니다.
+zone-transfer를 요청하는 대신, 레코드 유형을 PTR로 설정하여 지정된 IP 주소에 대해 쿼리를 실행하십시오.
+
+테스터가 운이 좋으면, DNS 항목을 다시 가져올 수 있습니다.
+이 기술은 IP 심볼릭 네임 맵의 존재에 의존하며, 이는 보장되지 않습니다.
 
 
 Web-based DNS searches
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-This kind of search is akin to DNS zone transfer, but relies on webbased services that enable name-based searches on DNS. 
-One such service is the Netcraft Search DNS service, available at http://searchdns.netcraft.com/?host. 
-The tester may query for a list of names belonging to your domain of choice, such as example.com.
-Then they will check whether the names they obtained are pertinent to the target they are examining.
+해당 종류의 검색은 DNS zone-transfer와 비슷하지만 DNS 기반의 이름 기반 검색을 가능하게 하는 웹 기반 서비스에 의존합니다.
+
+Netcraft Search DNS 서비스: http://searchdns.netcraft.com/?host
 
 Reverse-IP services
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Reverse-IP services are similar to DNS inverse queries, with the difference that the testers query a web-based application instead of a name server. 
+Reverse-IP 서비스는 DNS inverse querie와 유사하지만, 테스터가 이름 서버 대신 웹 기반 응용 프로그램을 쿼리한다는 차이점이 있습니다.
+해당 서비스는 여러 가지가 있습니다.
 
-There are a number of such services available. 
+그들은 부분적인 결과를 반환하는 경향이 있으므로, 보다 포괄적 인 분석을 얻으려면 여러 서비스를 사용하는 것이 좋습니다.
 
-Since they tend to return partial (and often different) results, it is better to use multiple services to obtain a more comprehensive analysis.
-
-- Domain tools reverse IP: http://www.domaintools.com/reverse-ip/ (requires free membership)
-- MSN search: http://search.msn.com syntax: "ip:x.x.x.x" (without the quotes)
+- Domain tools reverse IP: http://www.domaintools.com/reverse-ip/
+- MSN search: http://search.msn.com syntax: "ip:x.x.x.x"
 - Webhosting info: http://whois.webhosting.info/ syntax: http://whois.webhosting.info/x.x.x.x
-- DNSstuff: http://www.dnsstuff.com/ (multiple services available) http://www.net-square.com/mspawn.html (multiple queries on domains and IP addresses, requires installation)
-- tomDNS: http://www.tomdns.net/index.php (some services are still private at the time of writing)
-- SEOlogs.com: http://www.seologs.com/ip-domains.html (reverse-IP/domain lookup)
+- DNSstuff: http://www.dnsstuff.com/ 
+- multiple services available: http://www.net-square.com/mspawn.html
+- tomDNS: http://www.tomdns.net/index.php
+- SEOlogs.com: http://www.seologs.com/ip-domains.html
 
-The following example shows the result of a query to one of the above reverse-IP services to 216.48.3.18, the IP address of www.owasp.org.
-
-Three additional non-obvious symbolic names mapping to the same address have been revealed. 
 
 Googling
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-이 전 기술로 부터 정보 수집 후, 테스터는 가능한 세밀하게 구분하고 자신의 분석을 증가하기 위해 써치 엔진에 의존 할 수 있습니다.
-대상에 속하는 추가 도메인 명의 증거를 얻을 수 있거나, 비 명백한 URL을 통해 액세스 할 수 있습니다.
-
-For instance, considering the previous example regarding www.owasp.org, the tester could query Google and other search engines looking for information (hence, DNS names) related to the newly discovered domains of webgoat.org, webscarab.com, and webscarab.net.
+테스터는 써치 엔진을 통해 정보 수집을 하여, 공격 대상과 관련된 추가 도메인 명의 정보를 얻거나, 비 명백한 URL을 통해 액세스 할 수 있습니다.
 
 구글링 기술은 Spiders, Robots, Crawlers 테스트를 위해 설명되었습니다.
 

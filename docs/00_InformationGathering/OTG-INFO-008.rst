@@ -1,5 +1,5 @@
 ==========================================================================================
-OTG-INFO-008 (웹 어플리케이션 프레임워크 핑거프린트)
+OTG-INFO-008 (웹 응용 프로그램 프레임워크 핑거프린트)
 ==========================================================================================
 
 |
@@ -9,21 +9,16 @@ OTG-INFO-008 (웹 어플리케이션 프레임워크 핑거프린트)
 
 웹 프레임워크 핑거프린트는 정보 수집 과정 중 중요한 작업 중 하나입니다.
 
-이러한 프레임워크가 침투 테스터에 의해 이미 테스트 되었다면, 프레임워크의 유형을 아는 것은 자동으로 큰 이점을 제공 할 수 있습니다.
+이러한 프레임워크가 침투 테스터에 의해 이미 테스트 되었다면, 프레임워크의 유형을 아는 것은 자동으로 큰 이점을 제공할 수 있습니다.
 
-It is not only the known vulnerabilities in unpatched versions but specific misconfigurations in the framework and known file structure that makes the fingerprinting process so important.
-Several different vendors and versions of web frameworks are widely
-used. Information about it significantly helps in the testing process,
-and can also help in changing the course of the test. Such information
-can be derived by careful analysis of certain common locations. Most
-of the web frameworks have several markers in those locations which
-help an attacker to spot them. This is basically what all automatic tools
-do, they look for a marker from a predefined location and then compare it to the database of known signatures. For better accuracy several markers are usually used.
-[*] Please note that this article makes no differentiation between Web
-Application Frameworks (WAF) and Content Management Systems
-(CMS). This has been done to make it convenient to fingerprint both of
-them in one chapter. Furthermore, both categories are referenced as
-web frameworks.
+패치되지 않은 버전의 알려진 취약점 뿐 아니라 프레임워크의 특정 구성 오류 및 핑거프린팅 프로세스를 중요하게 만드는 알려진 파일 구조이기도 합니다.
+여러 다른 공급 업체 및 웹 프레임 워크 버전이 널리 사용됩니다.
+이에 대한 정보는 테스트 과정에서 크게 도움이되며 테스트 과정을 변경하는 데 도움이 될 수 있습니다.
+이러한 정보는 특정 공통 위치에 대한 신중한 분석을 통해 얻을 수 있습니다.
+
+대부분의 웹 프레임 워크에는 공격자가 사이트를 발견하는 데 도움이 되는 여러 마커가 있습니다.
+이것은 기본적으로 모든 자동 도구가 수행하는 것으로 사전 정의 된 위치에서 마커를 찾고 알려진 서명의 데이터베이스와 비교합니다.
+더 나은 정확성을 위해 일반적으로 여러 마커가 사용됩니다.
 
 |
 
@@ -71,7 +66,7 @@ HTTP 헤더
     Vary: Accept-Encoding
     X-Powered-By: Mono
 
-X-Powered-By 필드로 부터, Mono라는 웹 어플리케이션 프레임워크인 걸 확인하였습니다.
+X-Powered-By 필드로 부터, Mono라는 웹 응용 프로그램 프레임워크인 걸 확인하였습니다.
 이 방법은 간단하고 빠르지만, 100% 완벽하지는 않습니다.
 설정에 의해 쉽게 X-Powered-By 헤더를 비활성화 할 수 있습니다.
 또한, HTTP 헤더를 통해 난독화할 수 있는 몇가지 기술이 있습니다.
@@ -141,29 +136,28 @@ Cookies
     */
     Configure::write('Session.cookie', 'CAKEPHP');
 
-However, these changes are less likely to be made than changes
-to the X-Powered-By header, so this approach can be considered
-as more reliable.
+그러나, 이러한 변경은 X-Powered-By 헤더의 변경보다 쉽게 수행되지 않으므로, 이 방법은 더 안정적인 것으로 간주 될 수 있습니다.
 
 |
 
 HTML source code
 -----------------------------------------------------------------------------------------
 
-This technique is based on finding certain patterns in the HTML page source code. 
-Often one can find a lot of information which helps a tester to recognize a specific web framework. 
-One of the common markers are HTML comments that directly lead to framework disclosure.
+이 기법은 HTML 페이지 소스 코드에서 특정 패턴을 찾는 것에 기반합니다.
 
-More often certain framework-specific paths can be found, i.e. links to framework-specific css and/or js folders. 
-Finally, specific script variables might also point to a certain framework.
-From the screenshot below one can easily learn the used framework and its version by the mentioned markers. 
+종종 테스터가 특정 웹 프레임워크를 인식하는 데 도움이되는 많은 정보를 찾을 수 있습니다.
+일반적인 마커 중 하나는 프레임워크 공개로 직접 이어지는 HTML 주석입니다.
 
-The comment, specific paths and script variables can all help an attacker to quickly determine an instance of ZK framework.
+종종 특정 프레임워크 별 경로, 즉 프레임워크 별 css 또는 js 폴더에 대한 링크를 찾을 수 있습니다.
+마지막으로 특정 스크립트 변수는 특정 프레임워크를 가리킬 수도 있습니다.
+아래 스크린 샷에서 언급된 마커를 통해 사용된 프레임워크와 버전을 쉽게 배울 수 있습니다.
 
-More frequently such information is placed between <head></head> tags, in <meta> tags or at the end of the page.
-Nevertheless, it is recommended to check the whole document since it can be useful for other purposes such as inspection of other useful comments and hidden fields. 
-Sometimes, web developers do not care much about hiding information about the framework used. 
-It is still possible to stumble upon something like this at the bottom of the page:
+주석, 특정 경로 및 스크립트 변수는 모두 공격자가 ZK 프레임 워크의 인스턴스를 신속하게 결정하는 데 도움이 될 수 있습니다.
+
+이러한 정보는 <head> </head> 태그, <meta> 태그 또는 페이지 끝 부분에 더 자주 배치됩니다.
+그럼에도 불구하고 다른 유용한 주석과 숨겨진 필드를 검사하는 것과 같은 다른 목적에 유용할 수 있기 때문에 전체 문서를 검사하는 것이 좋습니다.
+때때로 웹 개발자는 사용된 프레임워크에 대한 정보를 숨기지 않습니다.
+다음과 같이 페이지 하단에서 우연히 마주치는 것이 가능할 수 있습니다.
 
 |
 
@@ -173,9 +167,10 @@ It is still possible to stumble upon something like this at the bottom of the pa
 .. csv-table:: Cookies
     :header: "프레임워크","Cookie 이름"
 
-    "Zope", "BITRIX_"
-    "CakePHP","AMP"
-    "Laravel","django"
+    "Zope", "zope3"
+    "CakePHP","cakephp"
+    "Kohana", "kohanasession"
+    "Laravel","laravel_session"
 
 .. csv-table:: HTML 소스 코드
     :header: "일반적인 마커"
@@ -200,18 +195,13 @@ It is still possible to stumble upon something like this at the bottom of the pa
 특정 파일과 폴더
 -----------------------------------------------------------------------------------------
 
-Specific files and folders are different for each specific framework. 
-It is recommended to install the corresponding framework
-during penetration tests in order to have better understanding
-of what infrastructure is presented and what files might be left
-on the server. However, several good file lists already exist and
-one good example is FuzzDB wordlists of predictable files/folders
+특정 파일 및 폴더는 특정 프레임워크마다 다릅니다.
+어떤 인프라가 제공되고 어떤 파일이 서버에 남아있을지 더 잘 이해할 수 있도록 침투 테스트 중에 해당 프레임워크를 설치해 보는 것이 좋습니다.
 (http://code.google.com/p/fuzzdb/).
-
 
 |
 
-Tools
+도구
 ==========================================================================================
 
 WhatWeb
@@ -219,8 +209,8 @@ WhatWeb
 
 http://www.morningstarsecurity.com/research/whatweb
 
-Currently one of the best fingerprinting tools on the market. 
-Included in a default Kali Linux build. Language: Ruby Matches for fingerprinting are made with:
+현재 시장에서 가장 우수한 지문 인식 도구 중 하나입니다.
+기본 Kali Linux 빌드에 포함됩니다. 언어: Ruby 지문 일치는 다음으로 이루어집니다.
 
 - Text strings (case sensitive)
 - Regular expressions
@@ -230,7 +220,6 @@ Included in a default Kali Linux build. Language: Ruby Matches for fingerprintin
 - HTML tag patterns
 - Custom ruby code for passive and aggressive operations
 
-Sample output is presented on a screenshot below:
 
 |
 
@@ -239,10 +228,10 @@ BlindElephant
 
 https://community.qualys.com/community/blindelephant
 
-This great tool works on the principle of static file checksum based
-version difference thus providing a very high quality of fingerprinting. Language: Python
+이 훌륭한 도구는 정적 파일 체크섬 기반의 원칙에 따라 작동합니다.
+버전 차이로 인해 매우 높은 품질의 지문을 제공합니다. 언어: Python
 
-Sample output of a successful fingerprint:
+성공적인 지문 샘플 출력
 
 .. code-block:: console
 
@@ -285,17 +274,16 @@ Wappalyzer
 
 http://wappalyzer.com
 
-Wapplyzer is a Firefox Chrome plug-in. It works only on regular expression matching and doesn`t need anything other than the page
-to be loaded on browser. It works completely at the browser level
-and gives results in the form of icons. Although sometimes it has
-false positives, this is very handy to have notion of what technologies were used to construct a target website immediately after
-browsing a page.
+Wapplyzer는 Firefox Chrome 플러그인입니다.
+정규식 일치에서만 작동하며 브라우저에 로드할 페이지 이외의 다른 것을 필요로 하지 않습니다.
+그것은 브라우저 수준에서 완전히 작동하고 아이콘의 형태로 결과를 제공합니다.
+때로는 오탐(false positive)이 있지만, 때때로 페이지를 탐색한 후 대상 웹 사이트를 구성하는 데 사용된 기술을 이해하는 데 매우 편리합니다.
 
-Sample output of a plug-in is presented on a screenshot below.
+플러그인의 샘플 출력은 아래 스크린 샷에 나와 있습니다.
 
 |
 
-References
+참고 문헌
 ==========================================================================================
 
 Whitepapers
@@ -307,48 +295,48 @@ Whitepapers
 
 |
 
-Remediation
+권고 사항
 ==========================================================================================
 
-The general advice is to use several of the tools described above and check logs to better understand what exactly helps an attacker to disclose the web framework. 
-By performing multiple scans after changes have been made to hide framework tracks, it`s possible to achieve a better level of security and to make sure of the framework can not be detected by automatic scans. 
-Below are some specific recommendations by framework marker location and some additional interesting approaches.
+일반적인 조언은 위에 설명된 여러 도구를 사용하여 로그를 검사하여 침입자가 웹 프레임워크를 공개하는 데 정확히 도움이 되는지 이해하는 것입니다.
+프레임워크 트랙을 숨기도록 변경한 후에 여러 번 스캔을 수행하면 더 나은 보안 수준을 달성하고 자동 스캔으로 프레임워크를 감지할 수 없는 지 확인할 수 있습니다.
+다음은 프레임워크 마커 위치 및 몇 가지 추가적인 흥미로운 접근법에 따른 몇 가지 구체적인 권장 사항입니다.
 
 **HTTP headers**
 
-Check the configuration and disable or obfuscate all HTTP-headers that disclose information the technologies used. Here is an
-interesting article about HTTP-headers obfuscation using Netscaler:
+구성을 확인하고 기술이 사용하는 정보를 공개하는 모든 HTTP 헤더를 비활성화하거나 난독화 하십시오. 
+다음은 Netscaler를 사용하는 HTTP 헤더 난독화에 대한 흥미로운 기사입니다.
+
 http://grahamhosking.blogspot.ru/2013/07/obfuscating-http-header-using-netscaler.html
 
 |
 
 **Cookies**
 
-It is recommended to change cookie names by making changes in
-the corresponding configuration files.
+해당 구성 파일을 변경하여 쿠키 이름을 변경하는 것이 좋습니다.
 
 |
 
 **HTML source code**
 
-Manually check the contents of the HTML code and remove everything that explicitly points to the framework.
+수동으로 HTML 코드의 내용을 확인하고 명시적으로 프레임워크를 가리키는 모든 것을 제거하십시오.
 
-General guidelines:
+일반 지침 :
 
-- Make sure there are no visual markers disclosing the framework
-- Remove any unnecessary comments (copyrights, bug information, specific framework comments)
-- Remove META and generator tags
-- Use the companies own css or js files and do not store those in a framework-specific folders
-- Do not use default scripts on the page or obfuscate them if they must be used.
+- 프레임 워크를 공개하는 시각적 마커가 없는지 확인하십시오.
+- 불필요한 주석(저작권, 버그 정보, 특정 프레임 워크 주석)을 제거하십시오.
+- META 및 생성기 태그 제거
+- 회사의 css 또는 js 파일을 사용하고 프레임 워크 관련 폴더에 파일을 저장하지 않습니다.
+- 페이지에서 기본 스크립트를 사용하지 않거나 사용해야 할 경우 난독 화합니다.
 
 |
 
-**Specific files and folders**
+**특정 파일과 폴더**
 
-General guidelines:
+일반 지침:
 
-- Remove any unnecessary or unused files on the server. This implies text files disclosing information about versions and installation too.
-- Restrict access to other files in order to achieve 404-response when accessing them from outside. This can be done, for example, by modifying htaccess file and adding RewriteCond or RewriteRule there. An example of such restriction for two common WordPress folders is presented below.
+- 서버에서 불필요하거나 사용되지 않는 파일을 제거하십시오. 이것은 텍스트 파일이 버전 및 설치에 대한 정보를 공개함을 의미합니다.
+- 외부 파일에 액세스 할 때 404 응답을 얻기 위해 다른 파일에 대한 액세스를 제한하십시오. 예를 들어, htaccess 파일을 수정하고, RewriteCond 또는 RewriteRule을 추가하여 이를 수행 할 수 있습니다. 두 가지 일반적인 WordPress 폴더에 대한 이러한 제한의 예가 아래에 나와 있습니다.
 
 .. code-block:: console
 
@@ -357,27 +345,25 @@ General guidelines:
     RewriteRule $ /http://your_website [R=404,L]
 
 
-However, these are not the only ways to restrict access. In order to
-automate this process, certain framework-specific plugins exist.
-One example for WordPress is StealthLogin (http://wordpress.org/
-plugins/stealth-login-page).
+그러나 이것 만이 액세스를 제한하는 유일한 방법은 아닙니다. 이 프로세스를 자동화하기 위해 특정 프레임워크 관련 플러그인이 존재합니다.
+WordPress의 한 가지 예가 StealthLogin입니다. (http://wordpress.org/plugins/stealth-login-page).
 
 |
 
-**Additional approaches**
+**추가 접근법**
 
-:General guidelines:
+일반 지침:
 
-1. Checksum management
+1. 체크섬 관리
 
-The purpose of this approach is to beat checksum-based scanners
-and not let them disclose files by their hashes. Generally, there are
-two approaches in checksum management:
-- Change the location of where those files are placed (i.e. move them to another folder, or rename the existing folder)
-- Modify the contents - even slight modification results in a completely different hash sum, so adding a single byte in the end of the file should not be a big problem.
+이 접근법의 목적은 체크섬 기반 스캐너를 이기고, 해시로 파일을 공개하지 못하게하는 것입니다. 
+일반적으로 체크섬 관리에는 두 가지 방법이 있습니다.
 
-2. Controlled chaos
+- 파일을 저장할 위치를 변경합니다 (예 : 다른 폴더로 이동하거나 기존 폴더 이름 바꾸기).
+- 내용을 수정하십시오 : 완전히 다른 해시 합계로 약간의 수정 결과가 있어도 파일 끝에 단일 바이트를 추가하는 것이 큰 문제는 아닙니다.
 
-A funny and effective method that involves adding bogus files and folders from other frameworks in order to fool scanners and confuse an attacker. But be careful not to overwrite existing files and folders and to break the current framework!
+2. 제어가능한 혼돈
+
+재미있는 방법은 스캐너를 속이고 공격자를 혼란시키기 위해 다른 프레임워크에서 가짜 파일과 폴더를 추가하는 것입니다. 그러나 기존 파일과 폴더를 덮어 쓰지 말고 현재 프레임워크를 깨뜨리지 않도록 주의하십시오!
 
 |

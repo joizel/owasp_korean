@@ -1,5 +1,5 @@
 ==========================================================================================
-OTG-INFO-006 (어플리케이션 엔트리 포인트 식별)
+OTG-INFO-006 (응용 프로그램 엔트리 포인트 식별)
 ==========================================================================================
 
 |
@@ -7,20 +7,17 @@ OTG-INFO-006 (어플리케이션 엔트리 포인트 식별)
 개요
 ==========================================================================================
 
-Enumerating the application and its attack surface is a key precursor
-before any thorough testing can be undertaken, as it allows the tester
-to identify likely areas of weakness. This section aims to help identify
-and map out areas within the application that should be investigated
-once enumeration and mapping have been completed.
-    
+테스터가 취약한 부분을 식별 할 수 있도록 철저한 테스트를 수행하기 전에 응용 프로그램 및 취약한 부분을 목록화하는 것이 중요한 선행입니다.
+
+이 섹션에서는 목록화 및 매핑이 완료되면 조사해야 하는 응용 프로그램 내의 영역을 식별하고 매핑하는 것을 돕습니다.
 
 |
 
 테스트 목적
 ==========================================================================================
 
-리퀘스트가 어떻게 형성되는 지와 어플리케이션으로 부터 전형적인 응답 이해
-    
+리퀘스트가 어떻게 형성되는 지와 응용 프로그램으로 부터 전형적인 응답 이해
+
 |
 
 
@@ -29,96 +26,69 @@ once enumeration and mapping have been completed.
 
 |
 
-모든 테스트를 시작하기 전에, 테스터는 어플리케이션과 사용자간의 통신하는 방법에 대해 잘 이해하고 있어야 합니다.
+테스트를 시작하기 전에, 테스터는 항상 응용 프로그램과 사용자 및 브라우저가 어떻게 통신하는지 잘 이해하고 있어야 합니다.
+테스터가 응용 프로그램을 탐색 할 때 응용 프로그램에 전달되는 모든 매개 변수와 양식 필드뿐만 아니라 모든 HTTP 요청에 특히 주의해야 합니다.
+또한, GET 요청이 사용되는 시기와 POST 요청이 매개 변수를 응용 프로그램에 전달하는 데 사용될 때 주의해야 합니다. 
+GET 요청이 사용되는 것이 일반적이지만, 민감한 정보가 전달되면 POST 요청 본문 내에서 수행되는 경우가 많습니다.
 
-As the tester walks through the application, they should pay special attention to all HTTP requests (GET and POST Methods, also known as Verbs), as well as every parameter and form field that is passed to the application.
+POST 요청에서 전송된 매개 변수를 보려면 테스터가 인터셉팅 프록시 (Burp Suite, ZAP) 또는 브라우저 플러그인과 같은 도구를 사용해야 합니다.
+POST 요청 내에서 테스터는 응용 프로그램에 전달되는 숨겨진 양식 필드에 특별한 주의를 기울여야 합니다.
+일반적으로 상태 정보, 항목 수, 항목 가격, 개발자가 절대 사용하지 않는 민감한 정보가 포함되어 있기 때문입니다. 보거나 변경하기위한 것입니다.
 
-In addition, they should pay attention to when GET requests are used and when POST requests are used to pass parameters to the application. 
-It is very common that GET requests are used, but when sensitive information is passed, it is often done within the body of a POST request.
+저자의 경험에 따르면, 테스트 단계에서 인터셉팅 프록시와 스프레드 시트를 사용하는 것이 매우 유용합니다.
+프록시는 테스터와 응용 프로그램이 통신하는 동안 요청자와 응답 간의 모든 요청 및 응답을 추적합니다. 
+또한 이 시점에서 테스터는 대개 모든 요청과 응답을 트랩하여 응용 프로그램에 전달되는 모든 헤더와 매개 변수 등을 정확히 볼 수 있도록 반환됩니다. 
+특히 대규모 대화식 사이트에서는 매우 지루할 수 있습니다. 
+그러나, 경험을 통해 무엇을 찾아야 하는 단계를 현저하게 줄일 수 있습니다.
 
-Note that to see the parameters sent in a POST request, the tester will
-need to use a tool such as an intercepting proxy (for example, OWASP:
-Zed Attack Proxy (ZAP)) or a browser plug-in. Within the POST request,
-the tester should also make special note of any hidden form fields that
-are being passed to the application, as these usually contain sensitive
-information, such as state information, quantity of items, the price of
-items, that the developer never intended for you to see or change.
+테스터가 응용 프로그램을 진행하면서 URL, 커스텀 헤더 또는 요청/응답의 흥미로운 매개 변수를 기록하고 스프레드 시트에 저장해야합니다. 
+스프레드 시트에는 요청된 페이지, 흥미로운 매개 변수, 요청 유형(POST/GET), 액세스가 인증/인증되지 않은 경우, SSL 다중 단계 프로세스의 일부인 경우에는 기타 관련 노트를 사용합니다. 
+일단 응용 프로그램의 모든 영역이 매핑되면 응용 프로그램을 거쳐 식별된 각 영역을 테스트하고 작동한 것과 작동하지 않은 것을 체크 할 수 있습니다. 
+이 가이드의 나머지 부분에서는 이러한 각 관심 영역을 테스트하는 방법을 식별하지만 실제 테스트를 시작하기 전에 이 섹션을 수행해야합니다.
 
-In the author’s experience, it has been very useful to use an intercepting
-proxy and a spreadsheet for this stage of the testing. The proxy
-will keep track of every request and response between the tester and
-the application as they u walk through it. Additionally, at this point,
-testers usually trap every request and response so that they can
-see exactly every header, parameter, etc. that is being passed to the
-application and what is being returned. This can be quite tedious at
-times, especially on large interactive sites (think of a banking application).
-However, experience will show what to look for and this phase
-can be significantly reduced.
 
-As the tester walks through the application, they should take note
-of any interesting parameters in the URL, custom headers, or body
-of the requests/responses, and save them in a spreadsheet. The
-spreadsheet should include the page requested (it might be good to
-also add the request number from the proxy, for future reference),
-the interesting parameters, the type of request (POST/GET), if access
-is authenticated/unauthenticated, if SSL is used, if it’s part of
-a multi-step process, and any other relevant notes. Once they have
-every area of the application mapped out, then they can go through
-the application and test each of the areas that they have identified
-and make notes for what worked and what didn’t work. The rest of
-this guide will identify how to test each of these areas of interest, but
-this section must be undertaken before any of the actual testing can
-commence.
-
-Below are some points of interests for all requests and responses.
-Within the requests section, focus on the GET and POST methods,
-as these appear the majority of the requests. Note that other methods,
-such as PUT and DELETE, can be used. Often, these more rare
-requests, if allowed, can expose vulnerabilities. There is a special section
-in this guide dedicated for testing these HTTP methods.
+다음은 모든 요청 및 응답에 대한 관심 사항입니다. 
+요청 섹션에서 GET 및 POST 메서드에 중점을 둡니다. 
+요청의 대부분이 나타나기 때문입니다. 
+PUT 및 DELETE와 같은 다른 방법을 사용할 수 있습니다. 
+이러한 드문 요청이 허용되는 경우 종종 취약성을 노출 할 수 있습니다. 
+이 HTTP 메서드를 테스트하기 위한 전용 섹션이 이 가이드에 있습니다.
 
 |
 
-Requests
------------------------------------------------------------------------------------------
+**Requests**
 
-- GET을 사용한 곳과 POST를 사용한 곳에 대한 식별
-- POST 요청에서 사용하는 모든 파라미터 식별
-- POST 요청 내에 숨겨진 파라미터를 확인합니다. POST로 form 필드를 보낼 때, 어플리케이션에 HTTP body
-메시지로 보낼 것입니다. 추가적으로, 접속 권한에 따라 숨겨진 파라미터의 값이 다를 수 있습니다. 
-- GET 요청에서 사용하는 모든 파라미터 식별
-- 쿼리 문자열의 모든 파라미터 식별. 이것은 foo=bar와 같이 항상 한 쌍 형식으로 되어 있습니다.
-
-
-- A special note when it comes to identifying multiple parameters in one string or within a POST request is that some or all of the parameters will be needed to execute the attacks. 
-The tester needs to identify all of the parameters (even if encoded or encrypted) and identify which ones are processed by the application. 
-Later sections of the guide will identify how to test these parameters. 
-At this point, just make sure each one of them is identified.
-- Also pay attention to any additional or custom type headers not typically seen (such as debug=False).
+- GET이 사용되는 위치와 POST가 사용되는 위치를 식별하십시오.
+- POST 요청에 사용된 모든 매개 변수를 식별합니다 (요청 본문에 있음).
+- POST 요청 내에서 숨겨진 매개 변수에 특히 주의하십시오. POST가 전송되면 모든 양식 필드(숨겨진 매개 변수 포함)가 HTTP 메시지 본문에서 응용 프로그램으로 전송됩니다. 프록시 또는 HTML 소스 코드 보기가 사용되지 않는 한 일반적으로 표시되지 않습니다. 또한 표시된 다음 페이지, 해당 데이터 및 액세스 수준은 모두 숨겨진 매개 변수의 값에 따라 다를 수 있습니다.
+- GET 요청(예: URL)에 사용 된 모든 매개 변수, 특히 쿼리 문자열을 식별합니다 (일반적으로 ?기호 다음에 표시).
+- 쿼리 문자열의 모든 매개 변수를 확인하십시오. 이들은 대개 foo = bar와 같은 쌍 형식입니다. 또한 많은 매개 변수는 &, ~, : 또는 다른 특수 문자 또는 인코딩으로 구분 된 것과 같이 하나의 쿼리 문자열에 있을 수 있습니다.
+- 한 문자열이나 POST 요청에서 여러 매개 변수를 식별 할 때 특히 주의해야 할 점은 일부 또는 모든 매개 변수가 공격을 실행하는 데 필요하다는 것입니다. 테스터는 (모든 매개 변수를 식별하고 어떤 매개 변수가 응용 프로그램에서 처리되는지 식별해야합니다. 이 가이드의 이후 섹션에서는 이러한 매개 변수를 테스트하는 방법을 설명합니다. 이 시점에서 각 항목이 식별되는지 확인하십시오.
+- 또한 일반적으로 표시되지 않는 추가 또는 사용자 정의 유형 헤더에 주의하십시오.
 
 |
 
-Responses
------------------------------------------------------------------------------------------
+**Responses**
 
-- 새로운 쿠키가 설정(Set-Cookie 헤더), 수정, 또는 추가된 걸 확인
-
-- Identify where there are any redirects (3xx HTTP status code), 400 status codes, in particular 403 Forbidden, and 500 internal server errors during normal responses (i.e., unmodified requests).
-- Also note where any interesting headers are used. For example, "Server: BIG-IP" indicates that the site is load balanced. Thus, if a site is load balanced and one server is incorrectly configured, then the tester might have to make multiple requests to access the vulnerable server, depending on the type of load balancing used.
+- 새 쿠키가 설정된 위치 (Set-Cookie 헤더), 수정 또는 추가 된 위치를 식별합니다.
+- 정상 응답 (즉, 수정되지 않은 요청) 중에 리디렉션 (3xx HTTP 상태 코드), 400 상태 코드, 특히 403 금지됨 및 500 내부 서버 오류가있는 위치를 식별하십시오.
+- 또한, 흥미로운 헤더가 사용되는 곳을 주목하십시오. 예를 들어 "Server : BIG-IP"는 사이트의 부하가 분산되었음을 나타냅니다. 따라서 사이트가 로드 밸런싱되고 하나의 서버가 잘못 구성된 경우 테스터는 사용된 로드 밸런싱 유형에 따라 취약한 서버에 액세스하기 위해 여러 요청을 해야 할 수 있습니다.
 
 |
 
 Black Box Testing
 -----------------------------------------------------------------------------------------
 
-어플리케이션 엔트리 포인트 테스트:
+응용 프로그램 엔트리 포인트 테스트:
 
-어플리케이션 엔트리 포인트를 체크하는 방법은 다음 두가지 예가 있습니다.
+응용 프로그램 엔트리 포인트를 체크하는 방법은 다음 두가지 예가 있습니다.
+
+|
 
 예제 1
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-이 예제는 온라인 쇼핑 어플리케이션으로 부터 아이템을 구매하는 GET 리퀘스트를 보여줍니다.
+이 예제는 온라인 쇼핑 응용 프로그램으로 부터 아이템을 구매하는 GET 리퀘스트를 보여줍니다.
 
 .. code-block:: console
 
@@ -137,7 +107,7 @@ Black Box Testing
 예제 2
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-이 예제는 어플리케이션으로 로그인하는 POST 리퀘스트를 보여줍니다.
+이 예제는 응용 프로그램으로 로그인하는 POST 리퀘스트를 보여줍니다.
 
 .. code-block:: console
 
@@ -162,21 +132,13 @@ Black Box Testing
 Gray Box Testing
 ==========================================================================================
 
-Testing for application entry points via a Gray Box methodology
-would consist of everything already identified above with one addition.
-In cases where there are external sources from which the application
-receives data and processes it (such as SNMP traps, syslog
-messages, SMTP, or SOAP messages from other servers) a meeting
-with the application developers could identify any functions that
-would accept or expect user input and how they are formatted. For
-example, the developer could help in understanding how to formulate
-a correct SOAP request that the application would accept and
-where the web service resides (if the web service or any other function
-hasn’t already been identified during the black box testing).
+Gray Box 방법론을 통해 응용 프로그램 진입 점을 테스트하는 것은 위에 추가 된 항목으로 이미 식별 된 모든 항목으로 구성됩니다.
+응용 프로그램에서 데이터를 수신하고 처리하는 외부 소스 (예 : SNMP 트랩, Syslog 메시지, SMTP 또는 다른 서버의 SOAP 메시지)가 있는 경우 응용 프로그램 개발자와의 회의에서 사용자를 수락하거나 기대하는 모든 기능을 식별 할 수 있으며 입력 및 형식 지정 방법에 대해 설명합니다.
+예를 들어 개발자는 응용 프로그램이 받아들일 정확한 SOAP 요청을 공식화하는 방법과 웹 서비스가 상주하는 위치를 이해하는 데 도움을 줄 수 있습니다.
 
 |
 
-Tools
+도구
 ==========================================================================================
 
 웹 프록시
@@ -195,7 +157,7 @@ Tools
 
 |
 
-References
+참고 문헌
 ==========================================================================================
 
 Whitepapers

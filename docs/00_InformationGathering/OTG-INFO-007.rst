@@ -1,5 +1,5 @@
 ==========================================================================================
-OTG-INFO-007 (애플리케이션을 통해 경로 실행 맵)
+OTG-INFO-007 (응용 프로그램을 통해 경로 실행 매핑)
 ==========================================================================================
 
 |
@@ -7,39 +7,40 @@ OTG-INFO-007 (애플리케이션을 통해 경로 실행 맵)
 개요
 ==========================================================================================
 
-보안 검사를 시작하기 전에, 어플리케이션의 구조를 이해하는 것은 중요합니다.
-어플리케이션의 레이아웃의 철저한 이해 없이, 완벽하게 테스트 될 수 없을 것입니다.
+보안 검사를 시작하기 전에, 응용 프로그램의 구조를 이해하는 것은 중요합니다.
+응용 프로그램 레이아웃에 대한 이해 없이, 완벽한 테스트는 할 수 없을 것입니다.
 
 |
 
 테스트 목적
 ==========================================================================================
 
-대상 어플리케이션을 지도화하고 주요 워크플로우를 이해하기
+대상 응용 프로그램을 매핑화하고 주요 워크 플로우를 이해하기
 
 |
 
 테스트 방법
 ==========================================================================================
 
-In black box testing it is extremely difficult to test the entire code base. 
-Not just because the tester has no view of the code paths through the application, but even if they did, to test all code paths would be very time consuming. 
-One way to reconcile this is to document what code paths were discovered and tested.
+black box 테스트에서 전체 코드를 기반으로 테스트하는 것은 매우 어렵습니다. 
+테스터가 응용 프로그램을 통한 코드 경로를 전혀 볼 수 없을 뿐만 아니라 모든 코드 경로를 테스트 하는 데 시간이 많이 걸릴 것입니다.
+이를 조정하는 한 가지 방법은 코드 경로가 발견되고 테스트되었는지를 문서화하는 것입니다.
 
-There are several ways to approach the testing and measurement of code coverage:
+코드 적용 범위의 테스트 및 측정에 접근하는 방법에는 여러 가지가 있습니다.
 
-- Path - test each of the paths through an application that includes combinatorial and boundary value analysis testing for each decision path. While this approach offers thoroughness, the number of testable paths grows exponentially with each decision branch.
-- Data flow (or taint analysis) - tests the assignment of variables via external interaction (normally users). Focuses on mapping the flow, transformation and use of data throughout an application.
-- Race - tests multiple concurrent instances of the application manipulating the same data.
+- 경로 - 각 의사 결정 경로에 대한 조합 및 경계 값 분석 테스트가 포함 된 응용 프로그램을 통해 각 경로를 테스트하십시오. 이 접근 방식은 철저한 테스트를 제공하지만 테스트 가능한 경로의 수는 각 결정 지점마다 기하 급수적으로 커집니다.
+- 데이터 플로우 - 외부 상호 작용을 통해 변수를 할당합니다. 응용 프로그램 전반에 걸쳐 데이터의 흐름, 변환 및 사용을 매핑하는 데 중점을 둡니다.
+- Race - 동일한 데이터를 조작하는 응용 프로그램의 여러 동시 인스턴스를 테스트합니다.
 
-The trade off as to what method is used and to what degree each method is used should be negotiated with the application owner. Simpler approaches could also be adopted, including asking the application owner what functions or code sections they are particularly concerned about and how those code segments can be reached.
+어떤 방법을 사용하고 각 방법을 어느 정도 사용하는지에 대한 절충은 응용 프로그램 소유자와 협의해야 합니다. 
+응용 프로그램 소유자에게 특히 관심이 있는 기능 또는 코드 섹션과 해당 코드 세그먼트에 도달 할 수 있는 방법을 묻는 것을 포함하여 보다 간단한 방법을 채택 할 수도 있습니다.
 
 |
 
 Black Box Testing
 -----------------------------------------------------------------------------------------
 
-어플리케이션 관리자에게 코드 커버리지를 설명하기 위해, 테스터는 스프레드시트로 시작하고 어플리케이션을 스파이더링에 의해 발견된 모든 링크를 문서화할 수 있습니다.
+응용 프로그램 관리자에게 코드 커버리지를 설명하기 위해, 테스터는 스프레드시트로 시작하고 응용 프로그램을 스파이더링에 의해 발견된 모든 링크를 문서화할 수 있습니다.
 
 그런 다음 테스터는 응용 프로그램에서 결정 포인트 더 자세히보고 중요한 코드 경로가 발견 얼마나 많은 조사 할 수 있습니다.
 이 후 발견 된 경로의 URL을, 산문 및 스크린 샷 설명과 함께 스프레드 시트에 문서화되어야한다.
@@ -49,10 +50,9 @@ Black Box Testing
 Gray/White Box testing
 -----------------------------------------------------------------------------------------
 
-Ensuring sufficient code coverage for the application owner is far
-easier with the gray and white box approach to testing. Information
-solicited by and provided to the tester will ensure the minimum requirements
-for code coverage are met.
+테스트에 대한 Gray/White Box 방식을 사용하면 응용 프로그램 소유자에게 충분한 코드 범위를 보장 할 수 있습니다.
+
+테스터가 요청하여 제공하는 정보는 코드 커버리지의 최소 요구 사항을 충족하도록 보장합니다.
 
 |
 
@@ -67,16 +67,16 @@ for code coverage are met.
 
 |
 
-ZAP offers the following automatic spidering features, which can be selected based on the tester’s needs:
+ZAP은 테스터의 필요에 따라 선택할 수있는 다음과 같은 자동 스파이더 링 기능을 제공합니다.
 
-- Spider Site - The seed list contains all the existing URIs already found for the selected site.
-- Spider Subtree - The seed list contains all the existing URIs already found and present in the subtree of the selected node.
-- Spider URL - The seed list contains only the URI corresponding to the selected node (in the Site Tree).
-- Spider all in Scope - The seed list contains all the URIs the user has selected as being ‘In Scope’.
+- Spider Site - 시드 목록에는 선택한 사이트에 대해 이미 발견 된 기존 URI가 모두 들어 있습니다.
+- Spider Subtree - 시드 목록에는 이미 발견되어 선택된 노드의 하위 트리에 있는 기존 URI가 모두 들어 있습니다.
+- Spider URL - 시드 목록에는 선택한 노드 (사이트 트리에 있음)에 해당하는 URI 만 포함됩니다.
+- Spider all in Scope - 시드 목록에는 사용자가 '범위 내에 있음'으로 선택한 모든 URI가 포함됩니다.
 
 |
 
-Tools
+도구
 ==========================================================================================
 
 - Zed Attack Proxy (ZAP)
@@ -85,7 +85,7 @@ Tools
 
 |
 
-References
+참고 문헌
 ==========================================================================================
 
 Whitepapers

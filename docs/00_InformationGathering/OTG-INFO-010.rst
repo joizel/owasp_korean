@@ -1,5 +1,5 @@
 ==========================================================================================
-OTG-INFO-010 (어플리케이션 아키텍쳐 맵)
+OTG-INFO-010 (응용 프로그램 아키텍쳐 맵)
 ==========================================================================================
 
 |
@@ -7,67 +7,46 @@ OTG-INFO-010 (어플리케이션 아키텍쳐 맵)
 개요
 ==========================================================================================
 
-The complexity of interconnected and heterogeneous web server infrastructure
-can include hundreds of web applications and makes configuration
-management and review a fundamental step in testing and
-deploying every single application. In fact it takes only a single vulnerability
-to undermine the security of the entire infrastructure, and even
-small and seemingly unimportant problems may evolve into severe
-risks for another application on the same server.
-To address these problems, it is of utmost importance to perform an
-in-depth review of configuration and known security issues. Before
-performing an in-depth review it is necessary to map the network and
-application architecture. The different elements that make up the infrastructure
-need to be determined to understand how they interact
-with a web application and how they affect security.
+상호 연결된 웹 서버 인프라와 이기종 웹 서버 인프라의 복잡성으로 인해 수백 개의 웹 응용 프로그램이 포함될 수 있으며 구성 관리 및 검토는 모든 단일 응용 프로그램을 테스트하고 배포하는 기본 단계가 됩니다.
+
+실제로 전체 인프라의 보안을 약화시키는 데는 단 하나의 취약점만 있으며, 중요하지 않은 최소한의 문제 조차도 동일한 서버의 다른 응용 프로그램에 심각한 위험이 될 수 있습니다.
+이러한 문제를 해결하려면 구성 및 알려진 보안 문제에 대한 심층적인 검토를 수행하는 것이 가장 중요합니다.
+심층적인 검토를 수행하기 전에 네트워크 및 응용 프로그램 아키텍처를 매핑해야합니다.
+인프라를 구성하는 다양한 요소는 웹 응용 프로그램과 상호 작용하는 방법과 보안에 미치는 영향을 이해하기 위해 결정되어야합니다.
 
 |
 
 테스트 방법
 ==========================================================================================
 
-어플리케이션 아키텍쳐 맵
+**응용 프로그램 아키텍쳐 매핑**
 
-어플리케이션 아키텍쳐는 다른 구성 요소가 웹 어플리케이션을 빌드하는데 사용되는 결정을 
-하기위해 몇가지 테스트를 통해 매핑할 필요가 있습니다.
+응용 프로그램 아키텍쳐는 다른 구성 요소가 웹 응용 프로그램을 빌드하는데 사용되는 결정을 하기위해 몇가지 테스트를 통해 매핑할 필요가 있습니다.
 
-CGI 기반 어플리케이션과 같은 소규모 설정에서는, 단일 서버가 C, Perl, Shell CGI 어플리케이션, 인증 메커니즘이 실행되는 웹 서버를 동작하는데 사용될 수 있습니다.
+CGI 기반 응용 프로그램과 같은 소규모 설정에서는, 단일 서버가 C, Perl, Shell CGI 응용 프로그램, 인증 메커니즘이 실행되는 웹 서버를 동작하는데 사용될 수 있습니다.
 온라인 뱅크 시스템과 같은 복잡한 설정에서는, 여러 서버가 포함될 수 있습니다.
-리버스 프록시, 프론트 엔드 웹 서버, 어플리케이션 서버, 그리고 데이터 베이스 서버 또는 LDAP 서버가 포함될 수 있습니다.
+리버스 프록시, 프론트 엔드 웹 서버, 응용 프로그램 서버, 그리고 데이터 베이스 서버 또는 LDAP 서버가 포함될 수 있습니다.
 이러한 서버는 서로 다른 목적으로 사용되며, 심지어 그들 사이에 방화벽으로 다른 네트워크와 구분될 수 있습니다.
 
-This creates different DMZs so that access to the web server will not grant a remote user access to the authentication mechanism itself, and so that compromises of the different elements of the architecture can be isolated so that they will not compromise the whole architecture.
+이렇게하면 서로 다른 DMZ가 만들어지므로 웹 서버에 액세스 할 때 원격 사용자가 인증 메커니즘 자체에 액세스하지 못하게되므로 아키텍처의 여러 요소가 손상되어 전체 아키텍처를 손상시키지 않도록 할 수 있습니다.
+이 정보가 문서 형태 또는 인터뷰를 통해 응용 프로그램 개발자에 의해 테스트 팀에 제공되지만 맹목 침투 테스트를 수행하는 경우 매우 어려울 수도 있습니다.
+후자의 경우, 테스터는 먼저 간단한 설정 (단일 서버)이 있다는 가정하에 시작합니다.
 
-Getting knowledge of the application architecture can be easy if this information is provided to the testing team by the application developers in document form or through interviews, but can also prove to be very difficult if doing a blind penetration test.
+그런 다음 다른 테스트에서 정보를 검색하고 다른 요소를 도출하고이 가정에 의문을 제기하고 아키텍처 매핑을 확장합니다.
 
-In the latter case, a tester will first start with the assumption that there is a simple setup (a single server). 
+테스터는 "웹 서버를 보호하는 방화벽 시스템이 있습니까?"와 같은 간단한 질문을 통해 시작됩니다.
 
-Then they will retrieve information from other tests and derive the different elements, question this assumption and extend the architecture map. 
-
-The tester will start by asking simple questions such as: “Is there a firewalling system protecting the web server?”. 
-
-This question will be answered based on the results of network scans targeted at the web server and the analysis of whether the network ports of the web server are being filtered in the network edge (no answer or ICMP unreachables are received) or if the server is directly connected to the Internet (i.e. returns RST
-packets for all non-listening ports). This analysis can be enhanced to
-determine the type of firewall used based on network packet tests.
-Is it a stateful firewall or is it an access list filter on a router? How is it
-configured? Can it be bypassed?
-Detecting a reverse proxy in front of the web server needs to be done
-by the analysis of the web server banner, which might directly disclose
-the existence of a reverse proxy (for example, if ‘WebSEAL’[1] is returned).
-It can also be determined by obtaining the answers given by
-the web server to requests and comparing them to the expected answers.
-For example, some reverse proxies act as “intrusion prevention
-systems” (or web-shields) by blocking known attacks targeted at the
-web server. If the web server is known to answer with a 404 message
-to a request that targets an unavailable page and returns a different
-error message for some common web attacks like those done by CGI
-scanners, it might be an indication of a reverse proxy (or an application-level
-firewall) which is filtering the requests and returning a different
-error page than the one expected. Another example: if the web
-server returns a set of available HTTP methods (including TRACE) but
-the expected methods return errors then there is probably something
-in between blocking them.
-In some cases, even the protection system gives itself away
+이 질문은 웹 서버를 대상으로 한 네트워크 검색 결과와 웹 서버의 네트워크 포트가 네트워크 에지에서 필터링되는지(응답이 없거나 ICMP 도달 할 수 없는지 여부) 분석 또는 서버가 인터넷에 직접 연결됨 (즉, 모든 비리스닝 포트에 대한 패킷에 RST를 반환 함).
+이 분석은 네트워크 패킷 테스트를 기반으로 사용되는 방화벽 유형을 결정하기 위해 향상 될 수 있습니다.
+그것은 stateful 방화벽입니까 아니면 라우터의 액세스 목록 필터입니까?
+어떻게 구성됩니까?
+이를 우회 할 수 있습니까?
+웹 서버 앞에있는 역방향 프록시를 감지하려면 역방향 프록시의 존재를 직접 공개 할 수있는 웹 서버 배너 분석(예: 'WebSEAL'[1]이 리턴 된 경우)이 필요합니다.
+요청에 대한 웹 서버의 응답을 얻고 예상되는 응답과 비교하여 결정할 수도 있습니다.
+예를 들어, 일부 역방향 프록시는 웹 서버를 대상으로 알려진 공격을 차단하여 "침입 방지 시스템"(또는 웹 차단) 역할을합니다.
+웹 서버가 사용할 수없는 페이지를 대상으로하는 요청에 대해 404 메시지로 응답하는 것으로 알려져 있고 CGI 검색 프로그램과 같은 일반적인 웹 공격에 대해 다른 오류 메시지를 반환하는 경우 역방향 프록시 (또는 응용 프로그램 수준 방화벽). 요청을 필터링하고 예상 한 것과 다른 오류 페이지를 반환합니다.
+또 다른 예 : 웹 서버가 사용 가능한 HTTP 메소드 (TRACE 포함)를 반환하지만 예상되는 메소드가 오류를 반환하면 차단하는 동안 뭔가가있을 수 있습니다.
+경우에 따라 보호 시스템조차도 스스로를 멀리합니다.
 
 .. code-block:: console
 
@@ -88,54 +67,34 @@ In some cases, even the protection system gives itself away
 Check Point Firewall-1 NG AI "protecting" 웹 서버의 보안 서버 예제
 ==========================================================================================
 
-Reverse proxies can also be introduced as proxy-caches to accelerate
-the performance of back-end application servers. Detecting these
-proxies can be done based on the server header. They can also be
-detected by timing requests that should be cached by the server and
-comparing the time taken to server the first request with subsequent
-requests.
+역 프록시를 프록시 캐시로 도입하여 백엔드 응용 프로그램 서버의 성능을 가속화 할 수도 있습니다. 
+이러한 프록시는 서버 헤더를 기반으로 탐지 할 수 있습니다. 
+또한 서버가 캐시해야하는 타이밍 요청과 첫 번째 요청을 처리하는 데 소요 된 시간을 후속 요청과 비교하여 감지 할 수 있습니다.
 
-Another element that can be detected is network load balancers.
-Typically, these systems will balance a given TCP/IP port to multiple
-servers based on different algorithms (round-robin, web server load,
-number of requests, etc.). Thus, the detection of this architecture element
-needs to be done by examining multiple requests and comparing
-results to determine if the requests are going to the same or different
-web servers. For example, based on the Date header if the server
-clocks are not synchronized. In some cases, the network load balance
-process might inject new information in the headers that will make it
-stand out distinctively, like the AlteonP cookie introduced by Nortel’s
-Alteon WebSystems load balancer.
 
-Application web servers are usually easy to detect. The request for
-several resources is handled by the application server itself (not the
-web server) and the response header will vary significantly (including
-different or additional values in the answer header). Another way to
-detect these is to see if the web server tries to set cookies which are
-indicative of an application web server being used (such as the JSESSIONID
-provided by some J2EE servers), or to rewrite URLs automatically
-to do session tracking.
+감지 할 수있는 또 다른 요소는 네트워크 부하 분산 장치입니다. 
+일반적으로 이러한 시스템은 서로 다른 알고리즘(라운드 로빈, 웹 서버로드, 요청 수 등)에 따라 지정된 TCP / IP 포트와 여러 서버의 균형을 맞춥니다. 
+따라서 이 아키텍처 요소의 탐지는 여러 요청을 검토하고 결과를 비교하여 요청이 동일하거나 다른 웹 서버로 이동하는지 확인해야합니다. 
+예를 들어 서버 클럭이 동기화되지 않은 경우 날짜 헤더를 기반으로 합니다. 
+경우에 따라 네트워크 로드밸런싱 프로세스가 Nortel의 Alteon WebSystems 로드밸런서가 도입한 AlteonP 쿠키와 같이 고유하게 눈에 띄는 헤더에 새로운 정보를 삽입할 수 있습니다.
 
-Authentication back ends (such as LDAP directories, relational databases,
-or RADIUS servers) however, are not as easy to detect from an
-external point of view in an immediate way, since they will be hidden
-by the application itself.
 
-The use of a back end database can be determined simply by navigating
-an application. If there is highly dynamic content generated “on the
-fly,” it is probably being extracted from some sort of database by the
-application itself. Sometimes the way information is requested might
-give insight to the existence of a database back-end. For example, an
-online shopping application that uses numeric identifiers (‘id’) when
-browsing the different articles in the shop. However, when doing a
-blind application test, knowledge of the underlying database is usually
-only available when a vulnerability surfaces in the application, such as
-poor exception handling or susceptibility to SQL injection.
+응용 프로그램 웹 서버는 일반적으로 쉽게 감지 할 수 있습니다. 
+여러 리소스에 대한 요청은 응용 프로그램 서버 자체(웹 서버가 아님)에서 처리하며 응답 헤더는 크게 다릅니다(응답 헤더의 다른 값 또는 추가 값 포함). 
+웹 서버가 사용중인 응용 프로그램 웹 서버(예: 일부 J2EE 서버에서 제공하는 JSESSIONID)를 나타내는 쿠키를 설정하려고 시도하는지 또는 URL을 자동으로 다시 작성하여 세션 추적을 수행할지 여부를 확인하는 또 다른 방법이 있습니다.
 
+
+그러나 LDAP 디렉토리, 관계형 데이터베이스 또는 RADIUS 서버와 같은 인증 백엔드는 응용 프로그램 자체에 의해 숨겨지기 때문에 외부 관점에서 즉시 감지하기 쉽지 않습니다.
+
+백엔드 데이터베이스의 사용은 응용 프로그램을 탐색하여 간단히 결정할 수 있습니다.
+"동적으로 생성되는" 매우 동적인 내용이있는 경우 응용 프로그램 자체에서 일종의 데이터베이스에서 추출되는 경우가 있습니다. 
+정보가 요청되는 방식에 따라 데이터베이스 백엔드의 존재 여부를 파악할 수 있는 경우가 있습니다. 
+예를 들어, 상점에서 다른 기사를 검색 할 때 숫자 식별자('ID')를 사용하는 온라인 쇼핑 응용 프로그램입니다. 
+그러나 막연한 응용 프로그램 테스트를 수행할 때 기본 데이터베이스에 대한 지식은 일반적으로 응용 프로그램에 취약점이 나타날 때만 사용할 수 있습니다.
 
 |
 
-References
+참고 문헌
 ==========================================================================================
 
 - WebSEAL, also known as Tivoli Authentication Manager, is a reverse proxy from IBM which is part of the Tivoli framework.
