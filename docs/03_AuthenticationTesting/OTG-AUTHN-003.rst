@@ -18,15 +18,13 @@ OTG-AUTHN-003 (취약한 잠금 매카니즘 테스트)
 어플리케이션은 강력한 잠금 메카니즘이 없이는 무작위 공격에 대해 취약할 수 있습니다.
 무작위 공격이 성공하게 되면 악의적인 사용자는 접근이 가능하게 됩니다.
 
-- 기밀 정보 또는 데이터: 
+- 기밀 정보 또는 데이터: 웹 애플리케이션의 비공개 섹션은 기밀 문서, 사용자 프로필 데이터, 금융 정보, 은행 정보, 사용자 관계 등을 공개 할 수 있습니다.
 
-Private sections of a web application could disclose confidential documents, users’ profile data, financial information, bank details, users’ relationships, etc.
+- 관리자 페이지: 이 섹션은 웹 마스터가 웹 응용 프로그램 컨텐츠를 관리 (수정, 삭제, 추가)하고 사용자 프로비저닝을 관리하며 사용자에게 다른 권한을 할당하는 데 사용됩니다.
 
-- 관리자 페이지: 
-These sections are used by webmasters to manage (modify, delete, add) web application content, manage user provisioning, assign different privileges to the users, etc.
 
-- 추가 공격 기회: 
-authenticated sections of a web application could contain vulnerabilities that are not present in the public section of the web application and could contain advanced functionality that is not available to public users.
+- 추가 공격 기회: 웹 응용 프로그램의 인증 섹션에는 웹 응용 프로그램의 공개 섹션에없는 취약점이 포함될 수 있으며 공용 사용자가 사용할 수없는 고급 기능을 포함 할 수 있습니다.
+
 
 |
 
@@ -63,40 +61,39 @@ authenticated sections of a web application could contain vulnerabilities that a
 어플리케이션은 "Your account is locked out."을 리턴, 이에 따라 잠금 메카니즘은 10분 후 자동으로 해제되지 않는 것을 확인
 9. 15분 후에 올바른 패스워드로 로그인 성공, 이에 따라 잠금 메카니즘은 10분에서 15분 사이에 자동으로 해제되는 것을 확인
 
-A CAPTCHA may hinder brute force attacks, but they can come with their own set of weaknesses (see Testing for CAPTCHA), and should not replace a lockout mechanism.
+보안 문자 (CAPTCHA)는 무차별 대입 공격을 저해 할 수 있지만 자체적인 약점이 있을 수 있으므로(CAPTCHA 테스트 참조) 잠금 메커니즘을 대체해서는 안됩니다.
 
-To evaluate the unlock mechanism’s resistance to unauthorized account unlocking, initiate the unlock mechanism and look for weaknesses.
-Typical unlock mechanisms may involve secret questions or an emailed unlock link. 
-The unlock link should be a unique one-time link, to stop an attacker from guessing or replaying the link and performing brute force attacks in batches. 
-Secret questions and answers should be strong (see Testing for Weak Security Question/Answer).
+잠금 해제 메커니즘의 무단 계정 잠금 해제에 대한 저항력을 평가하려면 잠금 해제 메커니즘을 시작하고 약점을 찾으십시오.
+일반적인 잠금 해제 메커니즘에는 비밀 질문 또는 전자 메일 잠금 해제 링크가 포함될 수 있습니다.
+잠금 해제 링크는 공격자가 링크를 추측하거나 재생하지 못하게하고 일괄 적으로 무차별 공격을 수행하는 고유 한 일회성 링크 여야합니다.
+비밀 질문 및 답변은 ​​강해야합니다(약한 보안 질문 / 답변 테스트 참조).
 
-Note that an unlock mechanism should only be used for unlocking accounts. 
-It is not the same as a password recovery mechanism.
-Factors to consider when implementing an account lockout mechanism:
+잠금 해제 메커니즘은 계정 잠금 해제에만 사용해야합니다.
+이것은 암호 복구 메커니즘과 동일하지 않습니다.
+계정 잠금 메커니즘을 구현할 때 고려해야 할 요소는 다음과 같습니다.
 
-- What is the risk of brute force password guessing against the application?
-- Is a CAPTCHA sufficient to mitigate this risk?
-- Number of unsuccessful log in attempts before lockout. If the lockout threshold is to low then valid users may be locked out too often. 
-If the lockout threshold is to high then the more attempts an attacker can make to brute force the account before it will be locked. 
-Depending on the application’s purpose, a range of 5 to 10 unsuccessful attempts is typical lockout threshold.
-- How will accounts be unlocked?
+1. 응용 프로그램에 대한 무차별 암호 추측의 위험은 무엇입니까?
+2. 보안 문자는 이 위험을 완화하기에 충분합니까?
+3. 잠금 전의 실패한 로그인 시도 횟수. 잠금 임계 값이 낮 으면 유효한 사용자가 너무 자주 잠길 수 있습니다.
+4. 잠금 임계 값이 높으면 공격자가 잠금을 해제하기 전에 더 많은 시도를 할 수 있습니다. 응용 프로그램의 목적에 따라 5 회에서 10 회까지 시도가 실패하면 일반적인 잠금 임계 값이됩니다.
+5. 계정은 어떻게 잠금 해제됩니까?
 
-- Manually by an administrator: this is the most secure lockout method, but may cause inconvenience to users and take up the administrator’s “valuable” time.
-- Note that the administrator should also have a recovery method in case his account gets locked.
-- This unlock mechanism may lead to a denial-of-service attack if an attacker’s goal is to lock the accounts of all users of the web application.
-- After a period of time: What is the lockout duration? Is this sufficient for the application being protected? E.g. a 5 to 30 minute lockout duration may be a good compromise between mitigating brute force attacks and inconveniencing valid users.
-- Via a self-service mechanism: As stated before, this self-service mechanism must be secure enough to avoid that the attacker can unlock accounts himself.
+	- 관리자가 수동으로 수행하는 작업: 가장 안전한 잠금 방법이지만 사용자에게 불편을 초래할 수 있으며 관리자의 "중요한" 시간을 차지할 수 있습니다.
+		- 관리자가 자신의 계정이 잠길 경우를 대비하여 복구 방법도 있어야합니다.
+		- 이 잠금 해제 메커니즘은 공격자의 목표가 웹 응용 프로그램의 모든 사용자 계정을 잠그는 것이면 서비스 거부 공격을 유발할 수 있습니다.
+	- 일정 기간 후: 잠금 기간은 얼마입니까? 보호되는 응용 프로그램에 충분합니까? 예 : 5 ~ 30 분의 잠금 기간은 무차별 공격을 완화하고 유효한 사용자를 불편하게하는 것 사이에 좋은 절충안이 될 수 있습니다.
+	- 셀프 서비스 메커니즘을 통해: 앞에서 설명한 것처럼이 셀프 서비스 메커니즘은 공격자가 계정을 스스로 잠금 해제 할 수 없도록 충분히 안전해야합니다.
 
 |
 
-References
+참고 문헌
 ==========================================================================================
 
 무작위 공격에 대한 OWASP 자료 확인
 
 |
 
-Remediation
+권고 사항
 ==========================================================================================
 
 위험 수준에 따라 계정 잠금 해제 메커니즘을 적용합니다.

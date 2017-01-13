@@ -7,35 +7,15 @@ OTG-AUTHN-005 (패스워드 기억 취약점 테스트)
 개요
 ==========================================================================================
 
-Browsers will sometimes ask a user if they wish to remember the
-password that they just entered. The browser will then store the
-password, and automatically enter it whenever the same authentication
-form is visited. This is a convenience for the user.
-Additionally some websites will offer custom “remember me”
-functionality to allow users to persist log ins on a specific client
-system.
+브라우저는 방금 입력 한 암호를 기억하고 싶은지 사용자에게 묻습니다. 
+그러면 브라우저는 암호를 저장하고 동일한 인증 양식을 방문 할 때마다 암호를 자동으로 입력합니다. 
+이것은 사용자의 편의입니다. 
+또한 일부 웹 사이트는 사용자가 특정 클라이언트 시스템에서 로그인을 유지할 수 있도록 사용자 정의 "remember me"기능을 제공합니다.
 
-Having the browser store passwords is not only a convenience
-for end-users, but also for an attacker. If an attacker can gain access
-to the victim’s browser (e.g. through a Cross Site Scripting
-attack, or through a shared computer), then they can retrieve the
-stored passwords. It is not uncommon for browsers to store these
-passwords in an easily retrievable manner, but even if the browser
-were to store the passwords encrypted and only retrievable
-through the use of a master password, an attacker could retrieve
-the password by visiting the target web application’s authentication
-form, entering the victim’s username, and letting the browser
-to enter the password.
+브라우저 저장 암호를 갖는 것은 최종 사용자뿐만 아니라 공격자에게도 편리합니다. 
+공격자가 피해자의 브라우저에 액세스 할 수 있으면 (예 : 교차 사이트 스크립팅 공격 또는 공유 컴퓨터를 통해) 저장된 암호를 검색 할 수 있습니다. 브라우저가 쉽게 검색 할 수있는 방법으로 이러한 암호를 저장하는 것은 흔한 일은 아니지만 브라우저가 암호화 된 암호를 저장하고 마스터 암호를 사용하여 검색 할 수있는 경우에도 공격자는 대상 웹 응용 프로그램을 방문하여 암호를 검색 할 수 있습니다 인증 양식을 입력하고 피해자의 사용자 이름을 입력 한 다음 브라우저가 암호를 입력하도록합니다.
 
-Additionally where custom “remember me” functions are put in
-place weaknesses in how the token is stored on the client PC (for
-example using base64 encoded credentials as the token) could
-expose the users passwords. Since early 2014 most major browsers
-will override any use of autocomplete=”off” with regards to
-password forms and as a result previous checks for this are not
-required and recommendations should not commonly be given for
-disabling this feature. However this can still apply to things like
-secondary secrets which may be stored in the browser inadvertently.
+또한 사용자 정의 "remember me"기능을 적절하게 배치하여 클라이언트 PC에 토큰을 저장하는 방법의 약점 (예 : 토큰으로 base64 인 코드 된 자격 증명 사용)이 사용자 암호를 노출시킬 수 있습니다. 2014 년 초부터 대부분의 주요 브라우저는 비밀번호 양식과 관련하여 autocomplete = "off"를 무시할 것이므로 이전에이 기능이 필요하지 않으므로이 기능을 사용 중지하기위한 권장 사항을 일반적으로 제공해서는 안됩니다. 그러나 이것은 우연히 브라우저에 저장 될 수있는 2 차 비밀 같은 것들에도 여전히 적용될 수 있습니다.
 
 |
 
@@ -51,10 +31,9 @@ secondary secrets which may be stored in the browser inadvertently.
 
 |
 
-References
+참고 문헌
 ==========================================================================================
 
-Ensure that no credentials are stored in clear text or are easily retrievable
-in encoded or encrypted forms in cookies.
+자격 증명이 일반 텍스트로 저장되지 않았거나 쿠키의 암호화되거나 암호화 된 양식에서 쉽게 검색 할 수 없도록하십시오.
 
 |

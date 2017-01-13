@@ -7,72 +7,56 @@ OTG-AUTHN-006 (브라우저 캐시 취약점 테스트)
 개요
 ==========================================================================================
 
-In this phase the tester checks that the application correctly instructs
-the browser to not remember sensitive data.
-Browsers can store information for purposes of caching and history.
-Caching is used to improve performance, so that previously
-displayed information doesn’t need to be downloaded again.
-History mechanisms are used for user convenience, so the user
-can see exactly what they saw at the time when the resource was
-retrieved. If sensitive information is displayed to the user (such
-as their address, credit card details, Social Security Number, or
-username), then this information could be stored for purposes of
-caching or history, and therefore retrievable through examining
-the browser’s cache or by simply pressing the browser’s “Back”
-button
+이 단계에서 테스터는 애플리케이션이 민감한 데이터를 기억하지 못하도록 브라우저에 올바르게 지시하는지 확인합니다.
+
+브라우저는 캐싱 및 히스토리를 위해 정보를 저장할 수 있습니다. 
+캐싱은 이전에 표시된 정보를 다시 다운로드 할 필요가 없도록 성능을 향상시키는 데 사용됩니다. 
+히스토리 메커니즘은 사용자 편의를 위해 사용되므로 사용자는 자원을 검색 할 때 본 내용을 정확히 볼 수 있습니다.
+사용자에게 민감한 정보(예: 주소, 신용 카드 세부 정보, 사회 보장 번호 또는 사용자 이름)가 표시되면 이 정보는 캐싱이나 기록을 위해 저장 될 수 있으므로 브라우저의 캐시를 검사하거나 간단히 검색하여 검색 할 수 있습니다.
+
 
 |
 
 테스트 방법
 ==========================================================================================
 
-Browser History
+브라우저 기록
 ----------------------------------------------------------------------------------------
 
-Technically, the “Back” button is a history and not a cache (see
-http://www.w3.org/Protocols/rfc2616/rfc2616-sec13.html#sec13.13).
-The cache and the history are two different entities.
-However, they share the same weakness of presenting previously
-displayed sensitive information.
-The first and simplest test consists of entering sensitive information
-into the application and logging out. Then the tester clicks
-the “Back” button of the browser to check whether previously
-displayed sensitive information can be accessed whilst unauthenticated.
-If by pressing the “Back” button the tester can access previous
-pages but not access new ones, then it is not an authentication
-issue, but a browser history issue. If these pages contain sensitive
-data, it means that the application did not forbid the browser from
-storing it.
-Authentication does not necessarily need to be involved in the
-testing. For example, when a user enters their email address in
-order to sign up to a newsletter, this information could be retrievable
-if not properly handled.
-The “Back” button can be stopped from showing sensitive data.
-This can be done by:
+기술적으로 "뒤로"버튼은 캐시가 아닌 기록입니다. 
+캐시와 히스토리는 두 개의 다른 엔티티입니다. 
+그러나 이전에 표시된 중요 정보를 표시하는 것과 동일한 약점을 공유합니다.
 
-• Delivering the page over HTTPS.
-• Setting Cache-Control: must-re-validate
+가장 간단한 테스트는 애플리케이션에 중요한 정보를 입력하고 로그아웃하는 것으로 구성됩니다. 
+그런 다음 테스터는 브라우저의 "뒤로"버튼을 클릭하여 인증되지 않은 상태에서 이전에 표시된 민감한 정보에 액세스 할 수 있는지 여부를 확인합니다.
+
+"뒤로" 버튼을 누르면 테스터가 이전 페이지에 액세스 할 수 있지만 새로운 페이지에 액세스 할 수 없으면 인증 문제는 아니지만 브라우저 기록 문제가됩니다. 
+이 페이지에 민감한 데이터가 포함되어 있으면 응용 프로그램이 브라우저에서 저장하지 못하게됩니다.
+
+인증이 테스트에 반드시 포함될 필요는 없습니다. 
+예를 들어 뉴스 레터에 가입하기 위해 사용자가 이메일 주소를 입력하면이 정보는 제대로 처리되지 않으면 검색 할 수 있습니다.
+
+'뒤로'버튼의 민감한 데이터 표시가 중지 될 수 있습니다. 이 작업은 다음을 통해 수행 할 수 있습니다.
+
+- HTTPS를 통해 페이지 전달.
+- 캐시 제어 설정: 반드시 다시 확인해야합니다.
 
 |
 
-Browser Cache
+브라우저 캐시
 ----------------------------------------------------------------------------------------
 
-Here testers check that the application does not leak any sensitive
-data into the browser cache. In order to do that, they can
-use a proxy (such as WebScarab) and search through the server
-responses that belong to the session, checking that for every
-page that contains sensitive information the server instructed the
-browser not to cache any data. Such a directive can be issued in
-the HTTP response headers:
+여기에서 테스터는 애플리케이션이 중요한 데이터를 브라우저 캐시로 누설하지 않는지 확인합니다. 
+그렇게하기 위해 프록시(예: WebScarab)를 사용하고 세션에 속한 서버 응답을 검색하여 서버가 브라우저에 데이터를 캐시하지 않도록 지시 한 중요한 정보가 들어있는 모든 페이지에 대해 확인합니다. 
+이러한 지시문은 HTTP 응답 헤더에서 발행 할 수 있습니다.
 
-- Cache-Control: no-cache, no-store
-- Expires: 0
-- Pragma: no-cache
+.. code-block:: html
 
-These directives are generally robust, although additional flags
-may be necessary for the Cache-Control header in order to better
-prevent persistently linked files on the filesystem. These include:
+    Cache-Control: no-cache, no-store
+    Expires: 0
+    Pragma: no-cache
+
+이러한 지시자는 일반적으로 견고하지만 파일 시스템에 지속적으로 링크된 파일을 더 잘 방지하기 위해 Cache-Control 헤더에 추가 플래그가 필요할 수도 있습니다. 여기에는 다음이 포함됩니다.
 
 - Cache-Control: must-revalidate, pre-check=0, post-check=0, max-age=0, s-maxage=0
 
@@ -85,17 +69,10 @@ prevent persistently linked files on the filesystem. These include:
     Pragma: no-cache
     Expires: <past date or illegal value (e.g., 0)>
 
-For instance, if testers are testing an e-commerce application,
-they should look for all pages that contain a credit card number or
-some other financial information, and check that all those pages
-enforce the no-cache directive. If they find pages that contain critical
-information but that fail to instruct the browser not to cache
-their content, they know that sensitive information will be stored
-on the disk, and they can double-check this simply by looking for
-the page in the browser cache.
-The exact location where that information is stored depends on
-the client operating system and on the browser that has been
-used. Here are some examples:
+예를 들어 테스터가 전자 상거래 애플리케이션을 테스트하는 경우 신용 카드 번호 나 기타 재무 정보가 포함 된 모든 페이지를 검색하고 모든 페이지에서 no-cache 지시어를 적용하는지 확인해야 합니다. 
+중요한 정보를 포함하지만 브라우저에 내용을 캐시하지 않도록 지시하는 페이지를 찾으면 민감한 정보가 디스크에 저장된다는 것을 알고 브라우저 캐시에서 페이지를 찾는 것만으로이 정보를 다시 확인할 수 있습니다 .
+
+해당 정보가 저장된 정확한 위치는 클라이언트 운영 체제 및 사용 된 브라우저에 따라 다릅니다. 다음은 몇 가지 예입니다.
 
 1. Mozilla Firefox:
 
@@ -111,16 +88,13 @@ used. Here are some examples:
 Gray Box testing
 -----------------------------------------------------------------------------------------
 
-The methodology for testing is equivalent to the black box case, as
-in both scenarios testers have full access to the server response
-headers and to the HTML code. However, with gray box testing,
-the tester may have access to account credentials that will allow
-them to test sensitive pages that are accessible only to authenticated
-users.
+테스팅을위한 방법론은 블랙 박스의 경우와 동일합니다. 
+두 시나리오 모두에서 테스터는 서버 응답 헤더와 HTML 코드에 대한 완전한 액세스 권한을 가지고 있기 때문입니다. 
+그러나 회색 상자 테스트의 경우 테스터는 인증된 사용자에게만 액세스 할 수 있는 중요한 페이지를 테스트 할 수 있는 계정 자격 증명에 액세스 할 수 있습니다.
 
 |
 
-Tools
+도구
 ==========================================================================================
 
 - OWASP Zed Attack Proxy
@@ -128,7 +102,7 @@ Tools
 
 |
 
-References
+참고 문헌
 ==========================================================================================
 
 Whitepapers

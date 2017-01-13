@@ -7,32 +7,16 @@ OTG-AUTHN-004 (인증 스키마를 우회하기 위한 테스트)
 개요
 ==========================================================================================
 
-While most applications require authentication to gain access to
-private information or to execute tasks, not every authentication
-method is able to provide adequate security. Negligence, ignorance,
-or simple understatement of security threats often result
-in authentication schemes that can be bypassed by simply skipping
-the log in page and directly calling an internal page that is
-supposed to be accessed only after authentication has been performed.
-In addition, it is often possible to bypass authentication measures
-by tampering with requests and tricking the application into
-thinking that the user is already authenticated. This can be accomplished
-either by modifying the given URL parameter, by manipulating
-the form, or by counterfeiting sessions.
-Problems related to the authentication schema can be found at
-different stages of the software development life cycle (SDLC), like
-the design, development, and deployment phases:
-• In the design phase errors can include a wrong definition of
-application sections to be protected, the choice of not applying
-strong encryption protocols for securing the transmission of
-credentials, and many more.
-• In the development phase errors can include the incorrect
- implementation of input validation functionality or not following
-the security best practices for the specific language.
-• In the application deployment phase, there may be issues during
- the application setup (installation and configuration activities)
-due to a lack in required technical skills or due to the lack of good
-documentation.
+대부분의 응용 프로그램은 개인 정보에 액세스하거나 작업을 실행하기 위해 인증을 요구하지만 모든 인증 방법이 적절한 보안을 제공 할 수있는 것은 아닙니다. 
+보안 위협에 대한 과실, 무지 또는 단순한 과소 평가는 종종 로그인 페이지를 건너 뛰고 인증이 수행 된 후에 만 ​​액세스해야하는 내부 페이지를 직접 호출하여 우회 할 수있는 인증 체계를 초래합니다.
+
+또한 요청을 변조하고 사용자가 이미 인증되었다고 생각하도록 응용 프로그램을 속여서 인증 조치를 무시할 수도 있습니다. 
+이는 주어진 URL 매개 변수를 수정하거나 양식을 조작하거나 세션을 위조하여 수행 할 수 있습니다.
+
+인증 스키마와 관련된 문제는 설계, 개발 및 배포 단계와 같이 소프트웨어 개발 라이프 사이클 (SDLC)의 여러 단계에서 확인할 수 있습니다.
+설계 단계에서 오류는 보호해야 할 응용 프로그램 섹션의 잘못된 정의, 자격 증명의 전송을 보호하기위한 강력한 암호화 프로토콜을 적용하지 않는 선택 등을 포함 할 수 있습니다.
+개발 단계에서 오류는 입력 유효성 검사 기능의 잘못된 구현을 포함하거나 특정 언어에 대한 보안 모범 사례를 따르지 않을 수 있습니다.
+응용 프로그램 배포 단계에서 필요한 기술 기술이 부족하거나 좋은 설명서가 없기 때문에 응용 프로그램 설치 중 (설치 및 구성 작업)에 문제가 있을 수 있습니다.
 
 |
 
@@ -46,31 +30,27 @@ Black Box testing
 
 웹 어플리케이션에서 사용되는 인증 스키마를 우회하는 방법은 여러가지 있습니다.
 
-- Direct page request (forced browsing)
-- Parameter modification
-- Session ID prediction
-- SQL injection
+- 직접 페이지 요청 (강제 브라우징)
+- 파라미터 수정
+- 세션 ID 예측
+- SQL 인젝션
 
-**Direct page request**
+**직접 페이지 요청 (강제 브라우징)**
 
 만약 웹 어플리케이션이 페이지에서의 로그인만 접근 제어를 구현해두었다면, 인증 스키마는 
 우회될 것입니다.
 예를 들어, 사용자가 직접 강제 브라우징을 통해 다른 페이지를 요청하면, 해당 페이지는 접속 권한을 부여하기 전에 사용자의 자격 증명을 확인하지 않을 수 있습니다.
 이 방법을 사용한 테스트는 브라우저에 주소 창을 통해 보호된 페이지를 직접 접근하는 시도입니다.
 
+|
 
-**Parameter Modification**
+**파라미터 수정**
 
-Another problem related to authentication design is when the application
-verifies a successful log in on the basis of a fixed value
-parameters. A user could modify these parameters to gain access
-to the protected areas without providing valid credentials. In the
-example below, the “authenticated” parameter is changed to a
-value of “yes”, which allows the user to gain access. In this example,
-the parameter is in the URL, but a proxy could also be used to
-modify the parameter, especially when the parameters are sent
-as form elements in a POST request or when the parameters are
-stored in a cookie. 
+인증 설계와 관련된 또 다른 문제점은 응용 프로그램이 고정 값 매개 변수를 기반으로 성공적인 로그인을 검증 할 때입니다. 
+사용자는 유효한 자격 증명을 제공하지 않고 보호 된 영역에 액세스하기 위해 이러한 매개 변수를 수정할 수 있습니다. 
+아래 예제에서는 "인증 된"매개 변수가 "예"값으로 변경되어 사용자가 액세스 할 수 있습니다. 
+이 예에서 매개 변수는 URL에 있지만 프록시가 매개 변수를 수정하는 데 사용될 수도 있습니다. 
+(특히 매개 변수가 POST 요청의 양식 요소로 전송되거나 매개 변수가 쿠키에 저장되는 경우)
 
 .. code-block:: console
 
@@ -92,71 +72,49 @@ stored in a cookie.
     <H1>You Are Authenticated</H1>
     </BODY></HTML>
 
-**Session ID Prediction**
+|
 
-Many web applications manage authentication by using session
-identifiers (session IDs). Therefore, if session ID generation is
-predictable, a malicious user could be able to find a valid session ID
-and gain unauthorized access to the application, impersonating a
-previously authenticated user.
-In the following figure, values inside cookies increase linearly, so it
-could be easy for an attacker to guess a valid session ID.
+**세션 ID 예측**
 
-n the following figure, values inside cookies change only partially, so
-it’s possible to restrict a brute force attack to the defined fields shown
-below.
+많은 웹 응용 프로그램은 세션 식별자 (세션 ID)를 사용하여 인증을 관리합니다. 따라서 세션 ID 생성이 예측 가능한 경우 악의적 인 사용자는 유효한 세션 ID를 찾고 해당 응용 프로그램에 대한 무단 액세스를 획득하여 이전에 인증 된 사용자를 가장 할 수 있습니다.
 
-**SQL Injection (HTML Form Authentication)**
+다음 그림에서 쿠키 내 값은 선형 적으로 증가하므로 공격자가 유효한 세션 ID를 쉽게 추측 할 수 있습니다.
 
-SQL Injection is a widely known attack technique. This section is not
-going to describe this technique in detail as there are several sections
-in this guide that explain injection techniques beyond the scope of
-this section.
+다음 그림에서 쿠키 내의 값은 부분적으로 만 변경되므로 총계 공격을 아래 표시된 정의 된 필드로 제한 할 수 있습니다.
 
-The following figure shows that with a simple SQL injection attack,
-it is sometimes possible to bypass the authentication form.
+
+**SQL 인젝션**
+
+SQL 인젝션은 널리 알려진 공격 기술입니다. 이 섹션에서는이 섹션의 범위를 벗어나는 사출 기술에 대해 설명하는 몇 가지 섹션이 있으므로이 기술을 자세히 설명하지는 않습니다.
+
+다음 그림은 간단한 SQL 인젝션 공격으로 인증 양식을 무시할 수 있음을 보여줍니다.
 
 |
 
 Gray Box Testing
 -----------------------------------------------------------------------------------------
 
-If an attacker has been able to retrieve the application source code
-by exploiting a previously discovered vulnerability (e.g., directory
-traversal), or from a web repository (Open Source Applications),
-it could be possible to perform refined attacks against the
-implementation of the authentication process.
-In the following example (PHPBB 2.0.13 - Authentication Bypass
-Vulnerability), at line 5 the unserialize() function parses a user
-supplied cookie and sets values inside the $row array. At line
-10 the user’s MD5 password hash stored inside the back end
-database is compared to the one supplied.
-In PHP, a comparison between a string value and a boolean value 
+공격자가 이전에 발견 된 취약점 (예 : 디렉토리 통과)을 이용하거나 웹 저장소(오픈 소스 응용 프로그램)를 이용하여 응용 프로그램 소스 코드를 검색 할 수있는 경우 인증 구현에 대해 세련된 공격을 수행 할 수 있습니다 방법.
+
+다음 예제 (PHPBB 2.0.13 - 인증 우회 취약점)의 5 행에서 unserialize () 함수는 사용자가 제공 한 쿠키를 파싱하고 $ row 배열 내에 값을 설정합니다. 10 행에서 백 엔드 데이터베이스에 저장된 사용자의 MD5 암호 해시가 제공된 암호 해시와 비교됩니다.
 
 .. code-block:: html
 
-    1. if ( isset($HTTP_COOKIE_VARS[$cookiename . ‘_sid’]) ||
-    2. {
-    3. $sessiondata = isset( $HTTP_COOKIE_VARS[$cookiename
-    . ‘_data’] ) ?
-    4.
-    5. unserialize(stripslashes($HTTP_COOKIE_VARS[$cookiename
-    . ‘_data’])) : array();
-    6.
-    7. $sessionmethod = SESSION_METHOD_COOKIE;
-    8. }
-    9.
-    10. if( md5($password) == $row[‘user_password’] &&
-    $row[‘user_active’] )
-    11.
-    12. {
-    13. $autologin = ( isset($HTTP_POST_VARS[‘autologin’]) ) ?
-    TRUE : 0;
-    14. }
+    if ( isset($HTTP_COOKIE_VARS[$cookiename . ‘_sid’]) ||
+    {
+        $sessiondata = isset( $HTTP_COOKIE_VARS[$cookiename. ‘_data’] ) ?
+        
+        unserialize(stripslashes($HTTP_COOKIE_VARS[$cookiename. ‘_data’])) : array();
+        $sessionmethod = SESSION_METHOD_COOKIE;
+    }
+    
+    if( md5($password) == $row[‘user_password’] && $row[‘user_active’] )
+    {
+        $autologin = ( isset($HTTP_POST_VARS[‘autologin’]) ) ?
+        TRUE : 0;
+    }
 
-(1 - “TRUE”) is always “TRUE”, so by supplying the following string
-(the important part is “b:1”) to the unserialize() function, it is
-possible to bypass the authentication control:
+PHP에서 문자열 값과 부울 값 (1 - "TRUE") 간의 비교는 항상 "TRUE"이므로 unserialize() 함수에 다음 문자열(중요한 부분은 "b:1"임) 인증 제어를 우회 할 수 있습니다.
 
 .. code-block:: html
 
@@ -165,7 +123,7 @@ possible to bypass the authentication control:
 
 |
 
-Tools
+도구
 ==========================================================================================
 
 - WebScarab
@@ -174,7 +132,7 @@ Tools
 
 |
 
-References
+참고 문헌
 ==========================================================================================
 
 Whitepapers

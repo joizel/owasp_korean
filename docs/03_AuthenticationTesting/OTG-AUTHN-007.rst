@@ -7,48 +7,32 @@ OTG-AUTHN-007 (취약한 패스워드 정책 테스트)
 개요
 ==========================================================================================
 
-The most prevalent and most easily administered authentication
-mechanism is a static password. The password represents the
-keys to the kingdom, but is often subverted by users in the name
-of usability. In each of the recent high profile hacks that have revealed
-user credentials, it is lamented that most common passwords
-are still: 123456, password and qwerty.
+가장 널리 보급되고 가장 쉽게 관리되는 인증 메커니즘은 정적 암호입니다. 
+암호는 왕국의 열쇠를 나타내지 만 사용자가 유용성의 이름으로 종종 전복합니다. 
+최근 신상 정보에서 사용자 자격 증명을 공개 한 해킹에서 가장 흔한 암호는 여전히 123456, 암호 및 qwerty입니다.
 
 |
 
 테스트 목적
 ==========================================================================================
 
-Determine the resistance of the application against brute force
-password guessing using available password dictionaries by evaluating
-the length, complexity, reuse and aging requirements of
-passwords.
+암호의 길이, 복잡성, 재사용 및 노후화 요구 사항을 평가하여 사용 가능한 암호 사전을 사용하여 무차별 암호 추측에 대한 응용 프로그램의 저항을 결정하십시오.
 
 |
 
 테스트 방법
 ==========================================================================================
 
-1. What characters are permitted and forbidden for use within
-a password? Is the user required to use characters from different
-character sets such as lower and uppercase letters, digits and
-special symbols?
-2. How often can a user change their password? How quickly can
-a user change their password after a previous change? Users may
-bypass password history requirements by changing their password
-5 times in a row so that after the last password change they
-have configured their initial password again.
-3. When must a user change their password? After 90 days? After
-account lockout due to excessive log on attempts?
-4. How often can a user reuse a password? Does the application
-maintain a history of the user’s previous used 8 passwords?
-5. How different must the next password be from the last password?
-6. Is the user prevented from using his username or other account
-information (such as first or last name) in the password?
+1. 어떤 문자가 암호 내에서 사용이 허용되고 금지됩니까? 사용자가 대소 문자, 숫자 및 특수 기호와 같은 다른 문자 집합의 문자를 사용해야합니까?
+2. 사용자는 얼마나 자주 암호를 변경할 수 있습니까? 이전에 변경 한 후 사용자가 얼마나 빨리 암호를 변경할 수 있습니까? 사용자는 암호를 다섯 번 연속 변경하여 암호 기록 요구 사항을 건너 뛸 수 있으므로 마지막 암호를 변경 한 후에 다시 초기 암호를 구성 할 수 있습니다.
+3. 사용자가 언제 암호를 변경해야합니까? 90일 후? 과도한 로그온 시도로 인해 계정이 잠긴 후?
+4. 사용자는 얼마나 자주 암호를 재사용 할 수 있습니까? 응용 프로그램이 이전에 사용한 8개의 암호에 대한 기록을 유지합니까?
+5. 다음 암호가 마지막 암호와 다른 점은 무엇입니까?
+6. 사용자가 자신의 사용자 이름이나 다른 계정 정보 (성과 이름 등)를 암호에서 사용하지 못하게합니까?
 
 |
 
-References
+참고 문헌
 ==========================================================================================
 
 - Brute Force Attacks
@@ -56,14 +40,10 @@ References
 
 |
 
-Remediation
+권고 사항
 ==========================================================================================
 
-To mitigate the risk of easily guessed passwords facilitating unauthorized
-access there are two solutions: introduce additional authentication
-controls (i.e. two-factor authentication) or introduce a
-strong password policy. The simplest and cheapest of these is the
-introduction of a strong password policy that ensures password
-length, complexity, reuse and aging.
+인증되지 않은 액세스를 용이하게하는 추측 된 암호의 위험을 줄이려면 추가 인증 제어(2단계 인증)를 도입하거나 강력한 암호 정책을 도입하는 두 가지 솔루션이 있습니다. 
+이들 중 가장 간단하고 저렴한 방법은 암호 길이, 복잡성, 재사용 및 노화를 보장하는 강력한 암호 정책을 도입하는 것입니다.
 
 |

@@ -16,10 +16,10 @@ OTG-AUTHN-002 (기본 자격 증명 테스트)
 
 해당 문제의 근본 원인을 다음과 같이 식별할 수 있습니다.
 
-- Inexperienced IT personnel, who are unaware of the importance of changing default passwords on installed infrastructure components, or leave the password as default for "ease of maintenance".
-- Programmers who leave back doors to easily access and test their application and later forget to remove them.
-- Applications with built-in non-removable default accounts with a preset username and password.
-- Applications that do not force the user to change the default credentials after the first log in.
+- 경험이 부족한 IT 직원. 설치된 인프라 구성 요소에서 기본 암호를 변경해야하는 중요성을 인식하지 못하거나 "유지 관리 용이성"을 위해 암호를 기본값으로 두십시오.
+- 뒷문을 열어 응용 프로그램에 쉽게 액세스하여 테스트하고 나중에 제거하는 것을 잊어 버린 프로그래머.
+- 미리 설정된 사용자 이름과 암호가있는 기본 제공 비 착탈식 기본 계정이있는 응용 프로그램
+- 처음 로그인 한 후 사용자가 기본 자격 증명을 변경하도록 강요하지 않는 응용 프로그램.
 
 |
 
@@ -30,147 +30,68 @@ OTG-AUTHN-002 (기본 자격 증명 테스트)
 
 **일반 어플리케이션의 기본 자격 증명 테스트**
 
-In black box testing the tester knows nothing about the application and its underlying infrastructure. 
-In reality this is often not true, and some information about the application is known. 
-We suppose that you have identified, through the use of the techniques described in this Testing Guide under the chapter Information Gathering, at least one or more common applications that may contain accessible administrative interfaces.
-When you have identified an application interface, for example
-a Cisco router web interface or a Weblogic administrator portal,
-check that the known usernames and passwords for these devices
-do not result in successful authentication. 
-To do this you can consult the manufacturer`s documentation or, in a much simpler way, you can find common credentials using a search engine or by using one of the sites or tools listed in the Reference section.
-When facing applications where we do not have a list of default
-and common user accounts (for example due to the fact that the
-application is not wide spread) we can attempt to guess valid default
-credentials. Note that the application being tested may have
-an account lockout policy enabled, and multiple password guess
-attempts with a known username may cause the account to be
-locked. If it is possible to lock the administrator account, it may be
-troublesome for the system administrator to reset it.
-Many applications have verbose error messages that inform the
-site users as to the validity of entered usernames. This information
-will be helpful when testing for default or guessable user accounts.
-Such functionality can be found, for example, on the log
-in page, password reset and forgotten password page, and sign
-up page. Once you have found a default username you could also
-start guessing passwords for this account.
-More information about this procedure can be found in the section
-Testing for User Enumeration and Guessable User Account and in
-the section Testing for Weak password policy.
-Since these types of default credentials are often bound to administrative
-accounts you can proceed in this manner:
+블랙 박스 테스트에서 테스터는 애플리케이션과 기본 인프라에 대해 아무것도 모릅니다. 
+실제로 이것은 종종 사실이 아니며 응용 프로그램에 대한 일부 정보가 알려져 있습니다. 
+이 테스트 가이드에 설명 된 기술을 사용하여 정보 수집 장에 접근 가능한 관리 인터페이스가 포함될 수 있는 하나 이상의 공통 응용 프로그램을 식별했다고 가정합니다.
 
-• Try the following usernames - "admin", "administrator", "root",
-"system", "guest", "operator", or "super".
-These are popular among system administrators and are often
-used. Additionally you could try "qa", "test", "test1", "testing" and
-similar names. Attempt any combination of the above in both the
-username and the password fields. If the application is vulnerable
-to username enumeration, and you manage to successfully
-identify any of the above usernames, attempt passwords in a
-similar manner. In addition try an empty password or one of
-the following "password", "pass123", "password123", "admin",
-or "guest" with the above accounts or any other enumerated
-accounts.
-Further permutations of the above can also be attempted. If
-these passwords fail, it may be worth using a common username
-and password list and attempting multiple requests against the
-application. This can, of course, be scripted to save time.
-• Application administrative users are often named after the
-application or organization.
-This means if you are testing an application named "Obscurity",
-try using obscurity/obscurity or any other similar combination as
-the username and password.
-• When performing a test for a customer, attempt using names
-of contacts you have received as usernames with any common
-passwords. Customer email addresses mail reveal the user
-accounts naming convention: if employee John Doe has the email
-address jdoe@example.com, you can try to find the names of
-system administrators on social media and guess their username
-by applying the same naming convention to their name.
-• Attempt using all the above usernames with blank passwords.
-• Review the page source and JavaScript either through a proxy
-or by viewing the source. Look for any references to users and
-passwords in the source.
-For example "If username='admin' then starturl=/admin.asp else /index.asp" (for a successful log in versus a failed log in).
-Also, if you have a valid account, then log in and view every
-request and response for a valid log in versus an invalid log in,
-such as additional hidden parameters, interesting GET request
-(login=yes), etc.
-• Look for account names and passwords written in comments
-in the source code. Also look in backup directories for source
-code (or backups of source code) that may contain interesting
-comments and code.
+시스코 라우터 웹 인터페이스 또는 Weblogic 관리자 포털과 같은 응용 프로그램 인터페이스를 식별 한 경우 이러한 장치에 대한 알려진 사용자 이름과 암호가 성공적인 인증을 초래하지 않는지 확인하십시오. 
+이렇게 하려면 제조업체의 설명서를 참조하거나 훨씬 간단한 방법으로 검색 엔진을 사용하거나 참조 섹션에 나열된 사이트 또는 도구 중 하나를 사용하여 공통 자격 증명을 찾을 수 있습니다.
+
+기본 및 일반 사용자 계정 목록이없는 응용 프로그램(예: 응용 프로그램이 널리 퍼져 있지 않기 때문에)에 적합한 기본 자격 증명을 추측 할 수 있습니다. 
+테스트중인 응용 프로그램에서 계정 잠금 정책이 활성화되어 있을 수 있으며 알려진 사용자 이름으로 여러 암호 추측을 시도하면 계정이 잠길 수 있습니다. 
+관리자 계정을 잠그는 것이 가능하면 시스템 관리자가 다시 설정하는 것이 번거로울 수 있습니다.
+
+많은 응용 프로그램에는 입력 된 사용자 이름의 유효성을 사이트 사용자에게 알리는 자세한 오류 메시지가 있습니다. 
+이 정보는 기본 또는 추측 가능한 사용자 계정을 테스트 할 때 유용합니다. 
+이러한 기능은 예를 들어 로그인 페이지, 암호 재설정 및 암호 잊어 버린 페이지 및 가입 페이지에서 찾을 수 있습니다. 
+기본 사용자 이름을 찾으면이 계정의 암호를 추측 할 수도 있습니다.
+
+이 절차에 대한 자세한 내용은 사용자 열거 및 추측 가능한 사용자 계정 테스트 단원 및 취약한 암호 정책 테스트 절에서 찾을 수 있습니다.
+
+이러한 유형의 기본 자격 증명은 종종 관리 계정에 바인딩되므로 다음과 같은 방법으로 진행할 수 있습니다.
+
+- "admin", "administrator", "root", "system", "guest", "operator"또는 "super"사용자 이름을 사용해보십시오. 이들은 시스템 관리자들 사이에서 널리 사용되고 자주 사용됩니다. 또한 "qa", "test", "test1", "testing"및 이와 유사한 이름을 사용할 수 있습니다. 사용자 이름과 암호 필드에서 위의 항목을 조합하여 시도하십시오. 응용 프로그램이 사용자 이름 열거에 취약하고 위의 사용자 이름을 성공적으로 식별 할 수있는 경우 유사한 방식으로 암호를 시도하십시오. 또한 위의 계정 또는 다른 열거 된 계정으로 빈 암호 또는 다음 "암호", "pass123", "password123", "admin"또는 "guest"중 하나를 사용해보십시오. 위의 추가 순열도 시도 할 수 있습니다. 이러한 암호가 실패하면 일반적인 사용자 이름과 암호 목록을 사용하고 응용 프로그램에 대해 여러 요청을 시도하는 것이 좋습니다. 물론 이것은 시간을 절약하기 위해 스크립팅 될 수 있습니다.
+- 응용 프로그램 관리 사용자는 종종 응용 프로그램이나 조직의 이름을 따서 명명됩니다. 즉, "애매한" 응용 프로그램을 테스트하는 중이면 사용자 이름 및 암호와 같이 모호한/모호하거나 다른 유사한 조합을 사용해보십시오.
+- 고객에 대한 테스트를 수행 할 때 공통 비밀 번호와 함께 사용자 이름으로받은 대화 상대 이름을 사용하십시오. 고객 이메일 주소 메일을 통해 사용자 계정 이름 지정 규칙을 알 수 있습니다. John Doe 직원이 이메일 주소가 jdoe@example.com 인 경우 소셜 미디어에서 시스템 관리자 이름을 찾고 해당 사용자 이름과 동일한 이름 지정 규칙을 적용하여 사용자 이름을 추측 해 볼 수 있습니다 이름.
+- 위의 모든 사용자 이름을 공백 암호로 사용하여 시도하십시오.
+- 프록시 또는 소스를보고 페이지 소스와 JavaScript를 검토하십시오. 소스의 사용자 및 비밀번호에 대한 참조를 찾습니다. 예를 들어 "사용자 이름 = 'admin'이면 starturl = / admin.asp else /index.asp"(실패한 로그인 대 성공적인 로그인). 또한 유효한 계정이있는 경우 추가 숨겨진 매개 변수, 흥미로운 GET 요청 (로그인 = 예) 등과 같이 유효한 로그인에 대한 모든 요청 및 응답 대 로그인하십시오.
+- 소스 코드에 주석으로 작성된 계정 이름과 암호를 찾습니다. 또한 백업 디렉토리에서 흥미로운 주석과 코드를 포함 할 수있는 소스 코드 (또는 소스 코드의 백업)를 찾으십시오.
+
+
 
 **새로운 계정 기존 패스워드 테스트**
 
-It can also occur that when a new account is created in an application
-the account is assigned a default password. This password
-could have some standard characteristics making it predictable. If
-the user does not change it on first usage (this often happens if
-the user is not forced to change it) or if the user has not yet logged
-on to the application, this can lead an attacker to gain unauthorized
-access to the application.
-The advice given before about a possible lockout policy and verbose
-error messages are also applicable here when testing for
-default passwords.
-The following steps can be applied to test for these types of default
-credentials:
-• Looking at the User Registration page may help to determine the
-expected format and minimum or maximum length of the 
-application usernames and passwords. If a user registration page
-does not exist, determine if the organization uses a standard
-naming convention for user names such as their email address or
-the name before the "@" in the email.
-• Try to extrapolate from the application how usernames are
-generated.
-For example, can a user choose his/her own username or does
-the system generate an account name for the user based on
-some personal information or by using a predictable sequence? If
-the application does generate the account names in a predictable
-sequence, such as user7811, try fuzzing all possible accounts
-recursively.
-If you can identify a different response from the application when
-using a valid username and a wrong password, then you can try a
-brute force attack on the valid username (or quickly try any of the
-identified common passwords above or in the reference section).
-• Try to determine if the system generated password is predictable.
-To do this, create many new accounts quickly after one another
-so that you can compare and determine if the passwords
-are predictable. If predictable, try to correlate these with the
-usernames, or any enumerated accounts, and use them as a
-basis for a brute force attack.
-• If you have identified the correct naming convention for the user
-name, try to "brute force" passwords with some common
-predictable sequence like for example dates of birth.
-• Attempt using all the above usernames with blank passwords or
-using the username also as password value.
+또한 응용 프로그램에 새 계정이 만들어지면 계정에 기본 암호가 지정 될 수도 있습니다. 
+이 암호는 예측 가능한 표준 특성을 가질 수 있습니다. 
+사용자가 첫 번째 사용시 변경하지 않으면(사용자가 강제로 변경하지 않는 경우에 자주 발생) 또는 사용자가 아직 응용 프로그램에 로그온하지 않은 경우 공격자가 응용 프로그램에 대한 무단 액세스를 유발할 수 있습니다.
+
+이전에 가능한 잠금 정책 및 자세한 오류 메시지에 대한 조언은 기본 암호를 테스트 할 때도 적용됩니다.
+
+다음 단계는 이러한 유형의 기본 자격 증명을 테스트하는 데 적용 할 수 있습니다.
+
+- 사용자 등록 페이지를 보면 응용 프로그램 사용자 이름과 암호의 예상되는 형식과 최소 또는 최대 길이를 결정하는 데 도움이 될 수 있습니다. 사용자 등록 페이지가없는 경우 조직에서 전자 메일 주소 나 전자 메일의 "@"앞에 있는 이름과 같은 사용자 이름에 대한 표준 명명 규칙을 사용하는지 확인하십시오.
+- 사용자 이름 생성 방법을 응용 프로그램에서 추정 해보십시오. 예를 들어, 사용자가 자신의 사용자 이름을 선택할 수 있습니까 아니면 시스템이 일부 개인 정보 또는 예측 가능한 시퀀스를 기반으로 사용자의 계정 이름을 생성 할 수 있습니까? 응용 프로그램이 user7811과 같은 예측 가능한 순서로 계정 이름을 생성하는 경우 모든 가능한 계정을 반복적으로 fuzzing 하십시오. 유효한 사용자 이름과 잘못된 암호를 사용할 때 응용 프로그램과 다른 응답을 식별 할 수 있는 경우 유효한 사용자 이름에 대해 무차별 공격을 시도 할 수 있습니다(위 또는 참조 절에서 식별 된 일반 암호를 빠르게 시도 할 수도 있음).
+- 시스템 생성 암호가 예측 가능한지 확인하십시오. 이렇게 하려면 많은 새 계정을 서로 빨리 생성하여 비교할 수 있고 암호가 예측 가능한지 확인할 수 있습니다. 예측 가능한 경우 사용자 이름 또는 열거 된 계정과 이들을 상호 연관시키고 무차별 대입 (brute force attack)의 기초로 사용하십시오.
+- 사용자 이름에 대한 올바른 명명 규칙을 확인한 경우 출생 일례와 같이 일반적으로 예측 가능한 시퀀스를 사용하여 "무차별 대입"암호를 사용해보십시오.
+- 공백 암호로 위의 모든 사용자 이름을 사용하거나 사용자 이름을 암호 값으로 사용하십시오.
 
 |
 
 Gray Box testing
 ---------------------------------------------------------------------------------------
 
-The following steps rely on an entirely Gray Box approach. If only
-some of this information is available to you, refer to black box
-testing to fill the gaps.
-• Talk to the IT personnel to determine which passwords they
-use for administrative access and how administration of the
-application is undertaken.
-• Ask IT personnel if default passwords are changed and if default
-user accounts are disabled.
-• Examine the user database for default credentials as described
-in the Black Box testing section. Also check for empty password
-fields.
-• Examine the code for hard coded usernames and passwords.
-• Check for configuration files that contain usernames
-and passwords.
-• Examine the password policy and, if the application generates its
-own passwords for new users, check the policy in use for this
-procedure.
+다음 단계는 완전히 회색 상자 방식에 의존합니다. 이 정보 중 일부만 사용할 수있는 경우 블랙 박스 테스트를 참조하여 공백을 채 웁니다.
+
+- IT 담당자에게 관리자 액세스에 사용하는 암호와 응용 프로그램 관리 방법을 확인하십시오.
+- 기본 암호가 변경되고 기본 사용자 계정이 비활성화 된 경우 IT 직원에게 문의하십시오.
+- Black Box 테스팅 섹션에서 설명한대로 사용자 데이터베이스에서 기본 자격 증명을 검사하십시오. 빈 암호 필드도 확인하십시오.
+- 하드 코딩 된 사용자 이름과 암호의 코드를 검사하십시오.
+- 사용자 이름과 암호가 포함 된 구성 파일을 확인하십시오.
+- 암호 정책을 검토하고 응용 프로그램이 새 사용자에 대해 자체 암호를 생성하는 경우이 절차에 사용중인 정책을 확인하십시오.
 
 |
 
-Tools
+도구
 ========================================================================================
 
 - Burp Intruder: http://portswigger.net/burp/intruder.html
@@ -180,7 +101,7 @@ Tools
 
 |
 
-References
+참고 문헌
 ========================================================================================
 
 Whitepapers
