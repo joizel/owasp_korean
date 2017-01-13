@@ -9,33 +9,42 @@ OTG-CONFIG-003 (민감한 정보를 확인하기 위해 파일 확장자 처리 
 
 파일 확장자는 일반적으로 쉽게 웹 요청을 수행하는 데 사용되어야 하는 기술, 언어, 플러그인을 결정하기 위해 웹 서버에서 사용됩니다.
 
-이 동작은 RFC와 웹 표준과 일치하지만, 표준 파일 정보를 사용하여 웹 어플라이언스에 사용되는 기반 기술에 대한 침투 테스터에게 유용한 정보를 제공하고 크게 공격 시나리오를 결정하는 작업이 특정 기술에 사용되는 단순화한다.
-While this behavior is consistent with RFCs and Web Standards, 
-using standard file extensions provides the penetration tester useful information 
-about the underlying technologies used in a web appliance and greatly simplifies 
-the task of determining the attack scenario to be used on particular technologies. 
+이 동작은 RFC 및 웹 표준과 일치하지만 표준 파일 확장명을 사용하면 침투 테스터가 웹 어플라이언스에 사용되는 기본 기술에 대한 유용한 정보를 제공하고 특정 기술에 사용되는 공격 시나리오를 결정하는 작업을 크게 단순화합니다.
 
-In addition, mis-configuration of web servers could easily reveal confidential information about access credentials. 
+또한 웹 서버의 잘못된 구성으로 인해 액세스 자격 증명에 대한 기밀 정보가 쉽게 노출 될 수 있습니다.
 
-Extension checking is often used to validate files to be uploaded, which can lead to unexpected results because the content is not what is expected, or because of unexpected OS file name handling. 
+확장 검사는 업로드 할 파일을 확인하는 데 자주 사용되며, 내용이 예상 한 내용이 아니거나 예기치 않은 OS 파일 이름 처리로 인해 예기치 않은 결과가 발생할 수 있습니다.
 
-Determining how web servers handle requests corresponding to files having different extensions may help in understanding web server behavior depending on the kind of files that are accessed. For example, it can help to understand which file extensions are returned as text or plain versus those that cause execution on the server side. The latter are indicative of technologies, languages or plugins that are used by web servers or application servers, and may provide additional insight on how the web application is engineered. For example, a ".pl" extension is usually associated with server-side Perl support. However, the file extension alone may be deceptive and not fully conclusive. For example, Perl server-side resources might be renamed to conceal the fact that they are indeed Perl related. See the next section on "web server components" for more on identifying server side technologies and components. 
+웹 서버가 확장자가 다른 파일에 해당하는 요청을 처리하는 방법을 결정하면 액세스되는 파일의 종류에 따라 웹 서버 동작을 이해하는 데 도움이 될 수 있습니다.
+예를 들어, 텍스트 또는 일반 텍스트로 반환되는 파일 확장명과 서버 측에서 실행을 유발하는 확장명을 이해하는 데 도움이 될 수 있습니다. 
+후자는 웹 서버 또는 응용 프로그램 서버에서 사용되는 기술, 언어 또는 플러그인을 나타내며 웹 응용 프로그램의 설계 방법에 대한 추가 통찰력을 제공합니다. 
+예를 들어, ".pl" 확장자는 대개 서버 측 Perl 지원과 연관됩니다. 
+그러나 파일 확장만으로는 기만적이고 완전히 결정적인 것은 아닙니다. 
+예를 들어 Perl 서버 측 리소스는 실제로 Perl과 관련된 사실을 숨기기 위해 이름이 바뀔 수 있습니다. 
+
 
 |
 
 테스트 방법
 ==========================================================================================
 
-**Forced browsing**
+**강제 브라우징**
 
-Submit http[s] requests involving different file extensions and verify how they are handled. The verification should be on a per web directory basis. Verify directories that allow script execution. Web server directories can be identified by vulnerability scanners, which look for the presence of well-known directories. In addition, mirroring the web site structure allows the tester to reconstruct the tree of web directories served by the application. 
+다른 파일 확장명과 관련된 http[s] 요청을 제출하고 처리 방법을 확인하십시오. 
+확인은 웹 디렉토리별로 이루어져야합니다. 
+스크립트 실행을 허용하는 디렉토리를 확인하십시오. 
+웹 서버 디렉토리는 잘 알려진 디렉토리가 있는지 확인하는 취약점 스캐너로 식별 할 수 있습니다. 
+또한 웹 사이트 구조를 미러링하면 테스터는 응용 프로그램이 제공하는 웹 디렉토리의 트리를 재구성 할 수 있습니다.
 
-If the web application architecture is load-balanced, it is important to assess all of the web servers. This may or may not be easy, depending on the configuration of the balancing infrastructure. In an infrastructure with redundant components there may be slight variations in the configuration of individual web or application servers. This may happen if the web architecture employs heterogeneous technologies (think of a set of IIS and Apache web servers in a load-balancing configuration, which may introduce slight asymmetric behavior between them, and possibly different vulnerabilities). 
+웹 응용 프로그램 아키텍처의 부하가 분산되면 모든 웹 서버를 평가하는 것이 중요합니다. 
+이는 균형 조정 인프라의 구성에 따라 쉽지 않을 수도 있습니다. 
+중복 구성 요소가있는 인프라에서 개별 웹 또는 응용 프로그램 서버의 구성에는 약간의 차이가 있을 수 있습니다. 
+이것은 웹 아키텍처가 이기종 기술을 사용하는 경우 발생할 수 있습니다.
 
-Example: 
+**예제**
 
-The tester has identified the existence of a file named connection.inc. 
-Trying to access it directly gives back its contents, which are: 
+테스터는 connection.inc라는 파일의 존재를 확인했습니다.
+직접 액세스하려고하면 다음과 같은 내용이 반환됩니다.
 
 .. code-block:: php
 
@@ -43,15 +52,16 @@ Trying to access it directly gives back its contents, which are:
         mysql_connect("127.0.0.1", "root", "") or die("Could not connect"); 
     ?> 
 
-The tester determines the existence of a MySQL DBMS back end, and the (weak) credentials used by the web application to access it. 
-The following file extensions should never be returned by a web server, since they are related to files which may contain sensitive information or to files for which there is no reason to be served. 
+테스터는 MySQL DBMS 백 엔드의 존재 여부와 웹 응용 프로그램이 액세스하는 데 사용하는 (약한) 자격 증명을 확인합니다.
+다음 파일 확장자는 민감한 정보를 포함 할 수 있는 파일 또는 제공 할 이유가 없는 파일이므로 웹 서버에서 절대로 반환하지 않아야 합니다.
 
 .. code-block:: console
 
     .asa 
     .inc 
 
-The following file extensions are related to files which, when accessed, are either displayed or downloaded by the browser. Therefore, files with these extensions must be checked to verify that they are indeed supposed to be served (and are not leftovers), and that they do not contain sensitive information. 
+다음 파일 확장명은 액세스 할 때 브라우저에서 표시하거나 다운로드하는 파일과 관련이 있습니다. 
+따라서 이러한 확장명을 가진 파일은 실제로 제공될 예정이며 남은 부분이 아닌지 확인하고 중요한 정보가 포함되어 있지 않은지 확인해야 합니다.
 
 .. code-block:: console
 
@@ -62,15 +72,17 @@ The following file extensions are related to files which, when accessed, are eit
     .doc, .rtf, .xls, .ppt, ...: Office documents 
     .bak, .old and other extensions indicative of backup files (for example: ~ for Emacs backup files)
 
-The list given above details only a few examples, since file extensions are too many to be comprehensively treated here. Refer to http://filext. com/ for a more thorough database of extensions. 
-To identify files having a given extensions a mix of techniques can be employed. THese techniques can include Vulnerability Scanners, spidering and mirroring tools, manually inspecting the application (this overcomes limitations in automatic spidering), querying search engines (see Testing: Spidering and googling). See also Testing for Old, Backup and Unreferenced Files which deals with the security issues related to "forgotten" files.
+위에 제시된 목록은 파일 확장자가 너무 많아 여기에서 포괄적으로 다루어지기 때문에 몇 가지 예를 자세히 설명합니다. 
+주어진 확장자를 갖는 파일을 식별하기 위해 기술의 혼합이 사용될 수 있습니다. 
+이러한 기법에는 취약점 검색기, 스파이더 링 및 미러링 도구, 응용 프로그램을 수동으로 검사, 검색 엔진 쿼리 등이 있습니다. 
+"잊어 버린"파일과 관련된 보안 문제를 다루는 오래된 파일, 백업 파일 및 참조되지 않은 파일 테스트를 참조하십시오.
 
 |
 
-File Upload
+파일 업로드
 -----------------------------------------------------------------------------------------
 
-Windows 8.3 legacy file handling can sometimes be used to defeat file upload filters 
+Windows 8.3 레거시 파일 처리를 사용하여 파일 업로드 필터를 무효화 할 수 있음
 
 .. code-block:: console
 
@@ -88,18 +100,20 @@ Windows 8.3 legacy file handling can sometimes be used to defeat file upload fil
 Gray Box testing 
 -----------------------------------------------------------------------------------------
 
-Performing white box testing against file extensions handling amounts to checking the configurations of web servers or application servers taking part in the web application architecture, and verifying how they are instructed to serve different file extensions. 
-If the web application relies on a load-balanced, heterogeneous infrastructure, determine whether this may introduce different behavior. 
+파일 확장자 처리에 대한 화이트 박스 테스트를 수행하면 웹 응용 프로그램 아키텍처에 참여하는 웹 서버 또는 응용 프로그램 서버의 구성을 확인하고 다른 파일 확장자를 제공하는 방법을 확인하는 데 소요됩니다.
+웹 응용 프로그램이 부하가 분산 된 이기종 인프라를 사용하는 경우 이것이 다른 동작을 유발하는지 여부를 결정합니다.
 
 |
 
-Tools 
+도구 
 ==========================================================================================
 
-Vulnerability scanners, such as Nessus and Nikto check for the existence of well-known web directories. They may allow the tester to download the web site structure, which is helpful when trying to determine the configuration of web directories and how individual file extensions are served. Other tools that can be used for this purpose include: 
+Nessus 및 Nikto와 같은 취약점 검색 프로그램은 잘 알려진 웹 디렉토리의 존재 여부를 확인합니다. 
+테스터가 웹 사이트 구조를 다운로드 할 수 있게하여 웹 디렉토리의 구성과 개별 파일 확장자가 제공되는 방식을 결정할 때 유용합니다. 
+이 목적을 위해 사용할 수 있는 다른 도구는 다음과 같습니다.
 
-- wget - http://www.gnu.org/software/wget 
-- curl - http://curl.haxx.se 
+- wget: http://www.gnu.org/software/wget 
+- curl: http://curl.haxx.se 
 - google for "web mirroring tools". 
 
 |

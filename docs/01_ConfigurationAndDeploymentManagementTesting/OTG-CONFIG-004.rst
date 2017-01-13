@@ -7,117 +7,46 @@ OTG-CONFIG-004 (민감한 정보를 확인하기 위해 백업 및 참조되지 
 개요
 ==========================================================================================
 
-While most of the files within a web server are directly handled by the
-server itself, it isn’t uncommon to find unreferenced or forgotten files
-that can be used to obtain important information about the infrastructure
-or the credentials.
-Most common scenarios include the presence of renamed old versions
-of modified files, inclusion files that are loaded into the language
-of choice and can be downloaded as source, or even automatic or
-manual backups in form of compressed archives. Backup files can also
-be generated automatically by the underlying file system the application
-is hosted on, a feature usually referred to as “snapshots”.
-All these files may grant the tester access to inner workings, back
-doors, administrative interfaces, or even credentials to connect to the
-administrative interface or the database server.
-An important source of vulnerability lies in files which have nothing to
-do with the application, but are created as a consequence of editing
-application files, or after creating on-the-fly backup copies, or by leaving
-in the web tree old files or unreferenced files.Performing in-place
-editing or other administrative actions on production web servers may
-inadvertently leave backup copies, either generated automatically by
-the editor while editing files, or by the administrator who is zipping a
-set of files to create a backup.
-It is easy to forget such files and this may pose a serious security
-threat to the application. That happens because backup copies may be
-generated with file extensions differing from those of the original files.
-A .tar, .zip or .gz archive that we generate (and forget...) has obviously
-a different extension, and the same happens with automatic copies
-created by many editors (for example, emacs generates a backup copy
-named file~ when editing file). Making a copy by hand may produce the
-same effect (think of copying file to file.old). The underlying file system
-the application is on could be making “snapshots” of your application
-at different points in time without your knowledge, which may also be
-accessible via the web, posing a similar but different “backup file” style
-threat to your application.
+웹 서버 내의 대부분의 파일은 서버 자체에서 직접 처리되지만 인프라 또는 자격 증명에 대한 중요한 정보를 얻는 데 사용할 수있는 참조되지 않거나 잊어 버린 파일은 흔히 발견되지 않습니다.
+가장 일반적인 시나리오는 수정 된 파일의 이름이 변경된 이전 버전, 선택한 언어로 로드되고 원본으로 다운로드 할 수 있는 포함 파일 또는 압축된 아카이브 형식의 자동 또는 수동 백업을 포함합니다.
+백업 파일은 응용 프로그램이 호스팅되는 기본 파일 시스템 (일반적으로 "스냅 샷"이라고도 함)에 의해 자동으로 생성 될 수도 있습니다.
+이러한 모든 파일은 내부 인터페이스, 백도어, 관리 인터페이스 또는 심지어 관리 인터페이스 또는 데이터베이스 서버에 연결하기위한 자격 증명에 대한 테스터 액세스를 허용 할 수 있습니다.
+중요한 취약점의 원인은 응용 프로그램과 아무 관련이 없지만 응용 프로그램 파일을 편집한 결과 또는 직접 복사를 작성한 결과로 생성되거나 웹 트리에 이전 파일 또는 참조되지 않은 파일을 남겨 두었기 때문입니다.
+파일을 편집하는 동안 편집기에서 자동으로 생성하거나 백업 세트를 생성하기 위해 파일 집합을 압축하는 관리자가 실수로 백업 복사본을 남길 수 있습니다.
 
-As a result, these activities generate files that are not needed by the
-application and may be handled differently than the original file by
-the web server. For example, if we make a copy of login.asp named
-login.asp.old, we are allowing users to download the source code of
-login.asp. This is because login.asp.old will be typically served as text
-or plain, rather than being executed because of its extension. In other
-words, accessing login.asp causes the execution of the server-side
-code of login.asp, while accessing login.asp.old causes the content of
-login.asp.old (which is, again, server-side code) to be plainly returned
-to the user and displayed in the browser. This may pose security risks, 
+그러한 파일을 잊어 버리기 쉽고 이로 인해 응용 프로그램에 심각한 보안 위협이 될 수 있습니다. 
+원본 파일과 다른 파일 확장명으로 백업 복사본이 생성 될 수 있기 때문에 이러한 상황이 발생합니다.
+생성하고 잊어버리는 .tar, .zip 또는 .gz 아카이브는 분명히 다른 확장자를 가지며 많은 편집자가 만든 자동 사본에서도 마찬가지입니다 (예를 들어, emacs는 file~ 편집 파일).
 
-since sensitive information may be revealed.
-Generally, exposing server side code is a bad idea. Not only are you
-unnecessarily exposing business logic, but you may be unknowingly
-revealing application-related information which may help an attacker
-(path names, data structures, etc.). Not to mention the fact that there
-are too many scripts with embedded username and password in clear
-text (which is a careless and very dangerous practice).
-Other causes of unreferenced files are due to design or configuration
-choices when they allow diverse kind of application-related files such
-as data files, configuration files, log files, to be stored in file system
-directories that can be accessed by the web server. These files have
-normally no reason to be in a file system space that could be accessed
-via web, since they should be accessed only at the application level,
-by the application itself (and not by the casual user browsing around).
+직접 복사를 하면 같은 효과가 발생할 수 있습니다(파일을 file.old로 복사하는 것을 생각하십시오). 
+응용 프로그램이있는 기본 파일 시스템은 사용자가 모르게 다른 시점에 응용 프로그램의 "스냅 샷"을 만들 수 있습니다. 
+또한 웹을 통해 액세스 할 수 있으므로 응용 프로그램과 유사하지만 다른 "백업 파일"스타일의 위협이 됩니다.
 
-Threats
-Old, backup and unreferenced files present various threats to the security
-of a web application:
-• Unreferenced files may disclose sensitive information that can
-facilitate a focused attack against the application; for example include
-files containing database credentials, configuration files containing
-references to other hidden content, absolute file paths, etc.
-• Unreferenced pages may contain powerful functionality that can be
-used to attack the application; for example an administration page
-that is not linked from published content but can be accessed by any
-user who knows where to find it.
-• Old and backup files may contain vulnerabilities that have been fixed
-in more recent versions; for example viewdoc.old.jsp may contain a
-directory traversal vulnerability that has been fixed in viewdoc.jsp
-but can still be exploited by anyone who finds the old version.
-• Backup files may disclose the source code for pages designed to
-execute on the server; for example requesting viewdoc.bak may
-return the source code for viewdoc.jsp, which can be reviewed for
-vulnerabilities that may be difficult to find by making blind requests
-to the executable page. While this threat obviously applies to scripted
-languages, such as Perl, PHP, ASP, shell scripts, JSP, etc., it is not
-limited to them, as shown in the example provided in the next bullet.
-• Backup archives may contain copies of all files within (or even
-outside) the webroot. This allows an attacker to quickly enumerate
-the entire application, including unreferenced pages, source code,
-include files, etc. For example, if you forget a file named myservlets.
-jar.old file containing (a backup copy of) your servlet implementation
-classes, you are exposing a lot of sensitive information which is
-susceptible to decompilation and reverse engineering.
-• In some cases copying or editing a file does not modify the file
- extension, but modifies the file name. This happens for example in
-Windows environments, where file copying operations generate file
-names prefixed with “Copy of “ or localized versions of this string.
-Since the file extension is left unchanged, this is not a case where
-an executable file is returned as plain text by the web server, and
-therefore not a case of source code disclosure. However, these
-files too are dangerous because there is a chance that they include
-obsolete and incorrect logic that, when invoked, could trigger
-application errors, which might yield valuable information to an
-attacker, if diagnostic message display is enabled.
-• Log files may contain sensitive information about the activities
-of application users, for example sensitive data passed in URL
-parameters, session IDs, URLs visited (which may disclose additional 
-unreferenced content), etc. Other log files (e.g. ftp logs) may contain
-sensitive information about the maintenance of the application by
-system administrators.
-• File system snapshots may contain copies of the code that contain
-vulnerabilities that have been fixed in more recent versions. For
-example /.snapshot/monthly.1/view.php may contain a directory
-traversal vulnerability that has been fixed in /view.php but can still
-be exploited by anyone who finds the old version.
+결과적으로 이러한 활동은 응용 프로그램에서 필요하지 않은 파일을 생성하며 웹 서버에서 원본 파일과 다르게 처리 할 수 ​​있습니다.
+예를 들어 login.asp.old라는 이름의 login.asp 사본을 만들면 사용자가 login.asp의 소스 코드를 다운로드 할 수 있게됩니다.
+
+이는 login.asp.old가 일반적으로 확장 때문에 실행되지 않고 텍스트 또는 일반 텍스트로 제공되기 때문입니다. 
+즉, login.asp에 액세스하면 login.asp의 서버 측 코드가 실행되고 login.asp.old에 액세스하면 login.asp.old(다시 서버 측 코드)의 내용이 다음과 같이됩니다. 
+명백히 사용자에게 반환되어 브라우저에 표시됩니다.
+민감한 정보가 노출 될 수 있으므로 보안 위험이 발생할 수 있습니다.
+
+일반적으로 서버 사이드 코드를 드러내는 것은 나쁜 생각입니다. 
+불필요하게 비즈니스 로직을 노출하고 있을뿐만 아니라 공격자(경로 이름, 데이터 구조 등)를 도울 수 있는 애플리케이션 관련 정보를 모르게 공개 할 수 있습니다.
+일반 텍스트에 사용자 이름과 암호가 포함된 스크립트가 너무 많다는 사실은 말할 필요도 없습니다.
+참조되지 않은 파일의 다른 원인은 데이터 파일, 구성 파일, 로그 파일과 같은 다양한 종류의 응용 프로그램 관련 파일이 웹 서버에서 액세스 할 수있는 파일 시스템 디렉토리에 저장 될 수 있도록 허용 할 때 설계 또는 구성 선택 때문입니다.
+이러한 파일은 웹을 통해 액세스 할 수 있는 파일 시스템 공간에 있을 이유가 없습니다. 
+응용 프로그램 수준에서만 액세스해야하기 때문에 응용 프로그램 자체에서 액세스해야 합니다.
+
+위협 오래된, 백업 및 참조되지 않은 파일은 웹 응용 프로그램의 보안에 대한 다양한 위협을 나타냅니다.
+
+- 참조되지 않은 파일은 응용 프로그램에 집중적으로 공격 할 수있는 중요한 정보를 공개 할 수 있습니다. 예를 들어 데이터베이스 자격 증명을 포함하는 파일, 다른 숨겨진 내용에 대한 참조를 포함하는 구성 파일, 절대 파일 경로 등을 포함 할 수 있습니다.
+- 참조되지 않은 페이지에는 응용 프로그램을 공격하는 데 사용할 수 있는 강력한 기능이 포함될 수 있습니다. 예를 들어 게시 된 콘텐츠와 연결되어 있지 않지만 어디에서 찾을 수 있는지를 아는 모든 사용자가 액세스 할 수 있는 관리 페이지.
+- 오래된 파일과 백업 파일에는 최신 버전에서 수정된 취약점이 있을 수 있습니다. 예를 들어 viewdoc.old.jsp에는 viewdoc.jsp에서 수정되었지만 이전 버전을 찾은 사람이 여전히 악용 할 수 있는 디렉토리 트래버설 취약점이 있을 수 있습니다.
+- 백업 파일은 서버에서 실행되도록 고안된 페이지의 소스 코드를 공개 할 수 있습니다. 예를 들어 viewdoc.bak를 요청하면 viewdoc.jsp의 소스 코드가 반환 될 수 있습니다. 이 소스 코드는 실행 파일 페이지에 대해 시각적인 요청을 함으로써 발견하기 어려운 취약성을 검토할 수 있습니다. 이 위협은 Perl, PHP, ASP, 셸 스크립트, JSP 등과 같은 스크립팅 언어에 분명히 적용되지만, 다음 글 머리 기호에서 제공되는 예제에서 볼 수 있듯이 이러한 위협은 이에 국한되지 않습니다.
+- 백업 아카이브는 웹 루트 내에 모든 파일의 복사본을 포함 할 수 있습니다. 이를 통해 공격자는 참조되지 않은 페이지, 소스 코드, 포함 파일 등 전체 응용 프로그램을 빠르게 열거 할 수 있습니다. 예를 들어 myservlets라는 파일을 잊어 버린 경우를 예로 들 수 있습니다. jar.old 파일에 서블릿 구현 클래스(백업 복사본)가 포함되어 있으면 디컴파일 및 역엔지니어링의 영향을 받기 쉬운 중요한 정보가 많이 노출됩니다.
+- 파일을 복사하거나 편집해도 파일 확장자는 수정되지 않지만 파일 이름은 수정됩니다. 이것은 파일 복사 작업에서 "Copy of" 접두어가 붙은 파일 이름이나 이 문자열의 자국어 버전을 생성하는 Windows 환경에서 발생합니다. 파일 확장자는 변경되지 않으므로 웹 서버가 실행 파일을 일반 텍스트로 반환하므로 소스 코드가 공개되지 않습니다. 그러나 진단 메시지 표시를 사용하는 경우 공격자에게 중요한 정보를 제공 할 수 있는 응용 프로그램 오류를 유발할 수 있는 쓸모없고 잘못된 논리가 포함될 가능성이 있기 때문에 이러한 파일도 위험합니다.
+- 로그 파일에는 응용 프로그램 사용자의 활동에 대한 중요한 정보(예 : URL 매개 변수, 세션 ID, 방문한 URL (참조되지 않은 추가 내용을 공개 할 수 있음) 등)와 같은 중요한 데이터가 포함될 수 있습니다. 기타 로그 파일(예: ftp 로그)에는 민감한 시스템 관리자가 응용 프로그램 유지 관리에 대한 정보.
+- 파일 시스템 스냅 샷에는 최신 버전에서 수정된 취약점이 포함 된 코드 사본이 포함될 수 있습니다. 예를 들어, /.snapshot/monthly.1/view.php는 /view.php에서 수정되었지만 이전 버전을 찾은 사람이 여전히 악용 할 수있는 디렉토리 트래버설 취약점을 포함 할 수 있습니다.
 
 
 |
@@ -130,60 +59,47 @@ be exploited by anyone who finds the old version.
 Black Box Testing
 -----------------------------------------------------------------------------------------
 
-Testing for unreferenced files uses both automated and manual techniques,
-and typically involves a combination of the following:
+참조되지 않은 파일에 대한 테스트는 자동 및 수동 기술을 모두 사용하며 일반적으로 다음을 조합하여 수행됩니다.
 
-Inference from the naming scheme used for published content
+**게시된 콘텐츠에 사용 된 명명 체계의 추측**
 
-Enumerate all of the application’s pages and functionality. This can be
-done manually using a browser, or using an application spidering tool.
-Most applications use a recognizable naming scheme, and organize
-resources into pages and directories using words that describe their
-function. From the naming scheme used for published content, it is often
-possible to infer the name and location of unreferenced pages. For
-example, if a page viewuser.asp is found, then look also for edituser.
-asp, adduser.asp and deleteuser.asp. If a directory /app/user is found,
-then look also for /app/admin and /app/manager.
+응용 프로그램의 모든 페이지와 기능을 열거하십시오. 
+이 작업은 브라우저를 사용하거나 응용 프로그램 스파이더 링 도구를 사용하여 수동으로 수행할 수 있습니다. 
+대부분의 응용 프로그램은 인식 할 수 있는 명명 체계를 사용하고 해당 기능을 설명하는 단어를 사용하여 리소스를 페이지 및 디렉토리로 구성합니다. 
+게시된 컨텐츠에 사용된 명명 체계에서 참조되지 않은 페이지의 이름과 위치를 유추하는 것이 가능합니다. 
+예를 들어, viewuser.asp 페이지가 발견되면 edituser.asp, adduser.asp 및 deleteuser.asp도 찾습니다. 
+디렉토리 /app/user가 발견되면 /app/admin 및 /app/manager도 찾습니다.
 
-Other clues in published content
+**게시된 콘텐츠의 다른 단서**
 
-Many web applications leave clues in published content that can lead
-to the discovery of hidden pages and functionality. These clues often
-appear in the source code of HTML and JavaScript files. The source
-code for all published content should be manually reviewed to identify
-clues about other pages and functionality. For example:
+많은 웹 응용 프로그램은 숨겨진 페이지 및 기능을 발견 할 수 있는 게시된 콘텐츠에 단서를 남깁니다. 이러한 단서는 종종 HTML 및 JavaScript 파일의 소스 코드에 나타납니다. 게시된 모든 컨텐츠의 소스 코드는 다른 페이지 및 기능에 대한 단서를 찾기 위해 수동으로 검토해야합니다.
 
-Programmers’ comments and commented-out sections of source
-code may refer to hidden content:
+프로그래머의 주석과 주석 처리 된 소스 코드 섹션은 숨겨진 컨텐츠를 참조 할 수 있습니다.
 
 .. code-block:: html
 
-    <!-- <A HREF=”uploadfile.jsp”>Upload a document to the server</A>
+    <!-- <A HREF="uploadfile.jsp">Upload a document to the server</A>
     -->
     <!-- Link removed while bugs in uploadfile.jsp are fixed -->
 
-JavaScript may contain page links that are only rendered within the
-user’s GUI under certain circumstances:
+자바 스크립트는 특정 상황에서 사용자의 GUI 내에서만 렌더링되는 페이지 링크를 포함 할 수 있습니다.
 
-.. code-block:: html
+.. code-block:: javascript
 
     var adminUser=false;
     :
-    if (adminUser) menu.add (new menuItem (“Maintain users”, “/
-    admin/useradmin.jsp”));
+    if (adminUser) menu.add (new menuItem ("Maintain users", "/admin/useradmin.jsp"));
 
-HTML pages may contain FORMs that have been hidden by disabling
-the SUBMIT element:
+HTML 페이지에는 SUBMIT 요소를 비활성화하여 숨겨진 FORM이 포함될 수 있습니다.
 
 .. code-block:: html
 
-    <FORM action=”forgotPassword.jsp” method=”post”>
-    <INPUT type=”hidden” name=”userID” value=”123”>
-    <!-- <INPUT type=”submit” value=”Forgot Password”> -->
+    <FORM action="forgotPassword.jsp" method="post">
+        <INPUT type="hidden" name="userID" value="123">
+        <!-- <INPUT type="submit" value="Forgot Password"> -->
     </FORM> 
 
-Another source of clues about unreferenced directories is the /robots.
-txt file used to provide instructions to web robots:
+참조되지 않은 디렉토리에 대한 또 다른 단서는 웹 로봇에게 지침을 제공하는 데 사용되는 /robots.txt 파일입니다.
 
 .. code-block:: html
 
@@ -194,13 +110,10 @@ txt file used to provide instructions to web robots:
     Disallow: /~jbloggs
     Disallow: /include 
 
-Blind guessing
+**맹목적인 추측**
 
-In its simplest form, this involves running a list of common file
-names through a request engine in an attempt to guess files and
-directories that exist on the server. The following netcat wrapper
-script will read a wordlist from stdin and perform a basic guessing
-attack:
+가장 단순한 형태로는 서버에있는 파일과 디렉토리를 추측하기 위해 요청 엔진을 통해 공통 파일 이름 목록을 실행하는 작업이 포함됩니다. 
+다음 netcat wrapper 스크립트는 stdin에서 단어 목록을 읽고 기본 추측 공격을 수행합니다.
 
 .. code-block:: sh
 
@@ -209,175 +122,95 @@ attack:
     port=80
     while read url
     do
-    echo -ne “$url\t”
-    echo -e “GET /$url HTTP/1.0\nHost: $server\n” | netcat $server
+    echo -ne "$url\t"
+    echo -e "GET /$url HTTP/1.0\nHost: $server\n" | netcat $server
     $port | head -1
     done | tee outputfile 
 
 
-Depending upon the server, GET may be replaced with HEAD for
-faster results. The output file specified can be grepped for “interesting”
-response codes. The response code 200 (OK) usually indicates
-that a valid resource has been found (provided the server
-does not deliver a custom “not found” page using the 200 code).
-But also look out for 301 (Moved), 302 (Found), 401 (Unauthorized),
-403 (Forbidden) and 500 (Internal error), which may also
-indicate resources or directories that are worthy of further investigation.
-The basic guessing attack should be run against the webroot, and
-also against all directories that have been identified through other
-enumeration techniques. More advanced/effective guessing attacks
-can be performed as follows:
-• Identify the file extensions in use within known areas of the
-application (e.g. jsp, aspx, html), and use a basic wordlist
-appended with each of these extensions (or use a longer list of
-common extensions if resources permit).
-• For each file identified through other enumeration techniques,
-create a custom wordlist derived from that filename. Get a list
-of common file extensions (including ~, bak, txt, src, dev, old, inc,
-orig, copy, tmp, etc.) and use each extension before, after, and
-instead of, the extension of the actual file name.
-Note: Windows file copying operations generate file names prefixed
-with “Copy of “ or localized versions of this string, hence they
-do not change file extensions. While “Copy of ” files typically do
+서버에 따라 더 빠른 결과를 얻으려면 GET을 HEAD로 바꿀 수 있습니다. 지정된 출력 파일은 "흥미로운" 응답 코드를 얻을 수 있습니다.
+응답 코드 200(OK)은 일반적으로 유효한 자원이 발견되었음을 나타냅니다(서버가 200 코드를 사용하여 사용자 정의 "찾을 수 없음"페이지를 제공하지 않는 경우).
+또한 301(이동), 302(찾음), 401(권한 없음), 403(금지됨) 및 500(내부 오류)를 조사하십시오.
 
-not disclose source code when accessed, they might yield valuable
-information in case they cause errors when invoked.
-Information obtained through server vulnerabilities and misconfiguration
-The most obvious way in which a misconfigured server may disclose
-unreferenced pages is through directory listing. Request all
-enumerated directories to identify any which provide a directory
-listing.
-Numerous vulnerabilities have been found in individual web servers
-which allow an attacker to enumerate unreferenced content,
-for example:
-• Apache ?M=D directory listing vulnerability.
-• Various IIS script source disclosure vulnerabilities.
-• IIS WebDAV directory listing vulnerabilities.
-Use of publicly available information
-Pages and functionality in Internet-facing web applications that
-are not referenced from within the application itself may be referenced
-from other public domain sources. There are various sources
-of these references:
-• Pages that used to be referenced may still appear in the archives
-of Internet search engines. For example, 1998results.asp may
-no longer be linked from a company’s website, but may remain
-on the server and in search engine databases. This old script may
-contain vulnerabilities that could be used to compromise the
-entire site. The site: Google search operator may be used to run
-a query only against the domain of choice, such as in: site:www.
-example.com. Using search engines in this way has lead to a
-broad array of techniques which you may find useful and that
-are described in the Google Hacking section of this Guide. Check
-it to hone your testing skills via Google. Backup files are not likely
-to be referenced by any other files and therefore may have not
-been indexed by Google, but if they lie in browsable directories
-the search engine might know about them.
-• In addition, Google and Yahoo keep cached versions of pages
-found by their robots. Even if 1998results.asp has been removed
-from the target server, a version of its output may still be stored
-by these search engines. The cached version may contain
-references to, or clues about, additional hidden content that still
-remains on the server.
-• Content that is not referenced from within a target application
-may be linked to by third-party websites. For example, an
-application which processes online payments on behalf of thirdparty
-traders may contain a variety of bespoke functionality
-which can (normally) only be found by following links within the
-web sites of its customers.
-File name filter bypass
-Because blacklist filters are based on regular expressions, one can
-sometimes take advantage of obscure OS file name expansion
-features in which work in ways the developer didn’t expect. The
-tester can sometimes exploit differences in ways that file names
-are parsed by the application, web server, and underlying OS and
-it’s file name conventions.
-Example: Windows 8.3 filename expansion “c:\program files” becomes
-“C:\PROGRA~1”
+기본 추측 공격은 웹 루트와 다른 열거 기법을 통해 식별 된 모든 디렉토리에 대해 실행되어야합니다.
+다음과 같이 더 고급/효과적인 추측 공격을 수행 할 수 있습니다.
+
+- 애플리케이션의 알려진 영역(예 : jsp, aspx, html)에서 사용 중인 파일 확장자를 확인하고 각 확장자에 기본 단어 목록을 사용합니다 (또는 리소스가 허용하는 경우 긴 확장자 목록 사용).
+- 다른 열거 기법을 통해 식별 된 각 파일에 대해 해당 파일 이름에서 파생 된 사용자 정의 단어 목록을 만듭니다. ~, bak, txt, src, dev, old, inc, orig, copy, tmp 등의 일반적인 파일 확장명 목록을 가져 와서 실제 파일 확장자의 앞뒤에 각각의 확장자를 사용하십시오.
+
+Note: Windows 파일 복사 작업은 "Copy of" 또는 이 문자열의 자국어 버전이 붙은 파일 이름을 생성하므로 파일 확장명을 변경하지 않습니다. 
+"Copy of" 파일은 일반적으로 액세스 할 때 소스 코드를 공개하지 않지만 호출 할 때 오류가 발생할 경우 유용한 정보를 제공합니다.
+
+**서버 취약점 및 잘못된 구성을 통해 얻은 정보**
+
+잘못 설정된 서버가 참조되지 않은 페이지를 공개 할 수 있는 가장 확실한 방법은 디렉토리 목록을 사용하는 것입니다. 
+열거 된 모든 디렉토리에 디렉토리 목록을 제공하는 디렉토리를 식별하도록 요청하십시오.
+
+개별 웹 서버에 수많은 취약점이 발견되어 공격자가 참조되지 않은 콘텐츠를 열거 할 수 있습니다. 
+예를 들면 다음과 같습니다.
+
+- 아파치 ?M=D 디렉토리 리스팅 취약점
+- 다양한 IIS 스크립트 소스 공개 취약점
+- IIS WebDAV 디렉토리 목록 취약점
 
 
-– Remove incompatible characters
-– Convert spaces to underscores
-- Take the first six characters of the basename
-– Add “~<digit>” which is used to distinguish files with names
-using the same six initial characters
-- This convention changes after the first 3 cname ollisions
-– Truncate file extension to three characters
-- Make all the characters uppercase 
+**공개적으로 사용 가능한 정보의 사용**
+
+응용 프로그램 자체에서 참조되지 않는 인터넷 연결 웹 응용 프로그램의 페이지 및 기능은 다른 공개 도메인 소스에서 참조 할 수 있습니다. 
+이러한 참고 문헌에는 다양한 출처가 있습니다.
+
+- 참조하는 데 사용된 페이지는 여전히 인터넷 검색 엔진의 아카이브에 나타날 수 있습니다. 예를 들어, 1998results.asp는 회사 웹 사이트에서 더 이상 링크되지 않지만 서버 및 검색 엔진 데이터베이스에 남아 있을 수 있습니다. 이 오래된 스크립트에는 전체 사이트를 손상시키는 데 사용할 수 있는 취약점이 포함될 수 있습니다. 사이트: Google 검색 연산자는 site: www.example.com과 같이 선택한 도메인에 대해서만 쿼리를 실행하는데 사용 될 수 있습니다. 이 방법으로 검색 엔진을 사용하면 유용 할 수 있는 다양한 기술로 이어집니다. Google을 통해 테스트 기술을 향상시킬 수 있는지 확인하십시오. 백업 파일은 다른 파일에서 참조 할 가능성이 없으므로 Google에서 색인을 생성하지 않았지만 검색 가능한 디렉토리에 있으면 색인 엔진이 알 수 있습니다.
+- 또한 Google과 Yahoo는 로봇이 찾은 페이지의 캐시된 버전을 유지합니다. 1998results.asp가 대상 서버에서 제거되었더라도 해당 출력 버전은 여전히 ​​이러한 검색 엔진에 저장 될 수 있습니다. 캐시된 버전에는 여전히 서버에 남아있는 추가 숨겨진 콘텐츠에 대한 참조 또는 단서가 포함될 수 있습니다.
+- 대상 응용 프로그램 내에서 참조되지 않은 콘텐츠는 제 3자 웹 사이트와 연결될 수 있습니다. 예를 들어 타사 거래 업체를 대신하여 온라인 지불을 처리하는 응용 프로그램에는 고객의 웹 사이트에 있는 링크를 따라야 만 맞춤형 기능을 다양하게 포함 할 수 있습니다.
+
+**파일 이름 필터 우회**
+
+블랙리스트 필터는 정규 표현식을 기반으로 하기 때문에 때때로 개발자가 예상하지 못한 방식으로 작동하는 모호한 OS 파일 이름 확장 기능을 이용할 수 있습니다. 
+테스터는 파일 이름이 애플리케이션, 웹 서버 및 기본 OS와 파일 이름 규칙에 따라 파싱되는 방식의 차이점을 악용 할 수 있습니다.
+
+예제: Windows 8.3 파일 이름 확장 "c:\program files"는 "C:\ PROGRA ~ 1"이 됩니다.
+- 호환되지 않는 문자 제거
+- 공백을 밑줄로 변환
+- 기본 이름의 처음 6문자 가져 오기
+- 동일한 6개의 초기 문자를 사용하여 이름이있는 파일을 구별하는 "~<digit>"을 추가하십시오
+- 이 컨벤션은 처음 3회의 이름 변경 후 변경됩니다.
+- 파일 확장자를 3자로 줄입니다.
+- 모든 문자를 대문자로 만듭니다.
 
 Gray Box Testing
 -----------------------------------------------------------------------------------------
 
-Performing gray box testing against old and backup files requires examining
-the files contained in the directories belonging to the set of
-web directories served by the web server(s) of the web application
-infrastructure. Theoretically the examination should be performed by
-hand to be thorough. However, since in most cases copies of files or
-backup files tend to be created by using the same naming conventions,
-the search can be easily scripted. For example, editors leave behind
-backup copies by naming them with a recognizable extension or
-ending and humans tend to leave behind files with a “.old” or similar
-predictable extensions. A good strategy is that of periodically scheduling
-a background job checking for files with extensions likely to identify
-them as copy or backup files, and performing manual checks as well
-on a longer time basis
+이전 및 백업 파일에 대해 회색 상자 테스트를 수행하려면 웹 응용 프로그램 인프라의 웹 서버에서 제공하는 일련의 웹 디렉토리에 속한 디렉토리에 들어있는 파일을 검사해야 합니다. 
+이론적으로 검사는 손으로 철저히 수행해야 합니다. 
+그러나 대부분의 경우 파일 또는 백업 파일의 복사본은 동일한 명명 규칙을 사용하여 생성되는 경향이 있으므로 검색을 쉽게 스크립팅 할 수 있습니다. 
+예를 들어, 편집자는 인식 가능한 확장자 또는 결말을 붙여 백업 사본을 남겨두고 사람은 ".old"또는 비슷한 예측 확장자를 가진 파일을 남겨 두는 경향이 있습니다. 
+좋은 전략은 주기적으로 백그라운드 작업을 스케줄링하여 확장자가 사본 또는 백업 파일로 식별할 가능성이있는 파일을 검사하고 더 긴 시간 기준으로 수동 검사를 수행하는 것입니다.
 
 |
 
-Tools
+도구
 ==========================================================================================
 
-• Vulnerability assessment tools tend to include checks to spot web
-directories having standard names (such as “admin”, “test”, “backup”,
-etc.), and to report any web directory which allows indexing. If you
-can’t get any directory listing, you should try to check for likely backup
-extensions. Check for example Nessus (http://www.nessus.org),
-Nikto2(http://www.cirt.net/code/nikto.shtml) or its new derivative
-Wikto (http://www.sensepost.com/research/wikto/), which also
-supports Google hacking based strategies.
-• Web spider tools: wget (http://www.gnu.org/software/wget/,
-http://www.interlog.com/~tcharron/wgetwin.html); Sam Spade
-(http://www.samspade.org); Spike proxy includes a web site crawler
-function (http://www.immunitysec.com/spikeproxy.html); Xenu
-(http://home.snafu.de/tilman/xenulink.html); curl (http://curl.haxx.
-se). Some of them are also included in standard Linux distributions.
-• Web development tools usually include facilities to identify broken
-links and unreferenced files.
+- 취약성 평가 도구에는 표준 이름(예: "admin", "test", "backup"등)이 있는 웹 디렉토리를 찾아 내고 색인을 허용하는 모든 웹 디렉토리를 보고하는 검사가 포함되는 경향이 있습니다. 디렉토리 목록을 가져올 수없는 경우 가능성이 있는 백업 확장자를 확인해야합니다. 예를 들어 Nessus(http://www.nessus.org), Nikto2(http://www.cirt.net/code/nikto.shtml) 또는 새 파생 Wikto(http://www.sensepost.com/research/wikto/)를 확인하십시오. Google 해킹 기반 전략도 지원합니다.
+- 웹 스파이더 도구: wget(http://www.gnu.org/software/wget/, http://www.interlog.com/~tcharron/wgetwin.html); Sam Spade(http://www.samspade.org); 스파이크 프록시는 웹 사이트 크롤러 기능(http://www.immunitysec.com/spikeproxy.html)을 포함합니다. Xenu(http://home.snafu.de/tilman/xenulink.html); curl(http://curl.haxx.se). 그 중 일부는 표준 Linux 배포판에도 포함되어 있습니다.
+- 웹 개발 도구에는 일반적으로 끊어진 링크와 참조되지 않은 파일을 식별하는 기능이 포함되어 있습니다.
 
 |
 
-Remediation
+권고 사항
 ==========================================================================================
 
-To guarantee an effective protection strategy, testing should be compounded
-by a security policy which clearly forbids dangerous practices,
-such as:
-• Editing files in-place on the web server or application server file
-systems. This is a particular bad habit, since it is likely to unwillingly
-generate backup files by the editors. It is amazing to see how often
-this is done, even in large organizations. If you absolutely need to
-edit files on a production system, do ensure that you don’t leave
-behind anything which is not explicitly intended, and consider that
-you are doing it at your own risk.
-• Check carefully any other activity performed on file systems
-exposed by the web server, such as spot administration activities.
-For example, if you occasionally need to take a snapshot of a couple
-of directories (which you should not do on a production system), you 
-may be tempted to zip them first. Be careful not to forget behind
-those archive files.
-• Appropriate configuration management policies should help not to
-leave around obsolete and unreferenced files.
-• Applications should be designed not to create (or rely on) files stored
-under the web directory trees served by the web server. Data files,
-log files, configuration files, etc. should be stored in directories
-not accessible by the web server, to counter the possibility of
-information disclosure (not to mention data modification if web
-directory permissions allow writing).
-• File system snapshots should not be accessible via the web if the
-document root is on a file system using this technology. Configure
-your web server to deny access to such directories, for example
-under apache a location directive such this should be used:
+효과적인 보호 전략을 보장하기 위해 다음과 같은 위험한 행위를 명확하게 금지하는 보안 정책에 따라 테스트를 수행해야합니다.
 
-<Location ~ “.snapshot”>
- Order deny,allow
- Deny from all
-</Location>
+- 웹 서버 또는 응용 프로그램 서버 파일 시스템에서 현재 위치에서 파일 편집. 이는 편집자가 원치 않는 백업 파일을 생성할 가능성이 있기 때문에 특히 나쁜 습관입니다. 대규모 조직에서 조차 이것이 얼마나 자주 수행되는지 보는 것은 놀랍습니다. 프로덕션 시스템에서 파일을 절대적으로 편집해야 하는 경우 명시 적으로 의도되지 않은 것을 남겨 두지 않도록 하십시오. 그리고 자신의 책임하에 수행해야합니다.
+- 스폿 관리 활동과 같이 웹 서버에 의해 노출된 파일 시스템에서 수행된 다른 작업을 주의 깊게 확인하십시오. 예를 들어 프로덕션 시스템에서 사용하지 말아야 할 디렉토리 몇 개를 스냅 샷으로 만들어야하는 경우가 종종 있습니다. 이러한 아카이브 파일을 잊지 않도록 주의하십시오.
+- 적절한 구성 관리 정책은 쓸모없고 참조되지 않은 파일을 남기지 않아야합니다.
+- 응용 프로그램은 웹 서버에서 제공하는 웹 디렉토리 트리 아래에 저장된 파일을 만들지 않거나(또는 ​​의존하지 않도록) 설계되어야 합니다. 데이터 파일, 로그 파일, 설정 파일 등은 웹 서버가 접근 할 수 없는 디렉토리에 저장되어 정보 유출 가능성에 대응할 수 있어야합니다.
+- 이 기술을 사용하는 파일 시스템에 문서 루트가 있는 경우 웹을 통해 파일 시스템 스냅 샷에 액세스 할 수 없습니다. 이러한 디렉토리에 대한 액세스를 거부하도록 웹 서버를 구성하십시오. 예를 들어 Apache에서 위치 지시문을 사용하는 경우 다음과 같이 사용해야합니다.
+
+.. code-block:: sh
+
+    <Location ~ ".snapshot">
+        Order deny,allow
+        Deny from all
+    </Location>

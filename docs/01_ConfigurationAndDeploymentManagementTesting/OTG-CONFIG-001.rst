@@ -8,23 +8,25 @@ OTG-CONFIG-001 (네트워크 및 인프라 설정 테스트)
 ==========================================================================================
 
 
-The intrinsic complexity of interconnected and heterogeneous web server infrastructure, which can include hundreds of web applications, makes configuration management and review a fundamental step in testing and deploying every single application. 
+수백 개의 웹 응용 프로그램을 포함 할 수 있는 상호 연결된 이기종 웹 서버 인프라의 본질적인 복잡성으로 인해 구성 관리가 검토되고 모든 단일 응용 프로그램을 테스트하고 배포하는 기본 단계가 검토됩니다.
 
-It takes only a single vulnerability to undermine the security of the entire infrastructure, and even small and seemingly unimportant problems may evolve into severe risks for another application on the same server. In order to address these problems, it is of utmost importance to perform an in-depth review of configuration and known security issues, after having mapped the entire architecture. 
+전체 인프라의 보안을 약화시키는 데는 단 하나의 취약점 만 있으며, 중요하지 않은 작은 문제조차도 동일한 서버의 다른 응용 프로그램에 심각한 위험이 될 수 있습니다.
+이러한 문제를 해결하기 위해 전체 아키텍처를 매핑 한 후 구성 및 알려진 보안 문제에 대한 심층적 인 검토를 수행하는 것이 가장 중요합니다.
 
-Proper configuration management of the web server infrastructure is very important in order to preserve the security of the application it¡©self. If elements such as the web server software, the back-end data¡©base servers, or the authentication servers are not properly reviewed and secured, they might introduce undesired risks or introduce new vulnerabilities that might compromise the application itself. 
+웹 서버 인프라의 적절한 구성 관리는 응용 프로그램 자체의 보안을 유지하기 위해 매우 중요합니다.
+웹 서버 소프트웨어, 백엔드 데이터베이스 서버 또는 인증 서버와 같은 요소가 적절하게 검토 및 보호되지 않으면 바람직하지 않은 위험을 초래하거나 응용 프로그램 자체를 손상시킬 수있는 새로운 취약점이 도입 될 수 있습니다.
 
-For example, a web server vulnerability that would allow a remote attacker to disclose the source code of the application itself (a vul¡©nerability that has arisen a number of times in both web servers or application servers) could compromise the application, as anonymous users could use the information disclosed in the source code to lever¡©age attacks against the application or its users. 
+예를 들어 익명의 사용자가 소스 코드에 공개된 정보를 사용하여 응용 프로그램이나 해당 사용자에 대한 공격을 활용할 수 있으므로, 원격 공격자가 응용 프로그램 자체의 소스 코드를 공개 할 수 있는 웹 서버 취약점이 응용 프로그램을 손상시킬 수 있습니다.
 
-The following steps need to be taken to test the configuration man¡©agement infrastructure: 
+구성 관리 인프라를 테스트하려면 다음 단계를 수행해야합니다.
 
-- The different elements that make up the infrastructure need to be determined in order to understand how they interact with a web application and how they affect its security.
-- All the elements of the infrastructure need to be reviewed in order to make sure that they don`t contain any known vulnerabilities. 
-- A review needs to be made of the administrative tools used to maintain all the different elements. 
-- The authentication systems, need to reviewed in order to assure that they serve the needs of the application and that they cannot be manipulated by external users to leverage access. 
-- A list of defined ports which are required for the application should be maintained and kept under change control. 
+- 인프라를 구성하는 다양한 요소는 웹 응용 프로그램과 상호 작용하는 방법과 해당 응용 프로그램의 보안에 미치는 영향을 이해하기 위해 결정되어야 합니다.
+- 인프라의 모든 요소는 알려진 취약점을 포함하지 않도록 검토해야합니다.
+- 모든 다른 요소를 유지하는 데 사용되는 관리 도구에 대한 검토가 필요합니다.
+- 인증 시스템은 응용 프로그램의 요구 사항을 충족시키고 액세스를 활용하기 위해 외부 사용자가 조작 할 수 없다는 것을 확인하기 위해 검토해야합니다.
+- 응용 프로그램에 필요한 정의된 포트 목록을 유지 관리하고 변경 제어하에 유지해야 합니다.
 
-After having mapped the different elements that make up the infra©structure (see Map Network and Application Architecture) it is possible to review the configuration of each element founded and test for any known vulnerabilities. 
+인프라를 구성하는 다양한 요소를 매핑 한 후에는 발견 된 각 요소의 구성을 검토하고 알려진 취약성을 테스트 할 수 있습니다.
 
 |
 
@@ -43,49 +45,62 @@ After having mapped the different elements that make up the infra©structure (se
 일부 자동화 툴은 웹 서버 버전에 기반한 플래그 취약점을 기반으로 합니다.
 이것은 진실 혹은 거짓으로 결정하며, 웹 서버 버전이 제거된 경우나 로컬 사이트 관리자가 모호하다면 스캔 툴을 사용하지 않습니다.
 
-On the other hand, if the vendor providing the software does not update the web server version when vulnerabilities are fixed, the scan tool will flag vulnerabilities that do not exist. 
+반면에 취약성이 수정되었을 때 소프트웨어를 제공하는 공급 업체가 웹 서버 버전을 업데이트하지 않으면 검사 도구는 존재하지 않는 취약점을 표시합니다.
+후자의 경우는 실제로 일부 운영 체제 공급 업체가 보안 취약성 패치를 운영 체제에서 제공하는 소프트웨어로 다시 포팅하지만 최신 소프트웨어 버전으로 전체 업로드하지는 않기 때문에 실제로 매우 일반적입니다.
 
-The latter case is actually very common as some operating system vendors back port patches of security vulnerabilities to the software they provide in the operating system, but do not do a full upload to the latest software version. 
+데비안, 레드햇, 수세 (SuSE)와 같은 대부분의 GNU / 리눅스 배포판에서 이런 일이 발생합니다.
 
-This happens in most GNU/Linux distributions such as Debian, Red Hat or SuSE. 
+대부분의 경우, 응용 프로그램 아키텍처의 취약성 검색은 아키텍처의 "노출된" 요소 (예: 웹 서버)와 관련된 취약점만 발견하고 일반적으로 노출되지 않은 요소와 관련된 취약점을 찾을 수 없습니다.
 
-In most cases, vulnerability scanning of an application architecture will only find vulnerabilities associated with the "exposed" elements of the architecture (such as the web server) and will usually be unable to find vulnerabilities associated to elements which are not directly exposed, such as the authentication back ends, the back end database, or reverse proxies in use. 
+마지막으로 모든 소프트웨어 벤더가 공개적으로 취약점을 공개하는 것은 아니므로이 취약점은 공개된 취약성 데이터베이스에 등록되지 않습니다. 
+이 정보는 고객에게만 공개되거나 권고가 포함되지 않은 수정 프로그램을 통해 게시됩니다. 이것은 취약점 스캐닝 도구의 유용성을 감소시킵니다.
 
-Finally, not all software vendors disclose vulnerabilities in a public way, and therefore these weaknesses do not become registered within publicly known vulnerability databases[2]. This information is only disclosed to customers or published through fixes that do not have accompanying advisories. This reduces the usefulness of vulnerability scanning tools. 
+일반적으로 이러한 도구의 취약성 범위는 일반적인 제품 (예 : Apache 웹 서버, Microsoft Internet Information Server 또는 IBM Lotus Domino)에 매우 적합하지만 덜 알려진 제품에는 부족합니다.
 
-Typically, vulnerability coverage of these tools will be very good for common products (such as the Apache web server, Microsoft`s Internet Information Server, or IBM`s Lotus Domino) but will be lacking for lesser known products. 
+따라서 테스터에게 소프트웨어에 사용된 버전과 릴리스, 소프트웨어에 적용된 패치 등 사용된 소프트웨어의 내부 정보가 제공 될 때 취약점을 검토하는 것이 가장 좋습니다.
 
-This is why reviewing vulnerabilities is best done when the tester is provided with internal information of the software used, including versions and releases used and patches applied to the software. 
+이 정보를 사용하여 테스터는 공급 업체 자체에서 정보를 검색하고 아키텍처에 존재할 수있는 취약점과 응용 프로그램 자체에 어떤 영향을 줄 수 있는지 분석합니다.
 
-With this information, the tester can retrieve the information from the vendor itself and analyze what vulnerabilities might be present in the architecture and how they can affect the application itself. 
+가능하면 이러한 취약점을 테스트하여 실제 효과를 확인하고 악용 성공 가능성을 감소 시키거나 무효화 할 수있는 외부 요소 (침입 탐지 또는 예방 시스템 등)가 있을지 여부를 감지 할 수 있습니다. 
+테스터는 구성 검토를 통해 심지어 사용되지 않는 소프트웨어 구성 요소에 영향을 미치기 때문에 취약점이 존재하지 않는다고 판단 할 수도 있습니다.
 
-When possible, these vulnerabilities can be tested to determine their real effects and to detect if there might be any external elements (such as intrusion detection or prevention systems) that might reduce or negate the possibility of successful exploitation. Testers might even determine, through a configuration review, that the vulnerability is not even present, since it affects a software component that is not in use. 
+또한 공급 업체는 때때로 취약점을 자동으로 수정하고 새로운 소프트웨어 릴리스에서 수정 프로그램을 사용할 수 있음을 알아 두는 것도 가치가 있습니다.
+다른 공급 업체는 이전 릴리스에 제공 할 수있는 지원 여부를 결정하는 릴리스주기가 다릅니다.
 
-It is also worthwhile to note that vendors will sometimes silently fix vulnerabilities and make the fixes available with new software releases. 
-
-Different vendors will have different release cycles that determine the support they might provide for older releases. 
-
-A tester with detailed information of the software versions used by the architecture can analyse the risk associated to the use of old software releases that might be unsupported in the short term or are already unsupported. This is critical, since if a vulnerability were to surface in an old software version that is no longer supported, the systems personnel might not be directly aware of it. No patches will be ever made available for it and advisories might not list that version as vulnerable as it is no longer supported. Even in the event that they are aware that the vulnerability is present and the system is vulnerable, they will need to do a full upgrade to a new software release, which might introduce significant downtime in the application architecture or might force the application to be re-coded due to incompatibilities with the latest software version. 
+아키텍처에서 사용하는 소프트웨어 버전에 대한 자세한 정보가 있는 테스터는 단기간에 지원되지 않거나 이미 지원되지 않는 이전 소프트웨어 릴리스 사용과 관련된 위험을 분석 할 수 있습니다. 
+더 이상 지원되지 않는 구 버전의 소프트웨어에 취약성이있을 경우 시스템 담당자가이를 직접 알지 못할 수 있기 때문에 이것은 중요합니다.
+패치를 사용할 수 없으며 권고가 더 이상 지원되지 않는만큼 해당 버전을 취약한 것으로 나열하지 않을 수 있습니다. 
+취약점이 존재하고 시스템이 취약하다는 것을 알고있는 경우에도 새로운 소프트웨어 릴리스로 완전히 업그레이드해야 할 필요가 있습니다. 
+이로 인해 응용 프로그램 아키텍처에 심각한 중단 시간이 생기거나 응용 프로그램이 다시 강제 실행될 수 있습니다.
 
 |
 
-Administrative Tools
+관리 도구
 ==========================================================================================
 
-Any web server infrastructure requires the existence of administrative tools to maintain and update the information used by the application. This information includes static content (web pages, graphic files), application source code, user authentication databases, etc. Administrative tools will differ depending on the site, technology, or software used. For example, some web servers will be managed using administrative interfaces which are, themselves, web servers (such as the iPlanet web server) or will be administrated by plain text configuration files (in the Apache case[3]) or use operating-system GUI tools (when using Microsoft`s IIS server or ASP.Net). 
+모든 웹 서버 인프라에는 응용 프로그램에서 사용하는 정보를 유지 관리하고 업데이트하기 위한 관리 도구가 필요합니다. 
+이 정보에는 정적 컨텐츠(웹 페이지, 그래픽 파일), 응용 프로그램 소스 코드, 사용자 인증 데이터베이스 등이 포함됩니다.
+관리 도구는 사용된 사이트, 기술 또는 소프트웨어에 따라 다릅니다.
+예를 들어, 일부 웹 서버는 웹 서버와 같은 관리 인터페이스를 사용하여 관리되거나 일반 텍스트 구성 파일에 의해 관리되거나 운영 체제 GUI 툴에 의해 관리됩니다.
 
-In most cases the server configuration will be handled using different file maintenance tools used by the web server, which are managed through FTP servers, WebDAV, network file systems (NFS, CIFS) or other mechanisms. Obviously, the operating system of the elements that make up the application architecture will also be managed using other tools. Applications may also have administrative interfaces embedded in them that are used to manage the application data itself (users, content, etc.). 
+대부분의 경우 서버 구성은 FTP 서버, WebDAV, 네트워크 파일 시스템 (NFS, CIFS) 또는 기타 메커니즘을 통해 관리되는 웹 서버에서 사용되는 다른 파일 유지 관리 도구를 사용하여 처리됩니다.
+물론 애플리케이션 아키텍처를 구성하는 요소의 운영 체제도 다른 도구를 사용하여 관리됩니다. 
+응용 프로그램에는 응용 프로그램 데이터 자체(사용자, 컨텐트 등)를 관리하는 데 사용되는 관리 인터페이스가 포함될 수도 있습니다.
 
-After having mapped the administrative interfaces used to manage the different parts of the architecture it is important to review them since if an attacker gains access to any of them he can then compromise or damage the application architecture. To do this it is important to: 
+아키텍처의 여러 부분을 관리하는 데 사용된 관리 인터페이스를 매핑한 후에는 공격자가 액세스 할 수 있으면 응용 프로그램 아키텍처를 손상 시키거나 손상시킬 수 있으므로 검토하는 것이 중요합니다. 
+이렇게 하려면 다음을 수행하는 것이 중요합니다.
 
-- Determine the mechanisms that control access to these interfaces and their associated susceptibilities. This information may be available online. 
-- Change the default username and password. 
+- 이러한 인터페이스 및 관련 감수성에 대한 액세스를 제어하는 메커니즘을 결정합니다. 이 정보는 온라인에서 볼 수 있습니다.
+- 기본 사용자 이름과 암호를 변경하십시오. 
 
-Some companies choose not to manage all aspects of their web server applications, but may have other parties managing the content delivered by the web application. This external company might either provide only parts of the content (news updates or promotions) or might manage the web server completely (including content and code). It is common to find administrative interfaces available from the Internet in these situations, since using the Internet is cheaper than providing a dedicated line that will connect the external company to the application infrastructure through a management-only interface. In this situation, it is very important to test if the administrative interfaces can be vulnerable to attacks. 
+일부 회사는 웹 서버 응용 프로그램의 모든 측면을 관리하지 않기로 선택하지만 웹 응용 프로그램에서 제공하는 콘텐츠를 관리하는 다른 당사자가 있을 수 있습니다. 
+이 외부 회사는 컨텐츠의 일부만 제공하거나(뉴스 업데이트 또는 프로모션) 웹 서버를 완전히 관리 할 수 있습니다(컨텐츠 및 코드 포함). 
+인터넷을 사용하면 외부 회사와 관리 전용 인터페이스를 통해 응용 프로그램 인프라를 연결하는 전용 회선을 제공하는 것보다 비용이 적기 때문에 관리 인터페이스를 인터넷에서 사용할 수 있습니다. 
+이 경우 관리 인터페이스가 공격에 취약 할 수 있는지를 테스트하는 것이 매우 중요합니다.
 
 |
 
-References
+참고 문헌
 ==========================================================================================
 
 - WebSEAL, also known as Tivoli Authentication Manager, is a reverse proxy from IBM which is part of the Tivoli framework. 

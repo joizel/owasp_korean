@@ -7,56 +7,58 @@ OTG-IDENT-001 (역할 정의 테스트)
 개요
 ============================================================================================
 
-It is common in modern enterprises to define system roles to manage users and authorization to system resources. In most system implementations it is expected that at least two roles exist, administrators and regular users. The first representing a role that permits access to privileged and sensitive functionality and information, the second representing a role that permits access to regular business functionality and information. Well developed roles should align with business processes which are supported by the application. 
+현대 기업에서는 시스템 역할을 정의하여 사용자를 관리하고 시스템 자원에 대한 권한을 관리하는 것이 일반적입니다.
+대부분의 시스템 구현에서 적어도 두 가지 역할(관리자 및 일반 사용자)이 있어야합니다. 
+첫 번째 역할은 권한이 있고 민감한 기능과 정보에 대한 액세스를 허용하는 것을 나타내며, 두 번째 역할은 일반 비즈니스 기능 및 정보에 대한 액세스를 허용하는 것을 나타냅니다. 
+잘 구성된 역할은 응용 프로그램이 지원하는 비즈니스 프로세스와 일치해야합니다.
 
-It is important to remember that cold, hard authorization isn't the only way to manage access to system objects. In more trusted environments where confidentiality is not critical, softer controls such as application workflow and audit logging can support data integrity requirements while not restricting user access to functionality or creating complex role structures that are difficult to manage. Its important to consider the Goldilocks principle when role engineering, in that defining too few, broad roles (thereby exposing access to functionality users don't require) is as bad as too many, tightly tailored roles (thereby restricting access to functionality users do require). 
+냉정하고 엄격한 인증만이 시스템 객체에 대한 액세스를 관리하는 유일한 방법은 아니라는 점을 기억해야합니다. 
+기밀성이 중요하지 않고 보다 신뢰할 수 있는 환경에서 응용 프로그램 워크플로우 및 감사 로깅과 같은 보다 부드러운 컨트롤은 데이터 무결성 요구 사항을 지원하면서 기능에 대한 사용자 액세스를 제한하지 않거나 관리하기 어려운 복잡한 역할 구조를 만들 수 있습니다. 
+너무 적은 수의 광범위한 역할을 정의함으로써(사용자가 요구하지 않는 기능에 대한 액세스를 노출 시킴) 역할 엔지니어링이 너무 많고 단단히 조율된 역할만큼 나쁘다는 점에서 Goldilocks 원칙을 고려하는 것이 중요합니다 (사용자가 요구하는 기능에 대한 액세스를 제한합니다). ).
 
 |
 
 테스트 목적 
 ============================================================================================
 
-Validate the system roles defined within the application sufficiently define and separate each system and business role to manage appropriate access to system functionality and information. 
+응용 프로그램 내에서 정의 된 시스템 역할의 유효성을 확인하여 각 시스템과 비즈니스 역할을 충분히 정의하고 분리하여 시스템 기능 및 정보에 대한 적절한 액세스를 관리합니다.
 
 |
 
 테스트 방법 
 ============================================================================================
 
-Either with or without the help of the system developers or administrators, 
-develop an role versus permission matrix. 
+시스템 개발자 나 관리자의 도움이 있든 없든 역할 vs 권한 매트릭스를 개발하십시오.
 
-The matrix should enumerate all the roles that can be provisioned and explore 
-the permissions that are allowed to be applied to the objects including any constraints. 
+매트릭스는 프로비저닝 할 수있는 모든 역할을 열거하고 모든 제약 조건을 포함하여 객체에 적용 할 수있는 권한을 탐색해야합니다.
 
-If a matrix is provided with the application it should be validated by the tester, 
-if it doesn't exist, the tester should generate it and determine whether the matrix 
-satisfies the desired access policy for the application. 
+응용 프로그램과 함께 제공된 매트릭스가 테스터에 의해 검증되어야합니다. 테스터가 존재하지 않으면 테스터는이를 생성하고 매트릭스가 응용 프로그램에 대한 원하는 액세스 정책을 충족하는지 확인해야합니다.
 
-**Example**
+**예제**
 
 .. csv-table::
-    :header: "Role", "Permission", "Object", "Constraints"
-    :widths: 10, 10, 10
+    :header: "역할", "권한", "목적", "제약 조건"
+    :widths: 10, 10, 10, 10
 
-    "Administrator", "Read", "Customer records", ""
-    "Manager", "Read", "Customer records", "Only records related to business unit"
-    "RoStaff", "Read", "Customer records", "Only records associated with customers assigned by Manager"
-    "Customer", "Read", "Customer records", "Only own record"
+    "Administrator", "Read", "고객 기록", ""
+    "Manager", "Read", "고객 기록", "비즈니스 단위와 관련된 기록 만"
+    "RoStaff", "Read", "고객 기록", "관리자가 지정한 고객과 관련된 기록 만"
+    "Customer", "Read", "고객 기록", "나만의 기록"
 
 
-A real world example of role definitions can be found in the Word-Press roles documentation [1]. WordPress has six default roles ranging from Super Admin to a Subscriber. 
+실제 세계 정의의 역할 정의는 Word-Press 역할 문서 [1]에서 찾을 수 있습니다. WordPress에는 수퍼 관리자에서 구독자에 이르는 6 가지 기본 역할이 있습니다
 
 |
 
-Tools 
+도구 
 ============================================================================================
 
-While the most thorough and accurate approach to completing this test is to conduct it manually, spidering tools [2] are also useful. Log on with each role in turn and spider the application (don't forget to exclude the logout link from the spidering). 
+이 테스트를 완료하기위한 가장 철저하고 정확한 접근법은 수동으로 수행하는 것이지만 스파이더 링 도구 [2]도 유용합니다. 각 역할에 차례로 로그온하고 애플리케이션을 스파이더 링하십시오 
+(스파이더 링에서 로그 아웃 링크를 제외하는 것을 잊지 마십시오).
 
 |
 
-References 
+참고 문헌 
 ============================================================================================
 
 - Role Engineering for Enterprise Security Management, E Coyne & J Davis, 2007 
@@ -64,13 +66,13 @@ References
 
 |
 
-Remediation
+권고 사항
 ============================================================================================
 
-Remediation of the issues can take the following forms: 
+문제를 해결하려면 다음과 같은 형식을 취할 수 있습니다.
 
-- Role Engineering 
-- Mapping of business roles to system roles 
-- Separation of Duties 
+- 역할 엔지니어링 
+- 비즈니스 역할을 시스템 역할에 매핑
+- 직무 분리
 
 |
