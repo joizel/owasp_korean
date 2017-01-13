@@ -7,14 +7,16 @@ OTG-IDENT-005 (취약 또는 강제 사용자 이름 정책 테스트)
 개요 
 ============================================================================================
 
-User account names are often highly structured (e.g. Joe Bloggs account name is jbloggs and Fred Nurks account name is fnurks) and valid account names can easily be guessed. 
+사용자 계정 이름은 종종 매우 구조적입니다(예 : Joe Bloggs 계정 이름은 jbloggs이고 Fred Nurks 계정 이름은 fnurks 임). 
+유효한 계정 이름은 쉽게 추측 할 수 있습니다.
 
 |
 
 테스트 목적 
 ============================================================================================
 
-Determine whether a consistent account name structure renders the application vulnerable to account enumeration. Determine whether the application's error messages permit account enumeration. 
+일관된 계정 이름 구조가 응용 프로그램을 계정 열거 형에 취약하게 만듭니다. 
+응용 프로그램의 오류 메시지가 계정 열거를 허용하는지 여부를 결정합니다.
 
 |
 
@@ -28,16 +30,9 @@ Determine whether a consistent account name structure renders the application vu
 
 |
 
-Remediation 
+권고 사항 
 ============================================================================================
 
-Ensure the application returns consistent generic error messages in response to invalid account name, password or other user credentials entered during the log in process. 
+로그인 프로세스 중에 입력 한 잘못된 계정 이름, 암호 또는 다른 사용자 자격 증명에 대한 응답으로 응용 프로그램이 일관된 일반 오류 메시지를 반환하는지 확인하십시오.
 
 |
-
-Authentication Testing
-============================================================================================
-
-Authentication (Greek: αυθεντικός = real or genuine, from 'authentes' = author ) is the act of establishing or confirming something (or someone) as authentic, that is, that claims made by or about the thing are true. Authenticating an object may mean confirming its provenance, whereas authenticating a person often consists of verifying her identity. Authentication depends upon one or more authentication factors. 
-
-In computer security, authentication is the process of attempting to verify the digital identity of the sender of a communication. A common example of such a process is the log on process. Testing the authentication schema means understanding how the authentication process works and using that information to circumvent the authentication mechanism. 

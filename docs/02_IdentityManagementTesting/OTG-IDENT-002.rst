@@ -7,7 +7,10 @@ OTG-IDENT-002 (사용자 등록 처리 테스트)
 개요
 ============================================================================================
 
-Some websites offer a user registration process that automates (or semi-automates) the provisioning of system access to users. The identity requirements for access vary from positive identification to none at all, depending on the security requirements of the system. Many public applications completely automate the registration and provisioning process because the size of the user base makes it impossible to manage manually. However, many corporate applications will provision users manually, so this test case may not apply. 
+일부 웹 사이트는 사용자에 대한 시스템 액세스 프로비저닝을 자동화(또는 반자동)하는 사용자 등록 프로세스를 제공합니다. 
+액세스에 대한 ID 요구 사항은 시스템의 보안 요구 사항에 따라 긍정적인 식별에서 전혀 식별하지 않는 것으로 다양합니다. 
+많은 공개 응용 프로그램은 사용자 기반의 크기로 인해 수동으로 관리 할 수 없기 때문에 등록 및 프로비저닝 프로세스를 완전히 자동화합니다. 
+그러나 많은 기업 응용 프로그램이 수동으로 사용자를 제공하므로이 테스트 사례는 적용되지 않을 수 있습니다.
 
 |
 
@@ -25,45 +28,45 @@ Some websites offer a user registration process that automates (or semi-automate
 사용자 등록에 대한 신원 요구 사항이 비즈니스 및 보안 요구 사항과 일치하는지 확인
 ------------------------------------------------------------------------------------------------
 
-1. Can anyone register for access? 
-2. Are registrations vetted by a human prior to provisioning, or are they automatically granted if the criteria are met? 
-3. Can the same person or identity register multiple times? 
-4. Can users register for different roles or permissions? 
-5. What proof of identity is required for a registration to be successful? 
-6. Are registered identities verified? 
+1. 누구나 접속할 수 있습니까?
+2. 등록은 프로비저닝 이전에 사람이 심사 했습니까? 아니면 기준이 충족되면 자동으로 부여됩니까?
+3. 동일한 사람 또는 신분증을 여러 번 등록 할 수 있습니까?
+4. 사용자가 다른 역할이나 권한을 등록 할 수 있습니까?
+5. 등록을 성공적으로하려면 어떤 신원 증명이 필요합니까?
+6. 등록된 신원을 확인합니까?
 
 등록 절차 확인
 -----------------------------------------------------------------------------------------
 
-[1] Can identity information be easily forged or faked? 
-[2] Can the exchange of identity information be manipulated during registration? 
+1. 신원 정보를 위조하거나 위장 할 수 있습니까?
+2. 신원 정보 교환이 등록 중에 조작 될 수 있습니까?
 
 **예제**
 
-In the WordPress example below, the only identification requirement is an email address that is accessible to the registrant. 
+아래의 WordPress 예에서는 유일한 신원 확인 요구 사항은 등록자가 액세스 할 수있는 전자 메일 주소입니다.
 
-
-In contrast, in the Google example below the identification requirements include name, date of birth, country, mobile phone number, email address and CAPTCHA response. While only two of these can be verified (email address and mobile number), the identification requirements are stricter than WordPress. 
+이와 대조적으로 아래의 Google 예에서는 신원 확인 요구 사항에 이름, 생년월일, 국가, 휴대 전화 번호, 이메일 주소 및 보안 문자 응답이 포함됩니다. 
+이 중 두 가지 (전자 메일 주소 및 휴대폰 번호) 만 확인할 수 있지만 식별 요구 사항은 WordPress보다 엄격합니다.
 
 |
 
-Tools 
+도구 
 ============================================================================================
 
-A HTTP proxy can be a useful tool to test this control. 
+HTTP 프록시는 이 컨트롤을 테스트하는 유용한 도구가 될 수 있습니다.
 
 |
 
-References 
+참고 문헌 
 ============================================================================================
 
 User Registration Design 
 
 |
 
-Remediation 
+권고 사항 
 ============================================================================================
 
-Implement identification and verification requirements that correspond to the security requirements of the information the credentials protect. 
+자격 증명이 보호하는 정보의 보안 요구 사항에 해당하는 식별 및 확인 요구 사항을 구현합니다.
 
 |

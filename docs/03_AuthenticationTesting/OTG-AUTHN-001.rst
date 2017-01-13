@@ -157,17 +157,13 @@ HTTPS 프로토콜을 사용하여 www.example.com:443/login.do으로 접근하�
 Gray Box testing
 -----------------------------------------------------------------------------------------
 
-Speak with the developers of the web application and try to
-understand if they are aware of the differences between HTTP
-and HTTPS protocols and why they should use HTTPS for transmitting
-sensitive information. Then, check with them if HTTPS
-is used in every sensitive request, like those in log in pages, to
-prevent unauthorized users to intercept the data.
+웹 응용 프로그램 개발자와 이야기하고 HTTP 프로토콜과 HTTPS 프로토콜 간의 차이점과 중요한 정보를 전송하는 데 HTTPS를 사용해야하는 이유를 알고 있는지 이해하려고합니다. 
+그런 다음 권한이없는 사용자가 데이터를 가로 채지 못하도록 로그인 페이지의 모든 중요 요청에서 HTTPS가 사용되는지 확인하십시오.
 
 
 |
 
-Tools
+도구
 ==========================================================================================
 
 - WebScarab
@@ -176,7 +172,7 @@ Tools
 |
 
 
-References
+권고 사항
 ==========================================================================================
 
 Whitepapers

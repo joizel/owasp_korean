@@ -7,13 +7,19 @@ OTG-IDENT-004 (계정 리스트 및 추측 가능한 사용자 테스트)
 개요
 ============================================================================================
 
-The scope of this test is to verify if it is possible to collect a set of valid usernames by interacting with the authentication mechanism of the application. This test will be useful for brute force testing, in which the tester verifies if, given a valid username, it is possible to find the corresponding password. 
+이 테스트의 범위는 응용 프로그램의 인증 메커니즘과 상호 작용하여 유효한 사용자 이름 집합을 수집 할 수 있는지 확인하는 것입니다. 
+이 테스트는 유효한 사용자 이름이 주어지면 테스터가 해당 비밀번호를 찾을 수 있는지를 확인하는 무차별 대항 테스트에 유용합니다.
 
-Often, web applications reveal when a username exists on system, either as a consequence of mis-configuration or as a design decision. For example, sometimes, when we submit wrong credentials, we receive a message that states that either the user-name is present on the system or the provided password is wrong. The information obtained can be used by an attacker to gain a list of users on system. This information can be used to attack the web application, for example, through a brute force or default username and password attack. 
+흔히 웹 애플리케이션은 잘못된 구성의 결과 또는 디자인 결정의 결과로 사용자 이름이 시스템에 존재할 때를 나타냅니다. 
+예를 들어 잘못된 자격 증명을 제출하면 사용자 이름이 시스템에 있거나 제공된 암호가 잘못되었다는 메시지가 표시되는 경우가 있습니다. 
+획득한 정보는 공격자가 시스템상의 사용자 목록을 얻는 데 사용할 수 있습니다. 
+이 정보는 예를 들어 무차별 공격이나 기본 사용자 이름 및 암호 공격을 통해 웹 응용 프로그램을 공격하는 데 사용될 수 있습니다.
 
-The tester should interact with the authentication mechanism of the application to understand if sending particular requests causes the application to answer in different manners. This issue exists because the information released from web application or web server when the user provide a valid username is different than when they use an invalid one. 
+테스터는 응용 프로그램의 인증 메커니즘과 상호 작용하여 특정 요청을 보내면 응용 프로그램이 다른 방식으로 응답하는지 확인해야합니다. 
+사용자가 유효한 사용자 이름을 제공 할 때 웹 응용 프로그램 또는 웹 서버에서 릴리스 한 정보가 유효하지 않은 사용자와 다를 때이 문제가 발생합니다.
 
-In some cases, a message is received that reveals if the provided credentials are wrong because an invalid username or an invalid password was used. Sometimes, testers can enumerate the existing users by sending a username and an empty password. 
+유효하지 않은 사용자 이름 또는 잘못된 암호가 사용 되었기 때문에 제공된 자격 증명이 잘못되었는지를 나타내는 메시지가 수신되는 경우도 있습니다. 
+경우에 따라 테스터는 사용자 이름과 빈 암호를 보내 기존 사용자를 열거 할 수 있습니다.
 
 |
 
@@ -99,9 +105,12 @@ WebScarab를 사용하면, 인증 실패 시도에 대한 검색 정보를 알 �
 - 클라이언트 요청: 유효한 사용자/잘못된 패스워드 --> 서버응답:'The password is not correct' 
 - 클라이언트 요청: 잘못된 사용자/잘못된 패스워드 --> 서버응답:'User not recognized' 
 
-The above responses let the client understand that for the first request they have a valid user name. So they can interact with the application requesting a set of possible user IDs and observing the answer. 
 
-Looking at the second server response, the tester understand in the same way that they don't hold a valid username. So they can interact in the same manner and create a list of valid user ID looking at the server answers. 
+위의 응답을 통해 클라이언트는 첫 번째 요청에 대해 유효한 사용자 이름을 가지고 있다는 것을 알 수 있습니다. 
+그래서 그들은 가능한 사용자 ID 집합을 요청하고 응답을 관찰하는 응용 프로그램과 상호 작용할 수 있습니다.
+
+두 번째 서버 응답을 살펴보면 테스터는 유효한 사용자 이름을 보유하고 있지 않은지 동일한 방식으로 이해합니다. 
+그래서 그들은 같은 방식으로 상호 작용하고 서버 응답을보고 유효한 사용자 ID의 목록을 만들 수 있습니다.
 
 |
 
@@ -125,13 +134,17 @@ Looking at the second server response, the tester understand in the same way tha
     http://www.foo.com/err.jsp?User=baduser&Error=0 
     http://www.foo.com/err.jsp?User=gooduser&Error=2 
 
-As is seen above, when a tester provides a user ID and password to the web application, they see a message indication that an error has occurred in the URL. In the first case they have provided a bad user ID and bad password. In the second, a good user ID and a bad password, so they can identify a valid user ID. 
+위와 같이 테스터가 웹 애플리케이션에 사용자 ID와 비밀번호를 제공하면 URL에 오류가 발생했다는 메시지가 표시됩니다. 
+첫 번째 경우에는 잘못된 사용자 ID와 잘못된 암호가 제공됩니다. 
+두 번째는 좋은 사용자 ID와 잘못된 암호이므로 유효한 사용자 ID를 식별 할 수 있습니다.
 
 **URI Probing**
 
-Sometimes a web server responds differently if it receives a request for an existing directory or not. For instance in some portals every user is associated with a directory. If testers try to access an existing directory they could receive a web server error. 
+때로는 웹 서버가 기존 디렉토리에 대한 요청을 받으면 다르게 응답합니다. 
+예를 들어 일부 포털에서는 모든 사용자가 디렉토리와 연결됩니다. 
+테스터가 기존 디렉토리에 액세스하려고하면 웹 서버 오류가 발생할 수 있습니다.
 
-A very common error that is received from web server is: 
+웹 서버에서 받는 가장 일반적인 오류는 다음과 같습니다.
 
 .. code-block:: html
 
@@ -147,18 +160,19 @@ and
 
 .. code-block:: html
 
-    http://www.foo.com/account1 - we receive from web server:
+    http://www.foo.com/account1 - 웹 서버로부터 수신:
     403 Forbidden 
-    http://www.foo.com/account2 - we receive from web server: 
+    http://www.foo.com/account2 - 웹 서버로부터 수신: 
     404 file Not Found 
 
-In the first case the user exists, but the tester cannot view the web page, in second case instead the user "account2" does not exist. By collecting this information testers can enumerate the users. 
+첫 번째 경우에는 사용자가 있지만 테스터는 웹 페이지를 볼 수 없지만 두 번째 경우에는 "account2"라는 사용자가 존재하지 않습니다. 
+이 정보를 수집함으로써 테스터가 사용자를 열거 할 수 있습니다.
 
 **웹 페이지 타이틀 분석**
 
-Testers can receive useful information on Title of web page, where they can obtain a specific error code or messages that reveal if the problems are with the username or password. 
+테스터는 웹 페이지 제목, 특정 오류 코드를 얻을 수있는 유용한 정보 또는 문제가 사용자 이름 또는 암호와 관련되어 있는지를 나타내는 메시지를받을 수 있습니다.
 
-For instance, if a user cannot authenticate to an application and receives a web page whose title is similar to: 
+예를 들어, 사용자가 응용 프로그램을 인증 할 수없고 제목이 다음과 유사한 웹 페이지를 수신하는 경우
 
 .. code-block:: html
 
@@ -167,9 +181,9 @@ For instance, if a user cannot authenticate to an application and receives a web
 
 **복원 장비로 부터 수신된 메시지 분석**
 
-When we use a recovery facility (i.e. a forgotten password function) a vulnerable application might return a message that reveals if a username exists or not. 
+복구 기능 (예 : 잊어 버린 비밀번호 기능)을 사용하면 취약한 응용 프로그램이 사용자 이름 존재 여부를 나타내는 메시지를 반환 할 수 있습니다.
 
-For example, message similar to the following: 
+예를 들어, 다음과 유사한 메시지가 표시됩니다.
 
 .. code-block:: html
 
@@ -181,18 +195,41 @@ For example, message similar to the following:
 
 **Friendly 404 Error Message**
 
-When we request a user within the directory that does not exist, we don't always receive 404 error code. Instead, we may receive "200 ok" with an image, in this case we can assume that when we receive the specific image the user does not exist. This logic can be applied to other web server response; the trick is a good analysis of web server and web application messages. 
+존재하지 않는 디렉토리 내의 사용자를 요청할 때 우리는 항상 404 오류 코드를 수신하지는 않습니다. 
+대신 이미지가있는 "200 ok"를 받을 수 있습니다.
+이 경우 특정 이미지를 수신하면 사용자가 존재하지 않는다고 가정 할 수 있습니다. 
+이 논리는 다른 웹 서버 응답에 적용될 수 있습니다. 
+트릭은 웹 서버 및 웹 응용 프로그램 메시지에 대한 훌륭한 분석입니다.
 
 |
 
 사용자 추측
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-In some cases the user IDs are created with specific policies of administrator or company. For example we can view a user with a user ID created in sequential order: CN000100 CN000101 ¡¦. Sometimes the usernames are created with a REALM alias and then a sequential numbers: R1001 . user 001 for REALM1 R2001 . user 001 for REALM2 
-In the above sample we can create simple shell scripts that compose user IDs and submit a request with tool like wget to automate a web query to discern valid user IDs. To create a script we can also use Perl and CURL. 
-Other possibilities are: - user IDs associated with credit card numbers, or in general numbers with a pattern. - user IDs associated with real names, e.g. if Freddie Mercury has a user ID of "fmercury", then you might guess Roger Taylor to have the user ID of "rtaylor". 
-Again, we can guess a username from the information received from an LDAP query or from Google information gathering, for example, from a specific domain. Google can help to find domain users through specific queries or through a simple shell script or tool. 
-Attention: by enumerating user accounts, you risk locking out accounts after a predefined number of failed probes (based on application policy). Also, sometimes, your IP address can be banned by dynamic rules on the application firewall or Intrusion Prevention System. 
+경우에 따라 사용자 ID는 관리자 또는 회사의 특정 정책으로 작성됩니다. 예를 들어 사용자 ID가 순차적으로 생성 된 사용자를 볼 수 있습니다.
+
+- CN000100
+- CN000101
+- ......
+
+때로는 사용자 이름이 REALM 별칭과 순차 번호로 만들어지는 경우가 있습니다.
+
+- R1001 – user 001 for REALM1
+- R2001 – user 001 for REALM2
+
+위의 샘플에서 사용자 ID를 작성하고 wget과 같은 도구로 요청을 제출하여 유효한 사용자 ID를 식별하는 웹 쿼리를 자동화하는 간단한 쉘 스크립트를 작성할 수 있습니다. 
+스크립트를 만들려면 Perl과 CURL도 사용할 수 있습니다.
+
+다른 가능성은 다음과 같습니다. 
+
+- 신용 카드 번호와 연관된 사용자 ID 또는 일반적으로 패턴이있는 번호. 
+- 실제 이름과 관련된 사용자 ID입니다(예 : 프레디 머큐리의 사용자 ID가 "fmercury"이면 Roger Taylor가 "rtaylor"라는 사용자 ID를 가지고 있다고 추측 할 수 있습니다.
+
+다시 말하지만, LDAP 쿼리 또는 Google 도메인 정보 수집(예 : 특정 도메인)에서받은 정보를 바탕으로 사용자 이름을 추측 할 수 있습니다. 
+Google은 특정 검색어를 통해 또는 간단한 셸 스크립트 또는 도구를 통해 도메인 사용자를 찾는 것을 도와줍니다.
+
+주의: 사용자 계정을 열거하면 미리 정의 된 수의 실패한 프로브 (응용 프로그램 정책에 따라)가 발생한 후에 계정을 잠글 수 있습니다. 또한 때로는 IP 주소가 응용 프로그램 방화벽이나 침입 방지 시스템의 동적 규칙에 의해 금지 될 수 있습니다.
+
 
 
 Gray Box testing 
@@ -200,19 +237,19 @@ Gray Box testing
 
 **인증 에러 메시지 테스트**
 
-Verify that the application answers in the same manner for every client request that produces a failed authentication. For this issue the Black Box testing and Gray Box testing have the same concept based on the analysis of messages or error codes received from web application. 
+실패한 인증을 생성하는 모든 클라이언트 요청에 대해 응용 프로그램이 동일한 방식으로 응답하는지 확인하십시오. 이 문제를 해결하기 위해 블랙 박스 테스트와 그레이 박스 테스트는 웹 애플리케이션에서받은 메시지 또는 오류 코드 분석을 기반으로 동일한 개념을 가지고 있습니다.
 
 **결과**
 
-The application should answer in the same manner for every failed attempt of authentication. 
+응용 프로그램은 실패한 모든 인증 시도에 대해 동일한 방식으로 응답해야합니다.
 
 예제: 
 
-Credentials submitted are not valid 
+제출된 신용 정보가 유효하지 않습니다.
 
 |
 
-Tools 
+도구 
 ============================================================================================
 
 - WebScarab: OWASP_WebScarab_Project 
@@ -222,7 +259,7 @@ Tools
 
 |
 
-References 
+참고 문헌 
 ============================================================================================
 
 - Marco Mella, Sun Java Access & Identity Manager Users enumeration: http://www.aboutsecurity.net 
@@ -230,9 +267,9 @@ References
 
 |
 
-Remediation 
+권고 사항 
 ============================================================================================
 
-Ensure the application returns consistent generic error messages in response to invalid account name, password or other user credentials entered during the log in process. 
+로그인 프로세스 중에 입력 한 잘못된 계정 이름, 암호 또는 다른 사용자 자격 증명에 대한 응답으로 응용 프로그램이 일관된 일반 오류 메시지를 반환하는지 확인하십시오.
 
-Ensure default system accounts and test accounts are deleted prior to releasing the system into production (or exposing it to an untrusted network). 
+시스템을 프로덕션으로 릴리스하기 전에 기본 시스템 계정 및 테스트 계정이 삭제되었는지(또는 신뢰할 수없는 네트워크에 노출되었는지) 확인하십시오.

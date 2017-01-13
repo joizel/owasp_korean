@@ -7,37 +7,41 @@ OTG-IDENT-003 (계정 공급 과정 테스트)
 개요
 ============================================================================================
 
-The provisioning of accounts presents an opportunity for an attacker to create a valid account without application of the proper identification and authorization process. 
+계정 프로비저닝은 공격자가 적절한 식별 및 권한 부여 프로세스를 적용하지 않고 올바른 계정을 만들 수있는 기회를 제공합니다.
 
 |
 
 테스트 목적
 ============================================================================================
 
-Verify which accounts may provision other accounts and of what type. 
+어떤 계정이 다른 계정을 프로비저닝 할 수 있는지 그리고 어떤 유형의 계정인지 확인하십시오.
 
 |
 
 테스트 방법 
 ============================================================================================
 
-Determine which roles are able to provision users and what sort of accounts they can provision. 
-- Is there any verification, vetting and authorization of provisioning requests? 
-- Is there any verification, vetting and authorization of de-provisioning requests? 
-- Can an administrator provision other administrators or just users? 
-- Can an administrator or other user provision accounts with privileges greater than their own? 
-- Can an administrator or user de-provision themselves? 
-- How are the files or resources owned by the de-provisioned user managed? Are they deleted? Is access transferred? 
+사용자를 프로비저닝 할 수있는 역할과 프로비저닝 할 수있는 계정을 결정하십시오.
+
+- 프로비저닝 요청에 대한 확인, 검사 및 승인이 있습니까?
+- 프로비저닝 해제 요청에 대한 확인, 검사 및 승인이 있습니까?
+- 관리자가 다른 관리자 또는 사용자를 프로비저닝 할 수 있습니까?
+- 관리자 나 다른 사용자가 자신보다 큰 권한을 가진 계정을 제공 할 수 있습니까?
+- 관리자 나 사용자가 스스로 프로비저닝을 해제 할 수 있습니까?
+- 프로비저닝 해제 된 사용자가 소유 한 파일 또는 리소스는 어떻게 관리됩니까? 삭제 되었습니까? 액세스가 전송 되었습니까?
 
 **예제**
 
-In WordPress, only a user's name and email address are required to provision the user, as shown below: 
+WordPress에서는 아래와 같이 사용자를 프로비저닝하는 데 사용자 이름과 전자 메일 주소 만 필요합니다.
+
+사용자의 프로비저닝을 해제하려면 관리자가 프로비저닝을 해제 할 사용자를 선택하고 드롭 다운 메뉴에서 삭제(동그라미로 표시)를 선택한 다음이 작업을 적용해야합니다. 
+관리자는 사용자의 게시물을 어떻게 처리할지 묻는 대화 상자를 표시합니다 (삭제 또는 전송).
 
 |
 
-Tools 
+도구 
 ============================================================================================
 
-While the most thorough and accurate approach to completing this test is to conduct it manually, HTTP proxy tools could be also useful. 
+이 테스트를 완료하기위한 가장 철저하고 정확한 방법은 수동으로 수행하는 것이지만 HTTP 프록시 도구도 유용 할 수 있습니다.
 
 |
