@@ -229,18 +229,16 @@ HTML 액션 또는 자바스크립트 코드의 컨텍스트에서 다른 특수
 
 |
 
-Gray Box testing
+Gray Box 테스팅
 -------------------------------------------------------------------------------------------
 
-Gray Box testing은 Black box testing과 유사합니다. 
-In gray box testing, the pen-tester has partial knowledge of the application. 
-In this case, information regarding user input, input validation controls,
-and how the user input is rendered back to the user might be
-known by the pen-tester.
+Gray Box 테스팅은 Black box 테스팅과 유사합니다. 
+Gray box 테스팅에서 침투 테스터는 어플리케이션에 대한 부분적인 지식을 가지고 있습니다.
+이 경우에, 사용자 입력, 입력값 검증 제어 및 사용자 입력이 사용자에게 다시 렌더링되는 방법에 
+관한 정보는 침투 테스터에 의해 알려질 수 있습니다.
 
-If source code is available (White Box), all variables received from
-users should be analyzed. Moreover the tester should analyze any
-sanitization procedures implemented to decide if these can be circumvented.
+소스 코드를 이용할 수 있는 경우(White Box), 사용자로 부터 받은 모든 변수를 분석해야 합니다.
+또한 테스터는 필터링 처리 절차를 분석하여 이를 우회할 수 있는지 판단해야 합니다.
 
 |
 
